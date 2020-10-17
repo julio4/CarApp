@@ -2,10 +2,10 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{{}}</title>
+        <title>panier.html</title>
         <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
         <link rel="stylesheet" href="css/style.css">
-
+        <link rel="stylesheet" href="css/panier.css">
     </head>
     <body>
         <header>
@@ -25,20 +25,70 @@
                         </li>
 
                     </ul>
-                    <form class="form-inline my-2 my-lg-0">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                    </form>
                 </div>
             </nav>
         </header>
         <div class="container py-5">
 
-            <div class="text-center mb-5">
-                <h1 class="display-4 font-weight-bold">Paniers</h1>
-                <p class="font-italic text-muted mb-0">Tout vos achats couverts par notre <a href="#"><strong>Politique de protections des acheteurs</strong></a>.</p>
+            <div class="card">
+                <div class="row">
+                    <div class="col-md-8 cart">
+                        <div class="title">
+                            <div class="row">
+                                <div class="col">
+                                    <h4><b>Votre panier</b></h4>
+                                </div>
+                                <div class="col align-self-center text-right text-muted"><strong>3</strong> réservations</div>
+                            </div>
+                        </div>
+                        <div class="row border-top border-bottom">
+                            <div class="row main align-items-center">
+                                <div class="col-2"><img class="img-fluid rounded" src="pics/porsche-a1.png"></div>
+                                <div class="col">
+                                    <div class="row text-muted"><a href="voiture.html">Porsche Cayenne</a></div>
+                                    <div class="row"><a href="loueur.html"></a>Porsche FR</a></div>
+                                </div>
+                                <div class="col">14 Oct 2020 - 25 Nov 2021</div>
+                                <div class="col-3">&euro; 44.00 <span class="close">&#10005;</span></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="row main align-items-center">
+                                <div class="col-2"><img class="img-fluid v" src="pics/porsche-model.png"></div>
+                                <div class="col">
+                                    <div class="row text-muted"><a href="voiture.html">Porsche Cayenne</a></div>
+                                    <div class="row"><a href="loueur.html"></a>Porsche FR</a></div>
+                                </div>
+                                <div class="col">14 Oct 2020 - 25 Nov 2021</div>
+                                <div class="col-3">&euro; 74.00 <span class="close">&#10005;</span></div>
+                            </div>
+                        </div>
+                        <div class="row border-top border-bottom">
+                            <div class="row main align-items-center">
+                                <div class="col-2"><img class="img-fluid rounded" src="pics/porsche-model.png"></div>
+                                <div class="col">
+                                    <div class="row text-muted"><a href="voiture.html">Porsche Cayenne</a></div>
+                                    <div class="row"><a href="loueur.html"></a>Porsche FR</a></div>
+                                </div>
+                                <div class="col">14 Oct 2020 - 25 Nov 2021</div>
+                                <div class="col-3">&euro; 88.08 <span class="close">&#10005;</span></div>
+                            </div>
+                        </div>
+                        <div class="back-to-shop"><a href="index.html">&leftarrow; <span class="text-muted">Continuer les achats</span></a></div>
+                    </div>
+                    <div class="col-md-4 summary">
+                        <div>
+                            <h5><b>Résumé</b></h5>
+                        </div>
+                        <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+                            <div class="col">PRIX TOTAL</div>
+                            <div class="col text-right">137.08 &euro;</div>
+                        </div> <a href="reservation_statut.html" class="btn">PAYER</a>
+                    </div>
+                </div>
             </div>
 
+        </div>
 
         <script src="lib/jquery.min.js"></script>
         <script src="lib/popper.min.js"></script>
