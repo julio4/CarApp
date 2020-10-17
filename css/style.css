@@ -34,3 +34,8 @@ a:hover {
 .btn-main {
     width: 100%
 }
+
+/* A mettre sur les .row*/
+.equal .card {
+  height: 100%;
+}
