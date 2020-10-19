@@ -6,6 +6,7 @@
         <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/panel.css">
+        <link rel="stylesheet" href="lib/bootstrap-select.min.css"/>
     </head>
     <body>   
         <header>
@@ -86,72 +87,41 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="loueur_dashboard.html">Panel</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Véhicules</li>
+                        <li class="breadcrumb-item"><a href="loueur_dashboard_vehicules.html">Véhicules</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Nouveau</li>
                         </ol>
                     </nav>
-                    <h1 class="h2">Véhicules</h1>
+                    <h1 class="h2">Ajouter un nouveau véhicule</h1>
                     <div class="row">
                         <div class="col">
-                            <div class="card rounded shadow-sm border-0">
+                            <div class="card rounded shadow-sm border-0 mr-2">
                                 <div class="card-body">
-                                    <h5 class="card-title">Mes Véhicules en location <a class="btn btn-primary" href="loueur_dashboard_vehicules_formulaire.html" role="button">Ajouter +</a></h5> 
-                                    <div class="table-responsive">
-                                        <table class="table">
-                                            <thead>
-                                            <tr>
-                                                <th scope="col">Modèle</th>
-                                                <th scope="col">Caractéristiques</th> <!-- Idées : https://bootsnipp.com/snippets/Veob -->
-                                                <th scope="col">Prix/j</th>
-                                                <th scope="col">Disponibilité</th>
-                                                <th scope="col"></th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr>
-                                                <th scope="row">Porsche Cayenne</th>
-                                                <td>Moteur: Hybride Boite: Automatique ...</td>
-                                                <td>61.11€</td>
-                                                <td><span href="#" class="badge badge-success">Disponible</span></td>
-                                                <td><a href="loueur_dashboard_vehicules_vehicule.html">Détails</a></td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">Porsche Cayenne</th>
-                                                <td>Moteur: Hybride Boite: Automatique ...</td>
-                                                <td>61.11€</td>
-                                                <td><span href="#" class="badge badge-success">Disponible</span></td>
-                                                <td><a href="loueur_dashboard_vehicules_vehicule.html">Détails</a></td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">Porsche Cayenne</th>
-                                                <td>Moteur: Hybride Boite: Automatique ...</td>
-                                                <td>61.11€</td>
-                                                <td><span href="#" class="badge badge-warning">En location</span></td>
-                                                <td><a href="loueur_dashboard_vehicules_vehicule.html">Détails</a></td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">Porsche Cayenne</th>
-                                                <td>Moteur: Hybride Boite: Automatique ...</td>
-                                                <td>61.11€</td>
-                                                <td><span href="#" class="badge badge-warning">En location</span></td>
-                                                <td><a href="loueur_dashboard_vehicules_vehicule.html">Détails</a></td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">Porsche Cayenne</th>
-                                                <td>Moteur: Hybride Boite: Automatique ...</td>
-                                                <td>61.11€</td>
-                                                <td><span class="badge badge-secondary">Indisponible</span></td>
-                                                <td><a href="loueur_dashboard_vehicules_vehicule.html">Détails</a></td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">Porsche Cayenne</th>
-                                                <td>Moteur: Hybride Boite: Automatique ...</td>
-                                                <td>61.11€</td>
-                                                <td><span href="#" class="badge badge-success">Disponible</span></td>
-                                                <td><a href="loueur_dashboard_vehicules_vehicule.html">Détails</a></td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                    <form>
+                                        <div class="form-row align-items-center m-4">
+                                            <div class="col-auto my-2 p-0">
+                                                <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect">Modèle</label>
+                                                <select class="selectpicker" data-live-search="true" data-style="btn-primary">
+                                                    <option>Sélection du modèle...</option>
+                                                    <option value="id_modèle_1">Porsche Cayenne</option>
+                                                    <option value="id_modèle_2">Porsche Carrera</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-auto my-2 p-0">
+                                                <input data-suffix="€/jour" value="0" data-decimals="2" min="0" max="10000" step="1" type="number" id="inputPrix"/>
+                                                <p>1 semaine : <span id="1semaine"></span><br>1 mois : <span id="1mois"></span><br>1 an: <span id="1an"></span></p>
+                                            </div>
+                                            <div class="custom-file my-2">
+                                                <input type="file" name="img" accept="image/*" class="custom-file-input" id="validatedCustomFile" required>
+                                                <label class="custom-file-label" for="validatedCustomFile" data-browse="Parcourir">Photo du véhicule</label>
+                                                <div class="invalid-feedback">La photo est invalide</div>
+                                            </div>
+                                            <div class="custom-control custom-switch my-2">
+                                                <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                                                <label class="custom-control-label" for="customSwitch1">Rendre disponible directement</label>
+                                            </div>
+                                        </div>
+                                    </form>
+                                      
                                 </div>
                             </div>
                         </div>
@@ -162,6 +132,28 @@
 
         <script src="lib/jquery.min.js"></script>
         <script src="lib/popper.min.js"></script>
-        <script src="lib/bootstrap/js/bootstrap.min.js"></script>
+        <script src="lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="lib/bs-custom-file-input.js"></script>
+        <script src="lib/bootstrap-select.min.js"></script>
+        <script src="lib/defaults-fr_FR.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                bsCustomFileInput.init()
+            })
+        </script>
+        <script src="lib/bootstrap-input-spinner.js"></script>
+        <script>
+            $("input[type='number']").inputSpinner()
+            var $inputPrix = $("#inputPrix")
+            var $1semaine = $("#1semaine")
+            var $1mois = $("#1mois")
+            var $1an = $("#1an")
+            var $valueOnChange = $("#valueOnChange")
+            $inputPrix.on("input", function (event) {
+                $1semaine.html($inputPrix.val() * 7 + " €")
+                $1mois.html($inputPrix.val() * 7 * 4 + " €")
+                $1an.html($inputPrix.val() * 7 * 4 * 12 + " €")
+            })
+        </script>
     </body>
 </html>
