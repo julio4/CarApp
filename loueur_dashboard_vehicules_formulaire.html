@@ -1,159 +1,241 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>base.html</title>
-        <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
-        <link rel="stylesheet" href="css/style.css">
-        <link rel="stylesheet" href="css/panel.css">
-        <link rel="stylesheet" href="lib/bootstrap-select.min.css"/>
-    </head>
-    <body>   
-        <header>
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <a class="navbar-brand" href="index.html">Car'App</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="index.html">Accueil</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="index.html">Parcourir les véhicules</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="index.html">Mes véhicules ?</a>
-                        </li>
-                    </ul>
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
+<head>
+    <meta charset="UTF-8">
+    <title>base.html</title>
+    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/panel.css">
+    <link rel="stylesheet" href="lib/bootstrap-select.min.css" />
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="index.html">Car'App</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="index.html">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Parcourir les véhicules</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Mes véhicules ?</a>
+                    </li>
+                </ul>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-toggle="dropdown" aria-expanded="false">
                         Bonjour, Porsche FR
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <li><a class="dropdown-item" href="#">Panel</a></li>
                         <li><a class="dropdown-item" href="#">Paramètres</a></li>
                         <li><a class="dropdown-item" href="#">Déconnexion</a></li>
-                        </ul>
-                    </div>
+                    </ul>
                 </div>
-            </nav>
-        </header>
-    
-        <div class="container-fluid">
-            <div class="row">
-                <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-                      <!-- SIDEBAR-->
-                      <div class="position-sticky pt-md-5">
-                        <ul class="nav flex-column">
-                            <li class="nav-item">
+            </div>
+        </nav>
+    </header>
+
+    <div class="container-fluid">
+        <div class="row">
+            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <!-- SIDEBAR-->
+                <div class="position-sticky pt-md-5">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
                             <a class="nav-link" aria-current="page" href="loueur_dashboard.html">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="feather feather-home">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                                </svg>
                                 <span class="ml-2">Accueil</span>
                             </a>
-                            </li>
-                            <li class="nav-item">
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="loueur_dashboard_vehicules.html">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="feather feather-file">
+                                    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                                    <polyline points="13 2 13 9 20 9"></polyline>
+                                </svg>
                                 <span class="ml-2">Véhicules</span>
                             </a>
-                            </li>
-                            <li class="nav-item">
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="loueur_dashboard_reservations.html">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-cart"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="feather feather-shopping-cart">
+                                    <circle cx="9" cy="21" r="1"></circle>
+                                    <circle cx="20" cy="21" r="1"></circle>
+                                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                                </svg>
                                 <span class="ml-2">Réservations</span>
                             </a>
-                            </li>
-                            <li class="nav-item">
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="loueur_dashboard_clients.html">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="feather feather-users">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
                                 <span class="ml-2">Clients</span>
                             </a>
-                            </li>
-                            <li class="nav-item">
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="loueur_dashboard_statistiques.html">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bar-chart-2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="feather feather-bar-chart-2">
+                                    <line x1="18" y1="20" x2="18" y2="10"></line>
+                                    <line x1="12" y1="20" x2="12" y2="4"></line>
+                                    <line x1="6" y1="20" x2="6" y2="14"></line>
+                                </svg>
                                 <span class="ml-2">Statistiques</span>
                             </a>
-                            </li>
-                        </ul>
-                    </div>
-                        
-                    
-                </nav>
-                <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
+                        </li>
+                    </ul>
+                </div>
+
+
+            </nav>
+            <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="loueur_dashboard.html">Panel</a></li>
                         <li class="breadcrumb-item"><a href="loueur_dashboard_vehicules.html">Véhicules</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Nouveau</li>
-                        </ol>
-                    </nav>
-                    <h1 class="h2">Ajouter un nouveau véhicule</h1>
-                    <div class="row">
-                        <div class="col">
-                            <div class="card rounded shadow-sm border-0 mr-2">
-                                <div class="card-body">
-                                    <form>
-                                        <div class="form-row align-items-center m-4">
-                                            <div class="col-auto my-2 p-0">
-                                                <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect">Modèle</label>
-                                                <select class="selectpicker" data-live-search="true" data-style="btn-primary">
-                                                    <option>Sélection du modèle...</option>
-                                                    <option value="id_modèle_1">Porsche Cayenne</option>
-                                                    <option value="id_modèle_2">Porsche Carrera</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-auto my-2 p-0">
-                                                <input data-suffix="€/jour" value="0" data-decimals="2" min="0" max="10000" step="1" type="number" id="inputPrix"/>
-                                                <p>1 semaine : <span id="1semaine"></span><br>1 mois : <span id="1mois"></span><br>1 an: <span id="1an"></span></p>
-                                            </div>
-                                            <div class="custom-file my-2">
-                                                <input type="file" name="img" accept="image/*" class="custom-file-input" id="validatedCustomFile" required>
-                                                <label class="custom-file-label" for="validatedCustomFile" data-browse="Parcourir">Photo du véhicule</label>
+                    </ol>
+                </nav>
+                <h1 class="h2">Ajouter un nouveau véhicule</h1>
+                <div class="row justify-content-center">
+                    <div class="col-10">
+                        <div class="card rounded shadow-sm border-0 mr-2">
+                            <div class="card-body">
+                                <form class="my-3">
+                                    <div class="form-row justify-content-center">
+                                        <div class="form-group col-md-4">
+                                            <label class="mr-sm-2 sr-only" for="selectModele">Modèle</label>
+                                            <select class="selectpicker form-control" id="selectModele" data-live-search="true"
+                                                data-style="btn-primary">
+                                                <option>Sélection du modèle...</option>
+                                                <option value="id_modèle_1">Porsche Cayenne</option>
+                                                <option value="id_modèle_2">Porsche Carrera</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-row justify-content-center">
+                                        <div class="form-group col-md-6">
+                                            <label for="inputPrix">Prix</label>
+                                            <input data-suffix="€/jour" value="0" data-decimals="2" min="0" max="10000"
+                                                step="1" type="number" id="inputPrix" />
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="nbPlaces">Places</label>
+                                            <input value="0" min="0" max="100" step="1" type="number" id="nbPlaces" />
+                                        </div>
+                                        <p>
+                                            1 semaine : <span id="1semaine"></span><br>
+                                            1 mois : <span id="1mois"></span><br>
+                                            1 an: <span id="1an"></span>
+                                        </p>
+                                    </div>
+                                    <div class="form-row justify-content-center">
+                                        <div class="form-group col-md-3">
+                                            <label for="caracBoite">Boite</label>
+                                            <select id="caracBoite" class="form-control">
+                                                <option selected>Manuelle</option>
+                                                <option>Automatique</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group col-md-3">
+                                            <label for="caracMoteur">Moteur</label>
+                                            <select id="caracMoteur" class="form-control">
+                                                <option selected>Diesel</option>
+                                                <option>Hybride</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label for="caracCarburant">Carburant</label>
+                                            <select id="caracCarburant" class="form-control">
+                                                <option selected>Essence</option>
+                                                <option>Petrole</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row justify-content-center">
+                                        <div class="form-group col-md-4">
+                                            <div class="custom-file">
+                                                <label for="validatedCustomFile">Prix</label>
+                                                <input type="file" name="img" accept="image/*" class="custom-file-input"
+                                                    id="validatedCustomFile" required>
+                                                <label class="custom-file-label" for="validatedCustomFile"
+                                                    data-browse="Parcourir">Photo
+                                                    du véhicule</label>
                                                 <div class="invalid-feedback">La photo est invalide</div>
                                             </div>
-                                            <div class="custom-control custom-switch my-2">
+                                            <div class="form-group custom-control custom-switch">
                                                 <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                                                <label class="custom-control-label" for="customSwitch1">Rendre disponible directement</label>
+                                                <label class="custom-control-label" for="customSwitch1">Rendre disponible
+                                                    directement</label>
                                             </div>
                                         </div>
-                                    </form>
-                                      
-                                </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary float-right">Ajouter</button>
+                                </form>
+
                             </div>
                         </div>
                     </div>
-                </main>
-            </div>
+                </div>
+            </main>
         </div>
+    </div>
 
-        <script src="lib/jquery.min.js"></script>
-        <script src="lib/popper.min.js"></script>
-        <script src="lib/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <script src="lib/bs-custom-file-input.js"></script>
-        <script src="lib/bootstrap-select.min.js"></script>
-        <script src="lib/defaults-fr_FR.min.js"></script>
-        <script>
-            $(document).ready(function () {
-                bsCustomFileInput.init()
-            })
-        </script>
-        <script src="lib/bootstrap-input-spinner.js"></script>
-        <script>
-            $("input[type='number']").inputSpinner()
-            var $inputPrix = $("#inputPrix")
-            var $1semaine = $("#1semaine")
-            var $1mois = $("#1mois")
-            var $1an = $("#1an")
-            var $valueOnChange = $("#valueOnChange")
-            $inputPrix.on("input", function (event) {
-                $1semaine.html($inputPrix.val() * 7 + " €")
-                $1mois.html($inputPrix.val() * 7 * 4 + " €")
-                $1an.html($inputPrix.val() * 7 * 4 * 12 + " €")
-            })
-        </script>
-    </body>
+    <script src="lib/jquery.min.js"></script>
+    <script src="lib/popper.min.js"></script>
+    <script src="lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/bs-custom-file-input.js"></script>
+    <script src="lib/bootstrap-select.min.js"></script>
+    <script src="lib/defaults-fr_FR.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            bsCustomFileInput.init()
+        })
+    </script>
+    <script src="lib/bootstrap-input-spinner.js"></script>
+    <script>
+        $("input[type='number']").inputSpinner()
+        var $inputPrix = $("#inputPrix")
+        var $1semaine = $("#1semaine")
+        var $1mois = $("#1mois")
+        var $1an = $("#1an")
+        var $valueOnChange = $("#valueOnChange")
+        $inputPrix.on("input", function (event) {
+            $1semaine.html($inputPrix.val() * 7 + " €")
+            $1mois.html($inputPrix.val() * 7 * 4 + " €")
+            $1an.html($inputPrix.val() * 7 * 4 * 12 + " €")
+        })
+    </script>
+</body>
+
 </html>
