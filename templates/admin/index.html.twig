@@ -1,0 +1,59 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block title %}Panel Administrateur{% endblock %}
+
+{% block sidebard %}
+    <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="{{ path('admin_panel_utilisateur') }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            <span class="ml-2">Utilisateurs</span>
+        </a>
+    </li>
+{% endblock %}
+
+
+{% block dashboard_current %}
+{% endblock %}
+{% block dashboard_body %}
+    <h1 class="h2">Panel Administrateur</h1>
+
+    <div class="row equal my-4">
+
+        <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
+            <div class="card rounded shadow-sm border-0">
+                <div class="card-body p-4 text-center">
+                    <p class="card-title">Utilisateurs</p>
+                    <h2 class="card-text">{{ nbUsers }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
+            <div class="card rounded shadow-sm border-0">
+                <div class="card-body p-4 text-center">
+                    <p class="card-title">Réservations</p>
+                    <h2 class="card-text">_TODO</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
+            <div class="card rounded shadow-sm border-0">
+                <div class="card-body p-4 text-center">
+                    <p class="card-title">Véhicules loués</p>
+                    <h2 class="card-text">_TODO</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
+            <div class="card rounded shadow-sm border-0">
+                <div class="card-body p-4 text-center">
+                    <p class="card-title">Revenue Totaux</p>
+                    <h2 class="card-text">_TODO</h2>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

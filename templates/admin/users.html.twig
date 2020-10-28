@@ -1,0 +1,75 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block title %}Panel Admin - Utilisateurs{% endblock %}
+
+
+{% block dashboard_current %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('admin_panel') }}">Panel</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Utilisateurs</li>
+        </ol>
+    </nav>
+{% endblock %}
+{% block dashboard_body %}
+    <h1 class="h2">Gérer les utilisateurs</h1>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card rounded shadow-sm border-0">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                            <tr>
+                                <th scope="col">id</th>
+                                <th scope="col">Nom</th>
+                                <th scope="col">email</th>
+                                <th scope="col">role</th>
+                                <th scope="col"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for user in users %}
+                                <tr>
+                                    <th scope="row">{{ user.id }}</th>
+                                    <td>{{ user.name }}</td>
+                                    <td>{{ user.email }}</td>
+                                    <td>
+                                        {% for role in user.roles %}
+                                            {{ role }}
+                                        {% endfor %}
+                                    </td>
+                                    <td>
+                                        {% if "ROLE_ADMIN" in user.roles %}
+                                            <a href="{{ path('admin_panel_utilisateur') }}" class="btn btn-sm btn-danger disabled">Supprimer</a>
+                                        {% else %}
+                                            {% if "ROLE_USER" in user.roles %}
+                                                <a href="{{ path('admin_panel_utilisateur_loueur', {id: user.id}) }}" class="btn btn-sm btn-primary">Définir Loueur</a>
+                                            {% elseif "ROLE_LOUEUR" in user.roles %}
+                                                <a href="{{ path('admin_panel_utilisateur_utilisateur', {id: user.id}) }}" class="btn btn-sm btn-secondary">Définir Utilisateur</a>
+                                            {% endif %}
+                                            <a href="{{ path('admin_panel_utilisateur_supprimer', {id: user.id}) }}" class="btn btn-sm btn-danger">Supprimer</a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

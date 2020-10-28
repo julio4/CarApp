@@ -1,0 +1,43 @@
+@import "~bootstrap/scss/bootstrap";
+
+body {
+  min-height: 100vh;
+  background: #fafafa;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+#grid-types .card {transition: all 0.2s ease-in-out;}
+#grid-types .card:hover{
+  transform:scale(1.05);
+}
+#grid-types p:after {
+  content: ' >';
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+#grid-types .card:hover p:after {
+  opacity: 1;
+  right: 0;
+}
+#grid-types .card p {
+  padding-right: 0px;
+  transition: 0.5s;
+}
+#grid-types .card:hover p {
+  padding-right: 10px;
+}
+
+.btn-main {
+  width: 100%
+}
+
+/* A mettre sur les .row*/
+.equal .card {
+  height: 100%;
+}
