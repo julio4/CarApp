@@ -7,6 +7,7 @@
         "ext-iconv": "*",
         "ext-json": "*",
         "composer/package-versions-deprecated": "^1.11",
+        "doctrine/annotations": "^1.11",
         "doctrine/doctrine-bundle": "^2.1",
         "doctrine/doctrine-migrations-bundle": "^3.0",
         "doctrine/orm": "^2.7",
@@ -29,6 +30,7 @@
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.3",
+        "symfony/debug-bundle": "5.1.*",
         "symfony/stopwatch": "^5.1",
         "symfony/web-profiler-bundle": "^5.1"
     },

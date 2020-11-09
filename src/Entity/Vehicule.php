@@ -6,6 +6,7 @@ use App\Repository\VehiculeRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
@@ -22,15 +23,72 @@ class Vehicule
      */
     private $id;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="vehicules")
      */
     private $loueur;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\TypeVehicule", inversedBy="vehicules")
+     */
+    private $type;
+
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $carac = [];
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $etat;
+
+    /**
+     * @ORM\Column(type="float")
+     * @Assert\Positive(
+     *      message = "Le prix ne peut être nul ou négatif."
+     * )
+     */
+    private $prix;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Location::class, mappedBy="vehicule", cascade={"persist", "remove"})
+     */
+    private $location;
+
+    public function getLocation(): ?Location
+    {
+        return $this->location;
+    }
+
+    public function setLocation(Location $location): self
+    {
+        $this->location = $location;
+
+        // set the owning side of the relation if necessary
+        if ($location->getVehicule() !== $this) {
+            $location->setVehicule($this);
+        }
+
+        return $this;
+    }
+
+    public function getPrix(): ?float
+    {
+        return $this->prix;
+    }
+
+    public function setPrix(float $prix): self
+    {
+        $this->prix = $prix;
+
+        return $this;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
     public function getLoueur(): ?User
     {
@@ -44,11 +102,6 @@ class Vehicule
         return $this;
     }
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\TypeVehicule", inversedBy="vehicules")
-     */
-    private $type;
-
     public function getType(): ?TypeVehicule
     {
         return $this->type;
@@ -60,11 +113,6 @@ class Vehicule
 
         return $this;
     }
-
-    /**
-     * @ORM\Column(type="json", nullable=true)
-     */
-    private $carac = [];
 
     public function getCarac(): ?array
     {
@@ -78,11 +126,6 @@ class Vehicule
         return $this;
     }
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $etat;
-
     public function getEtat(): ?string
     {
         return $this->etat;
@@ -91,24 +134,6 @@ class Vehicule
     public function setEtat(string $etat): self
     {
         $this->etat = $etat;
-
-        return $this;
-    }
-
-    /**
-     * @ORM\Column(type="float")
-     */
-    private $prix;
-
-
-    public function getPrix(): ?float
-    {
-        return $this->prix;
-    }
-
-    public function setPrix(float $prix): self
-    {
-        $this->prix = $prix;
 
         return $this;
     }
@@ -134,7 +159,7 @@ class Vehicule
      *
      * @var \DateTimeInterface|null
      */
-    private $miseAJour;
+    private $updatedAt;
 
     public function __construct()
     {
@@ -157,7 +182,7 @@ class Vehicule
         if (null !== $imageFile) {
             // It is required that at least one field changes if you are using doctrine
             // otherwise the event listeners won't be called and the file is lost
-            $this->miseAJour = new \DateTimeImmutable();
+            $this->updatedAt = new \DateTimeImmutable();
         }
     }
 

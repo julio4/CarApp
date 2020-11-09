@@ -1,5 +1,9 @@
 {% extends 'base.html.twig' %}
 
+{% block style %}
+    {{ encore_entry_link_tags('dates') }}
+{% endblock %}
+
 {% block body %}
     <div class="container py-5">
         <span class="glyphicon glyphicon-arrow-left"></span>
@@ -10,7 +14,7 @@
                     <div class="card-body p-4">
                         <div class='row align-items-center'>
                             <div class="col-8">
-                                <img src="{{ asset('media/img/types/' ~ type.img) }}" alt="" class="img-fluid d-block mx-auto mb-3">
+                                <img src="{{ asset('media/img/types/' ~ type.image.name) }}" alt="" class="img-fluid d-block mx-auto mb-3">
                             </div>
                             <div class="col-4">
                                 <h5>{{ type.name }}</h5>
@@ -21,175 +25,110 @@
                                 {% endif %}
                             </div>
                         </div>
-                        <form>
+                        {{ form_start(form) }}
+
+                        <div class="my-custom-class-for-errors">
+                            {{ form_errors(form) }}
+                        </div>
+
                             <div class="form-row align-items-center">
-                                <div class="form-group col-xl-3 col-md-6 col-xs-12 input">
-                                    <label for="sel1">Dates de location:</label>
-                                    <input id="litepicker" type="text" class="form-control" id="sel1">
+                                <div class="form-group col-xl-3 col-md-12 col-xs-12 input">
+{#                                    <input id="litepicker" type="text" class="form-control">#}
+                                    {{ form_row(form.date) }}
                                 </div>
-                                <div class="form-group col-xl-3 col-md-6 col-xs-12">
-                                    <label for="sel2">Critères 2:</label>
-                                    <select class="form-control" id="sel2">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-xl-3 col-md-6 col-xs-12">
-                                    <label for="sel3">Critères 3:</label>
-                                    <select class="form-control" id="sel3">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-xl-3 col-md-6 col-xs-12">
-                                    <label for="sel4">Critères 4:</label>
-                                    <select class="form-control" id="sel4">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                    </select>
-                                </div>
+                                {#TODO Trier les résultats#}
+{#                                <div class="form-group col-xl-3 col-md-6 col-xs-12">#}
+{#                                    <label for="sel2">Critères 2:</label>#}
+{#                                    <select class="form-control" id="sel2">#}
+{#                                        <option>1</option>#}
+{#                                        <option>2</option>#}
+{#                                        <option>3</option>#}
+{#                                        <option>4</option>#}
+{#                                    </select>#}
+{#                                </div>#}
+{#                                <div class="form-group col-xl-3 col-md-6 col-xs-12">#}
+{#                                    <label for="sel3">Critères 3:</label>#}
+{#                                    <select class="form-control" id="sel3">#}
+{#                                        <option>1</option>#}
+{#                                        <option>2</option>#}
+{#                                        <option>3</option>#}
+{#                                        <option>4</option>#}
+{#                                    </select>#}
+{#                                </div>#}
+{#                                <div class="form-group col-xl-3 col-md-6 col-xs-12">#}
+{#                                    <label for="sel4">Critères 4:</label>#}
+{#                                    <select class="form-control" id="sel4">#}
+{#                                        <option>1</option>#}
+{#                                        <option>2</option>#}
+{#                                        <option>3</option>#}
+{#                                        <option>4</option>#}
+{#                                    </select>#}
+{#                                </div>#}
                             </div>
-                            <input class="btn btn-primary float-right" type="submit" value="Afficher les résultats">
-                        </form>
+{#                            <input class="btn btn-primary float-right" type="" value="Afficher les résultats">#}
 
                         <div class="container-fluid py-5">
+                            {% for vehicule in type.vehicules %}
                             <hr>
                             <div class="row">
                                 <div class="col-md-12">
                                     <h3>
-                                        Porsche Cayenne
+                                        {{ type.name }}
                                     </h3>
-                                    <p class="small text-muted">Loueur: <a href="loueur.html">Porsche FR</a></p>
+                                    {# TODO Ajouter la page de loueur#}
+                                    <p class="small text-muted">Loueur: <a href="loueur.html">{{ vehicule.loueur.name }}</a></p>
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <img class="img-fluid d-block rounded" alt="Nom de l'annonce" src="pics/porsche-a1.png" />
+                                            <img class="img-fluid d-block rounded" alt="Nom de l'annonce" src="{{ asset('media/img/vehicules/' ~ vehicule.image.name) }}" />
                                         </div>
                                         <div class="col-md-4">
                                             <dl>
-                                                <dt>
-                                                    Moteur
-                                                </dt>
-                                                <dd>
-                                                    Hybride
-                                                </dd>
-                                                <dt>
-                                                    Places
-                                                </dt>
-                                                <dd>
-                                                    6
-                                                </dd>
-                                                <dd>
-                                                    Boite
-                                                </dd>
-                                                <dt>
-                                                    Automatique
-                                                </dt>
+                                                {% for key, descr in vehicule.carac %}
+                                                    <dt>
+                                                        {{ key }}
+                                                    </dt>
+                                                    <dd>
+                                                        {{ descr }}
+                                                    </dd>
+                                                {% endfor %}
                                             </dl>
                                         </div>
                                         <div class="col-md-4">
-                                            <h3 class="text-center">480.74 €</h3>
-                                            <a href="panier.html" class="btn btn-main btn-outline-primary m-2 px-2">Ajouter au panier</a>
-                                            <a href="panier.html" class="btn  btn-main btn-primary m-2 p-3">Réserver maintenant</a>
+                                            <h3 class="text-center">{{ vehicule.prix }} €</h3>
+                                            {# TODO Lien panier#}
+                                            <label for="form_select_{{ loop.index - 1 }}" class="btn btn-main btn-outline-primary m-2 px-2">Ajouter au panier</label>
+                                            <label for="form_select_{{ loop.index - 1 }}" class="btn btn-main btn-primary m-2 p-3">Réserver Maintenant</label>
+                                            {{ form_label(form.select[loop.index - 1]) }}
+                                            {{ form_widget(form.select[loop.index - 1], {'attr': {'class': 'form-check-input', 'onchange':'registerLocation()'}}) }}
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            {% endfor %}
 
-
-                            <hr>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <h3>
-                                        Porsche Cayenne
-                                    </h3>
-                                    <p class="small text-muted">Loueur: <a href="loueur.html">Porsche FR</a></p>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <img class="img-fluid d-block rounded" alt="Nom de l'annonce" src="pics/porsche-a1.png" />
-                                        </div>
-                                        <div class="col-md-4">
-                                            <dl>
-                                                <dt>
-                                                    Moteur
-                                                </dt>
-                                                <dd>
-                                                    Hybride
-                                                </dd>
-                                                <dt>
-                                                    Places
-                                                </dt>
-                                                <dd>
-                                                    6
-                                                </dd>
-                                                <dd>
-                                                    Boite
-                                                </dd>
-                                                <dt>
-                                                    Automatique
-                                                </dt>
-                                            </dl>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <h3 class="text-center">480.74 €</h3>
-                                            <a href="panier.html" class="btn btn-main btn-outline-primary m-2 px-2">Ajouter au panier</a>
-                                            <a href="panier.html" class="btn  btn-main btn-primary m-2 p-3">Réserver maintenant</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <hr>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <h3>
-                                        Porsche Cayenne
-                                    </h3>
-                                    <p class="small text-muted">Loueur: <a href="loueur.html">Porsche FR</a></p>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <img class="img-fluid d-block rounded" alt="Nom de l'annonce" src="pics/porsche-a1.png" />
-                                        </div>
-                                        <div class="col-md-4">
-                                            <dl>
-                                                <dt>
-                                                    Moteur
-                                                </dt>
-                                                <dd>
-                                                    Hybride
-                                                </dd>
-                                                <dt>
-                                                    Places
-                                                </dt>
-                                                <dd>
-                                                    6
-                                                </dd>
-                                                <dd>
-                                                    Boite
-                                                </dd>
-                                                <dt>
-                                                    Automatique
-                                                </dt>
-                                            </dl>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <h3 class="text-center">480.74 €</h3>
-                                            <a href="panier.html" class="btn btn-main btn-outline-primary m-2 px-2">Ajouter au panier</a>
-                                            <a href="panier.html" class="btn  btn-main btn-primary m-2 p-3">Réserver maintenant</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
+
+                        {{ form_end(form) }}
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    {% block javascripts %}
+        {{ encore_entry_script_tags('dates') }}
+        <script>
+
+            function registerLocation() {
+                $(document).ready(function() {
+                    $( "form" ).submit();
+                })
+                $('input[type="submit"]').click(function(){
+                    $('input[type="checkbox"]').each(function(){
+                        $(this).prop('checked', false);
+                    });
+                });
+            }
+        </script>
+    {% endblock %}
 {% endblock %}

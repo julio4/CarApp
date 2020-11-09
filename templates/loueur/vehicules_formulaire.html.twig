@@ -118,7 +118,16 @@
                 ajoutMod.addEventListener('click', function() {
                     // AJOUT MODELE
                     searchValue = document.querySelector('.bs-searchbox input').value;
-                    alert(searchValue);
+                    var form = document.createElement('form');
+                    document.body.appendChild(form);
+                    form.method = 'post';
+                    form.action = "{{ path('loueur_type_ajouter')|escape('js') }}";
+                        var input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = 'default_name';
+                        input.value = searchValue;
+                        form.appendChild(input);
+                    form.submit();
                 });
                 clearInterval(checkExist);
             }

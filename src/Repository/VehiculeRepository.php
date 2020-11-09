@@ -30,7 +30,20 @@ class VehiculeRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('p')
             ->andWhere('p.loueur = :user')
             ->setParameter('user', $user)
-            ->orderBy('p.miseAJour', 'DESC')
+            ->orderBy('p.updatedAt', 'DESC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    /**
+     * @return Vehicule[]
+     */
+    public function findAllType(TypeVehicule $type): array
+    {
+        return $this->createQueryBuilder('vehicule')
+            ->andWhere('vehicule.type = :type')
+            ->setParameter('type', $type)
             ->getQuery()
             ->getResult()
             ;
