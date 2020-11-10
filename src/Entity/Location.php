@@ -33,6 +33,22 @@ class Location
      */
     private $dateFin;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $estReccurent;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $prix;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="locations")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -70,6 +86,42 @@ class Location
     public function setDateFin(?\DateTimeInterface $dateFin): self
     {
         $this->dateFin = $dateFin;
+
+        return $this;
+    }
+
+    public function getEstReccurent(): ?bool
+    {
+        return $this->estReccurent;
+    }
+
+    public function setEstReccurent(bool $estReccurent): self
+    {
+        $this->estReccurent = $estReccurent;
+
+        return $this;
+    }
+
+    public function getPrix(): ?float
+    {
+        return $this->prix;
+    }
+
+    public function setPrix(float $prix): self
+    {
+        $this->prix = $prix;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

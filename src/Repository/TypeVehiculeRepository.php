@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\TypeVehicule;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\Expr;
 
 /**
  * @method TypeVehicule|null find($id, $lockMode = null, $lockVersion = null)
@@ -24,12 +25,34 @@ class TypeVehiculeRepository extends ServiceEntityRepository
      */
     public function findAllAvailable()
     {
-        $qb = $this->createQueryBuilder('type');
-//            ->innerJoin('tv.vehicules', 'prix')
-//            ->addSelect('prix');
+        $qb = $this->createQueryBuilder('t')
+            ->innerJoin('App\Entity\Vehicule','v', Expr\Join::WITH, 't.id = v.type')
+            ->leftJoin('App\Entity\Location', 'l', Expr\Join::WITH, 'v.id = l.vehicule')
+            ->andWhere('l is NULL OR l.dateFin < :now')
+            ->setParameter('now', $date = date('Y-m-d', time()));
 
         return $qb
             ->getQuery()
             ->getArrayResult();
     }
+
+    /**
+     * @return TypeVehicule[] Returns an array of TypeVehicule
+     */
+    public function findAllAvailableBetween($dateDebut, $dateFin)
+    {
+        $qb = $this->createQueryBuilder('t')
+            ->innerJoin('App\Entity\Vehicule','v', Expr\Join::WITH, 't.id = v.type')
+            ->leftJoin('App\Entity\Location', 'l', Expr\Join::WITH, 'v.id = l.vehicule')
+            ->andWhere('l is NULL OR (l.dateDebut < :dateDebut AND l.dateFin < :dateDebut) OR (l.dateDebut > :dateFin AND l.dateFin > :dateFin)')
+            ->setParameter('dateDebut', $dateDebut->format('Y-m-d'))
+            ->setParameter('dateFin', $dateFin->format('Y-m-d'))
+            ->groupBy('t');
+
+        return $qb
+            ->getQuery()
+            ->getArrayResult();
+    }
+
+
 }

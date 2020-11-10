@@ -49,6 +49,24 @@ class VehiculeRepository extends ServiceEntityRepository
             ;
     }
 
+    /**
+     * @return Vehicule[] disponible du type indiqué
+     */
+    public function findTypeAvailable(TypeVehicule $type): array
+    {
+        //TODO faudrait vérifier que les locations des voitures demandé si elles sont liés à une location vérifier que la date n'est pas atteinte OU non récurrente
+        //On précisera un autre findtypeavaiablebycriteria avec les dates précises (+detection automatique si session dates)
+        return $this->createQueryBuilder('v')
+            ->andWhere('v.type = :type')
+            ->setParameter('type', $type)
+            ->leftJoin('App\Entity\Location','l',Expr\Join::WITH, 'v.id = l.vehicule')
+            ->andWhere('l is NULL')
+            ->orderBy('v.prix','ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 //    /**
 //     * @return Vehicule Retourne tous les véhicules du loueur $username
 //     */

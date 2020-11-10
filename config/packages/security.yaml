@@ -24,7 +24,7 @@ security:
             logout:
                 path: app_deconnexion
                 # where to redirect after logout
-                target: index
+                target: index_home
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication

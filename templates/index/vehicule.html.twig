@@ -18,10 +18,10 @@
                             </div>
                             <div class="col-4">
                                 <h5>{{ type.name }}</h5>
-                                {% if type.vehicules.count > 1 %}
-                                    <p class="small text-muted font-italic"><strong>{{ type.vehicules.count }}</strong> disponibles</p>
+                                {% if vehicules|length > 1 %}
+                                    <p class="small text-muted font-italic"><strong>{{ vehicules|length }}</strong> disponibles</p>
                                 {% else %}
-                                    <p class="small text-muted font-italic"><strong>{{ type.vehicules.count }}</strong> disponible</p>
+                                    <p class="small text-muted font-italic"><strong>{{ vehicules|length }}</strong> disponible</p>
                                 {% endif %}
                             </div>
                         </div>
@@ -33,8 +33,7 @@
 
                             <div class="form-row align-items-center">
                                 <div class="form-group col-xl-3 col-md-12 col-xs-12 input">
-{#                                    <input id="litepicker" type="text" class="form-control">#}
-                                    {{ form_row(form.date) }}
+                                    <span>Date : du {{ savedDates.Debut }} au {{ savedDates.Fin }}</span>
                                 </div>
                                 {#TODO Trier les résultats#}
 {#                                <div class="form-group col-xl-3 col-md-6 col-xs-12">#}
@@ -65,50 +64,67 @@
 {#                                    </select>#}
 {#                                </div>#}
                             </div>
-{#                            <input class="btn btn-primary float-right" type="" value="Afficher les résultats">#}
+                            <input name="hiddenDate" class="currentDate" type="hidden" hidden>
+                            <input class="btn btn-primary float-right" type="submit" value="Afficher les résultats">
+                        {{ form_end(form) }}
 
                         <div class="container-fluid py-5">
-                            {% for vehicule in type.vehicules %}
+
+                            {% for message in app.flashes('success') %}
+                                <div class="alert alert-success">
+                                    {{ message|raw }}
+                                </div>
+                            {% endfor %}
+                            {% for message in app.flashes('danger') %}
+                                <div class="alert alert-danger">
+                                    {{ message|raw }}
+                                </div>
+                            {% endfor %}
+
+                            {% for vehicule in vehicules %}
                             <hr>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <h3>
-                                        {{ type.name }}
-                                    </h3>
-                                    {# TODO Ajouter la page de loueur#}
-                                    <p class="small text-muted">Loueur: <a href="loueur.html">{{ vehicule.loueur.name }}</a></p>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <img class="img-fluid d-block rounded" alt="Nom de l'annonce" src="{{ asset('media/img/vehicules/' ~ vehicule.image.name) }}" />
+                                    <form id="vehicule_{{ vehicule.id }}" action="{{ path('location_louer', {'id': vehicule.id} ) }}" method="post">
+
+                                        <label for="date_{{ vehicule.id }}" hidden></label>
+                                        <input id="date_{{ vehicule.id }}" name="date" class="inputDate" hidden>
+                                        <h3>
+                                            {{ type.name }}
+                                        </h3>
+                                        {# TODO Ajouter la page de loueur#}
+                                        <p class="small text-muted">Loueur: <a href="loueur.html">{{ vehicule.loueur.name }}</a></p>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <img class="img-fluid d-block rounded" alt="Nom de l'annonce" src="{{ asset('media/img/vehicules/' ~ vehicule.image.name) }}" />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <dl>
+                                                    {% for key, descr in vehicule.carac %}
+                                                        <dt>
+                                                            {{ key }}
+                                                        </dt>
+                                                        <dd>
+                                                            {{ descr }}
+                                                        </dd>
+                                                    {% endfor %}
+                                                </dl>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <h3 class="text-center">{{ vehicule.prix }} €</h3>
+                                                {# TODO Lien panier#}
+{#                                                <label for="form_select_{{ loop.index - 1 }}" class="btn btn-main btn-outline-primary m-2 px-2">Ajouter au panier</label>#}
+                                                    <input type="submit" class="validateLocation btn btn-main btn-outline-primary m-2 px-2" value="Réserver Maintenant">
+    {#                                            {{ form_label(form.select[loop.index - 1]) }}#}
+    {#                                            {{ form_widget(form.select[loop.index - 1], {'attr': {'class': 'form-check-input', 'onchange':'registerLocation()'}}) }}#}
+                                            </div>
                                         </div>
-                                        <div class="col-md-4">
-                                            <dl>
-                                                {% for key, descr in vehicule.carac %}
-                                                    <dt>
-                                                        {{ key }}
-                                                    </dt>
-                                                    <dd>
-                                                        {{ descr }}
-                                                    </dd>
-                                                {% endfor %}
-                                            </dl>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <h3 class="text-center">{{ vehicule.prix }} €</h3>
-                                            {# TODO Lien panier#}
-                                            <label for="form_select_{{ loop.index - 1 }}" class="btn btn-main btn-outline-primary m-2 px-2">Ajouter au panier</label>
-                                            <label for="form_select_{{ loop.index - 1 }}" class="btn btn-main btn-primary m-2 p-3">Réserver Maintenant</label>
-                                            {{ form_label(form.select[loop.index - 1]) }}
-                                            {{ form_widget(form.select[loop.index - 1], {'attr': {'class': 'form-check-input', 'onchange':'registerLocation()'}}) }}
-                                        </div>
-                                    </div>
+                                    </form>
                                 </div>
                             </div>
                             {% endfor %}
 
                         </div>
-
-                        {{ form_end(form) }}
                     </div>
                 </div>
             </div>
@@ -118,17 +134,23 @@
     {% block javascripts %}
         {{ encore_entry_script_tags('dates') }}
         <script>
+            $(document).ready(function () {
 
-            function registerLocation() {
-                $(document).ready(function() {
-                    $( "form" ).submit();
-                })
-                $('input[type="submit"]').click(function(){
-                    $('input[type="checkbox"]').each(function(){
-                        $(this).prop('checked', false);
+                {% if savedDates.Debut is not empty and savedDates.Fin is not empty%}
+                    $('.currentDate').val("{{ savedDates.Debut }}" + " - " + "{{ savedDates.Fin }}");
+                {% endif %}
+
+                //permet de mettre à jour les dates pour les envoyer automatiquement
+                $(document).ready(function () {
+                    $('.validateLocation').on('mouseover', function () {
+                        var textDate = $('.currentDate').val();
+                        $('.inputDate').each(function (index) {
+                            $(this).val(textDate);
+                        });
                     });
                 });
-            }
+
+            });
         </script>
     {% endblock %}
 {% endblock %}

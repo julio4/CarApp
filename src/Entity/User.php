@@ -152,9 +152,15 @@ class User implements UserInterface
      */
     private $vehicules;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Location::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $locations;
+
     public function __construct()
     {
         $this->vehicules = new ArrayCollection();
+        $this->locations = new ArrayCollection();
     }
 
     /**
@@ -183,6 +189,37 @@ class User implements UserInterface
                 $vehicule->setType(null);
             }
         }
+        return $this;
+    }
+
+    /**
+     * @return Collection|Location[]
+     */
+    public function getLocations(): Collection
+    {
+        return $this->locations;
+    }
+
+    public function addLocation(Location $location): self
+    {
+        if (!$this->locations->contains($location)) {
+            $this->locations[] = $location;
+            $location->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLocation(Location $location): self
+    {
+        if ($this->locations->contains($location)) {
+            $this->locations->removeElement($location);
+            // set the owning side to null (unless already changed)
+            if ($location->getUser() === $this) {
+                $location->setUser(null);
+            }
+        }
+
         return $this;
     }
 

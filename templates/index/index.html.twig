@@ -8,6 +8,16 @@
             <p class="font-italic text-muted mb-0">Choisissez parmis nos <strong>{{ types|length }}</strong>
                 modèles différents</p>
             {% endif %}
+{#            TODO mise en page#}
+            {{ form_start(form) }}
+            <div class="my-custom-class-for-errors">
+                {{ form_errors(form) }}
+            </div>
+            {{ form_row(form.date) }}
+            {{ form_rest(form) }}
+            <input class="btn btn-primary float-right" type="submit" value="Valider les dates">
+            {{ form_end(form) }}
+            <a href="{{ path('index_date_reset') }}" class="btn-danger">réinitialiser les dates</a>
         </div>
 
         <div class="row pb-5 mb-4" id="grid-types">
@@ -17,17 +27,18 @@
                 <div class="col-lg-3 col-md-6 mb-4">
                     <!-- Card-->
                     <div class="card rounded shadow-sm border-0">
-                        <a href="{{ path('type', {id: type.id})}}" class="text-dark">
-                            <div class="card-body p-4"><img src="{{ asset('media/img/types/' ~ type.image.name) }}" alt=""
+                        <a href="{{ path('index_type', {id: type.id})}}" class="text-dark">
+                            <div class="card-body p-4"><img src="{{ asset('media/img/types/' ~ type["image.name"] ) }}" alt=""
                                                             class="img-fluid d-block mx-auto mb-3">
                                 <h3>
                                     {{ type.name }}
                                 </h3>
-                                {% if type.vehicules|length > 0 %}
-                                    <p class="small font-bold float-right">À partir de {{ type.vehicules.0.prix }} €/j</p>
-                                {% else %}
-                                    <p class="small font-bold float-right text-danger">En rupture de stock</p>
-                                {% endif %}
+{#                                TODO PRIX MINIMAL#}
+{#                                {% if type.vehicules|length > 0 %}#}
+{#                                    <p class="small font-bold float-right">À partir de {{ type.vehicules.0.prix }} €/j</p>#}
+{#                                {% else %}#}
+{#                                    <p class="small font-bold float-right text-danger">En rupture de stock</p>#}
+{#                                {% endif %}#}
                             </div>
                         </a>
                     </div>
@@ -62,4 +73,16 @@
             {% endif %}
         </div>
     </div>
+{% endblock %}
+{% block javascripts %}
+        {{ encore_entry_script_tags('dates') }}
+<script>
+    $(document).ready(function () {
+
+        {% if savedDates.Debut is not empty and savedDates.Fin is not empty%}
+        picker.setDateRange("{{ savedDates.Debut }}", "{{ savedDates.Fin }}");
+        {% endif %}
+
+    });
+</script>
 {% endblock %}
