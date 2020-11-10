@@ -1,7 +1,13 @@
 {% extends 'loueur/index.html.twig' %}
 
 {% block dashboard_current %}
-
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('loueur_panel') }}">Panel</a></li>
+            <li class="breadcrumb-item"><a href="{{ path('loueur_vehicules') }}">Véhicules</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Nouveau</li>
+        </ol>
+    </nav>
 {% endblock %}
 
 {% block dashboard_body %}

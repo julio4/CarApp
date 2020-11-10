@@ -3,10 +3,10 @@
 {% block body %}
     <div class="container py-5">
         <div class="text-center mb-5">
-            <h1 class="display-4 font-weight-bold">Nos modèles</h1>
+            <h1 class="display-4 font-weight-bold">Car'App</h1>
             {% if types|length > 1 %}
             <p class="font-italic text-muted mb-0">Choisissez parmis nos <strong>{{ types|length }}</strong>
-                modèles différents</p>
+                modèles</p>
             {% endif %}
 {#            TODO mise en page#}
             {{ form_start(form) }}
@@ -17,7 +17,7 @@
             {{ form_rest(form) }}
             <input class="btn btn-primary float-right" type="submit" value="Valider les dates">
             {{ form_end(form) }}
-            <a href="{{ path('index_date_reset') }}" class="btn-danger">réinitialiser les dates</a>
+            <a href="{{ path('index_date_reset') }}" class="btn-danger">Réinitialiser les dates</a>
         </div>
 
         <div class="row pb-5 mb-4" id="grid-types">
@@ -46,7 +46,7 @@
                 {% endfor %}
             {% else %}
             <div class="col-lg-12 col-md-12 mb-12">
-                Aucune voiture disponible! Revenez plus tard
+                Oops, aucune voiture disponible ! Revenez plus tard
             </div>
             {% endif %}
 
