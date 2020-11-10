@@ -204,4 +204,8 @@ class LoueurController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
+    public function modifVehicules(Request $request){
+
+    }
 }
