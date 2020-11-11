@@ -1,4 +1,4 @@
-{% extends 'dashboard.html.twig' %}
+{% extends 'loueur/index.html.twig' %}
 
 {% block sidebard %}
     <li class="nav-item">
@@ -8,7 +8,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="{{ path('loueur_vehicules') }}">
+        <a class="nav-link active" aria-current="page" href="{{ path('user_panel_locations') }}">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
             <span class="ml-2">Mes Locations</span>
         </a>
@@ -22,7 +22,7 @@
         </ol>
     </nav>
 {% endblock %}
-{% block panel_scripts %}
+{% block dashboard_body %}
     <h1 class="h2">Mes Locations</h1>
     <div class="row">
         <div class="col">
@@ -34,6 +34,7 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Modèle</th> <!-- Idées : https://bootsnipp.com/snippets/Veob -->
+                                <th scope="col">Loueur</th>
                                 <th scope="col">Dates</th>
                                 <th scope="col">Prix</th>
                                 <th scope="col"></th>
@@ -43,19 +44,19 @@
                             {% for location in locations %}
                                 <tr>
                                     <th scope="row">{{ location.id }}</th>
-                                    <td>{{ location.vehicule }}</td>
-                                    <td>{{ location.dateDebut|date("m/d/Y") }} - {{ location.dateFin|date("m/d/Y") }}</td>
+                                    <td>{{ location.vehicule.type.name }}</td>
+{#                                    TODO PAGE LOUEUR#}
+                                    <td>{{ location.vehicule.loueur.name }}</td>
+                                    <td>{{ location.dateDebut|date("m/d/Y") }}{% if not location.estReccurent %} - {{ location.dateFin|date("m/d/Y") }}{% endif %}</td>
                                     <td>
-
-                                    </td>
-                                    {% if vehicule.etat == "Disponible" %}
-                                        <td><span class="badge badge-primary">{{ vehicule.etat }}</span></td>
-                                    {% elseif vehicule.etat == "Non disponible" %}
-                                        <td><span class="badge badge-secondary">{{ vehicule.etat }}</span></td>
-                                    {% elseif vehicule.etat == "En location" %}
-                                        <td><span class="badge badge-success">{{ vehicule.etat }}</span></td>
+                                    {% if location.estReccurent %}
+                                        <span class="badge badge-success">Paiement mensuel</span> {{ location.prix }} €/Mois
+                                    {% else %}
+                                        {{ location.prix }} €
                                     {% endif %}
-                                    <td><a href="{{ path('loueur_vehicules') }}">Détails</a></td>
+                                    </td>
+{#                                    TODO page détail location#}
+                                    <td><a href="#">Détails</a></td>
                                 </tr>
                             {% endfor %}
                             </tbody>

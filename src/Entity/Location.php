@@ -49,6 +49,11 @@ class Location
      */
     private $vehicule;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $estPayee;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -125,4 +130,17 @@ class Location
 
         return $this;
     }
+
+    public function getEstPayee(): ?bool
+    {
+        return $this->estPayee;
+    }
+
+    public function setEstPayee(bool $estPayee): self
+    {
+        $this->estPayee = $estPayee;
+
+        return $this;
+    }
+
 }

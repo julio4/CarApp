@@ -14,10 +14,11 @@ class UserController extends AbstractController
     /**
      * @Route("/", name="_panel")
      */
-    public function index()
+    public function index(LocationRepository $locationRepository)
     {
+        $locations = $locationRepository->findBy(['user' => $this->getUser()]);
         return $this->render('user/index.html.twig', [
-            'controller_name' => 'UserController',
+            'locations' => $locations,
         ]);
     }
 
@@ -27,7 +28,6 @@ class UserController extends AbstractController
     public function locations(LocationRepository $locationRepository)
     {
         $locations = $locationRepository->findBy(['user' => $this->getUser()]);
-        dump($locations);
         return $this->render('user/locations.html.twig', [
             'locations' => $locations,
         ]);

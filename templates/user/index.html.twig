@@ -11,7 +11,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{{ path('loueur_vehicules') }}">
+        <a class="nav-link" href="{{ path('user_panel_locations') }}">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
             <span class="ml-2">Mes Locations</span>
         </a>
@@ -24,43 +24,26 @@
 
     <!-- résumé cards-->
     <div class="row equal my-4">
-
-        <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
+        <div class="col-12 col-md-6 col-lg-6 mb-6 mb-lg-6">
             <div class="card rounded shadow-sm border-0">
                 <div class="card-body p-4 text-center">
                     <p class="card-title">Véhicules louées</p>
-                    <h2 class="card-text">_TODO</h2>
+                    <h2 class="card-text">{{ locations|length }}</h2>
                 </div>
             </div>
         </div>
-
-        <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
+        {% set totalPrice = 0 %}
+        {% for location in locations %}
+            {% set totalPrice = totalPrice + location.prix %}
+        {% endfor %}
+        <div class="col-12 col-md-6 col-lg-6 mb-6 mb-lg-6">
             <div class="card rounded shadow-sm border-0">
                 <div class="card-body p-4 text-center">
-                    <p class="card-title">En cours</p>
-                    <h2 class="card-text">_TODO</h2>
+                    <p class="card-title">Facture ce mois</p>
+                    <h2 class="card-text">{{ totalPrice|number_format(2) }} €</h2>
                 </div>
             </div>
         </div>
-
-        <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
-            <div class="card rounded shadow-sm border-0">
-                <div class="card-body p-4 text-center">
-                    <p class="card-title">_TODO</p>
-                    <h2 class="card-text">_TODO%</h2>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
-            <div class="card rounded shadow-sm border-0">
-                <div class="card-body p-4 text-center">
-                    <p class="card-title">_TODO</p>
-                    <h2 class="card-text">_TODO</h2>
-                </div>
-            </div>
-        </div>
-
     </div>
 
     <div class="row">
@@ -68,90 +51,49 @@
         <div class="col-12 col-xl-8 mb-4 mb-lg-0">
             <div class="card rounded shadow-sm border-0">
                 <div class="card-body">
-                    <h5 class="card-title">Dernières réservations</h5>
+                    <h5 class="card-title">Dernières locations</h5>
                     <div class="table-responsive">
                         <table class="table table-sm">
                             <thead>
                             <tr>
-                                <th scope="col">No</th>
-                                <th scope="col">Véhicule</th>
-                                <th scope="col">Client</th>
-                                <th scope="col">Total</th>
-                                <th scope="col">Date</th>
+                                <th scope="col">#</th>
+                                <th scope="col">Modèle</th> <!-- Idées : https://bootsnipp.com/snippets/Veob -->
+                                <th scope="col">Loueur</th>
+                                <th scope="col">Dates</th>
+                                <th scope="col">Prix</th>
                                 <th scope="col"></th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <th scope="row">17371705</th>
-                                <td>Porsche Cayenne</td>
-                                <td>johndoe@gmail.com</td>
-                                <td>61.11€</td>
-                                <td>Oct 31 2020</td>
-                                <td><a href="#" class="btn btn-sm btn-primary">Voir</a></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">17370540</th>
-                                <td>Porsche Cayenne</td>
-                                <td>jacob.monroe@company.com</td>
-                                <td>153.11€</td>
-                                <td>Oct 28 2020</td>
-                                <td><a href="#" class="btn btn-sm btn-primary">Voir</a></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">17371705</th>
-                                <td>Porsche Cayenne</td>
-                                <td>johndoe@gmail.com</td>
-                                <td>61.11€</td>
-                                <td>Oct 31 2020</td>
-                                <td><a href="#" class="btn btn-sm btn-primary">Voir</a></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">17370540</th>
-                                <td>Porsche Cayenne</td>
-                                <td>jacob.monroe@company.com</td>
-                                <td>153.11€</td>
-                                <td>Oct 28 2020</td>
-                                <td><a href="#" class="btn btn-sm btn-primary">Voir</a></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">17371705</th>
-                                <td>Porsche Cayenne</td>
-                                <td>johndoe@gmail.com</td>
-                                <td>61.11€</td>
-                                <td>Oct 31 2020</td>
-                                <td><a href="#" class="btn btn-sm btn-primary">Voir</a></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">17370540</th>
-                                <td>Porsche Cayenne</td>
-                                <td>jacob.monroe@company.com</td>
-                                <td>153.11€</td>
-                                <td>Oct 28 2020</td>
-                                <td><a href="#" class="btn btn-sm btn-primary">Voir</a></td>
-                            </tr>
+                            <!-- seulement les 10 dernières réservations -->
+                            {% for location in locations|slice(0,10) %}
+                                <tr>
+                                    <th scope="row">{{ location.id }}</th>
+                                    <td>{{ location.vehicule.type.name }}</td>
+                                    {#                                    TODO PAGE LOUEUR#}
+                                    <td>{{ location.vehicule.loueur.name }}</td>
+                                    <td>{{ location.dateDebut|date("m/d/Y") }} - {{ location.dateFin|date("m/d/Y") }}</td>
+                                    <td>
+                                        {% if location.estReccurent %}
+                                            <span class="badge badge-success">Paiement mensuel</span> {{ location.prix }} €/Mois
+                                        {% else %}
+                                            {{ location.prix }} €
+                                        {% endif %}
+                                    </td>
+                                    {#                                    TODO page détail location#}
+                                    <td><a href="#">Détails</a></td>
+                                </tr>
+                            {% endfor %}
                             </tbody>
                         </table>
                     </div>
-                    <a href="loueur_dashboard_reservations.html" class="btn btn-block btn-light">Tout voir</a>
+                    <a href="{{ path('user_panel_locations') }}" class="btn btn-block btn-light">Tout voir</a>
                 </div>
             </div>
         </div>
         <div class="col-12 col-xl-4">
 
-            <div class="card rounded shadow-sm border-0 mb-4">
-                <div class="card-body">
-                    <h5 class="card-title">Revenue sur 6 mois</h5>
-                    <canvas id="revChart"></canvas>
-                </div>
-            </div>
 
-            <div class="card rounded shadow-sm border-0">
-                <div class="card-body">
-                    <h5 class="card-title">Réservations sur 6 mois</h5>
-                    <canvas id="resChart"></canvas>
-                </div>
-            </div>
 
         </div>
     </div>

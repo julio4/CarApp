@@ -8,13 +8,13 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="{{ path('loueur_vehicules') }}">
+        <a class="nav-link" href="{{ path('loueur_vehicules') }}">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
             <span class="ml-2">Véhicules</span>
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{{ path('loueur_locations') }}">
+        <a class="nav-link active" aria-current="page" href="{{ path('loueur_locations') }}">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-cart"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
             <span class="ml-2">Locations</span>
         </a>
@@ -36,52 +36,60 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ path('loueur_panel') }}">Panel</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Véhicules</li>
+            <li class="breadcrumb-item active" aria-current="page">Locations</li>
         </ol>
     </nav>
 {% endblock %}
 {% block dashboard_body %}
-    <h1 class="h2">Véhicules</h1>
+    <h1 class="h2">Locations</h1>
     <div class="row">
         <div class="col">
             <div class="card rounded shadow-sm border-0">
                 <div class="card-body">
-                    <h5 class="card-title">Mes Véhicules en location <a class="btn btn-primary" href="{{ path('loueur_vehicules_ajouter') }}" role="button">Ajouter +</a></h5>
                     <div class="table-responsive">
                         <table class="table">
                             <thead>
                             <tr>
-                                <th scope="col">Modèle</th>
-                                <th scope="col">Caractéristiques</th> <!-- Idées : https://bootsnipp.com/snippets/Veob -->
-                                <th scope="col">Prix/j</th>
-                                <th scope="col">Disponibilité</th>
+                                <th scope="col">#</th>
+                                <th scope="col">Modèle</th> <!-- Idées : https://bootsnipp.com/snippets/Veob -->
+                                <th scope="col">Dates</th>
+                                <th scope="col">Prix</th>
+                                <th scope="col">Paiement</th>
+                                <th scope="col">Status</th>
                                 <th scope="col"></th>
                             </tr>
                             </thead>
                             <tbody>
-                            {% for v in vehicules %}
+                            {% for l in locations %}
                                 <tr>
-                                    <th scope="row">{{ v.vehicule.type.name }}</th>
+                                    <th scope="row">{{ l.location.id }}</th>
+                                    <td>{{ l.location.vehicule.type.name }}</td>
+                                    <td>{{ l.location.dateDebut|date("m/d/Y") }}
+                                        {% if not l.location.estReccurent %}
+                                            - {{ l.location.dateFin|date("m/d/Y") }}
+                                        {% else %}
+                                            <span class="badge badge-warning">Mensuel</span>
+                                        {% endif %}</td>
                                     <td>
-                                        <ul>
-                                        {% for key, descr in v.vehicule.carac %}
-                                            <li>{{ key }} : {{ descr }}</li>
-                                        {% endfor %}
-                                        </ul>
-                                    </td>
-                                    <td>{{ v.vehicule.prix }} €</td>
-                                    <td>
-                                    {% if v.estLoue %}
-                                        <span class="badge badge-success">Loué</span>
-                                    {% else %}
-                                        {% if v.vehicule.disponible %}
-                                            <span class="badge badge-primary">Disponible</span>
-                                        {% else  %}
-                                            <span class="badge badge-secondary">Non disponible</span>
+                                        {{ l.location.prix }} €
+                                        {% if l.location.estReccurent %}
+                                            /Mois
                                         {% endif %}
-                                    {% endif %}
                                     </td>
-                                    <td><a href="{{ path('loueur_vehicules_modifier', { 'id': v.vehicule.id }) }}">Détails</a></td>
+                                    <td>
+                                        {% if l.location.estPayee %}
+                                            <span class="badge badge-success">Payée</span>
+                                        {% else %}
+                                            <span class="badge badge-danger">En attente du paiement</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if l.enCours%}
+                                            <span class="badge badge-primary">En cours</span>
+                                        {% else %}
+                                            <span class="badge badge-secondary">Finis</span>
+                                        {% endif %}
+                                    </td>
                                 </tr>
                             {% endfor %}
                             </tbody>
@@ -91,8 +99,4 @@
             </div>
         </div>
     </div>
-{% endblock %}
-
-{% block scripts %}
-    {{ encore_entry_script_tags('chart') }}
 {% endblock %}

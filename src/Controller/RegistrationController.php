@@ -28,13 +28,11 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() and $form->isValid()) {
-            $data = $form->getData();
-
-            $user->setName($data['name']);
-            $user->setEmail($data['email']);
             $user->setPassword(
-                $passwordEncoder->encodePassword($user,$data['password'])
-            );
+                $passwordEncoder->encodePassword(
+                    $user,
+                    $form->get('password')->getData()
+            ));
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);

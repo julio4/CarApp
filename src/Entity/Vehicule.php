@@ -146,6 +146,11 @@ class Vehicule
      */
     private $locations;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $disponible;
+
     public function __construct()
     {
         $this->image = new EmbeddedFile();
@@ -214,6 +219,18 @@ class Vehicule
                 $location->setVehicule(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDisponible(): ?bool
+    {
+        return $this->disponible;
+    }
+
+    public function setDisponible(bool $disponible): self
+    {
+        $this->disponible = $disponible;
 
         return $this;
     }

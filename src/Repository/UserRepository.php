@@ -8,6 +8,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\ORM\Query\Expr;
 
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
@@ -52,19 +53,20 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     // /**
     //  * @return User[] Returns an array of User objects
     //  */
-    /*
-    public function findByExampleField($value)
+    public function findByLocationOfLoueur($loueur)
     {
         return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
+            ->innerJoin('App\Entity\Location','l', Expr\Join::WITH, 'l.user = u.id')
+            ->innerJoin('App\Entity\Vehicule','v', Expr\Join::WITH, 'v.id = l.vehicule')
+            ->innerJoin('App\Entity\User','loueur', Expr\Join::WITH, 'v.loueur = loueur.id')
+            ->andWhere('loueur.id = :loueur')
+            ->setParameter('loueur', $loueur)
+            ->orderBy('u.name', 'ASC')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?User
