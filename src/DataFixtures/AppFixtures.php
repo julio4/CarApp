@@ -74,50 +74,35 @@ class AppFixtures extends Fixture
         $type->setName('Porsche')
             ->setImageFile($file);
 
-        $porsche1 = new Vehicule();
-        $porsche1->setEtat('disponible');
-        $porsche1->setPrix(24.5);
-        $carac = array('boite' => 'automatique',
-            'moteur' => 'diesel',
-            'carburant' => 'essence');
-        $porsche1->setCarac($carac);
-        $porsche1->setType($type);
-        $porsche1->setLoueur($loueurDemo);
-        $src = __DIR__."/../../public/media/img/vehicules/ferrari-5faba6c0d2f31057397427.png";
-        $file = new UploadedFile(
-            $src,
-            '5faba6c0d2f31057397427.png',
-            'image/png',
-            null,
-            true //  Set test mode true !!! " Local files are used in test mode hence the code should not enforce HTTP uploads."
-        );
-        $porsche1->setImageFile($file);
-
-        $porsche2 = new Vehicule();
-        $porsche2->setEtat('disponible');
-        $porsche2->setPrix(52.5);
-        $carac = array('boite' => 'manuelle',
-            'moteur' => 'diesell',
-            'carburant' => 'essence');
-        $porsche2->setCarac($carac);
-        $porsche2->setType($type);
-        $porsche2->setLoueur($loueurDemo);
-        $src = __DIR__."/../../public/media/img/vehicules/ferrari-5faba6faea0b3939226100.png";
-        $file = new UploadedFile(
-            $src,
-            'ferrari-5faba6faea0b3939226100.png',
-            'image/png',
-            null,
-            true //  Set test mode true !!! " Local files are used in test mode hence the code should not enforce HTTP uploads."
-        );
-        $porsche2->setImageFile($file);
+//        $porsche1 = new Vehicule();
+//        $porsche1->setEtat('disponible');
+//        $porsche1->setPrix(24.5);
+//        $carac = array('boite' => 'automatique',
+//            'moteur' => 'diesel',
+//            'carburant' => 'essence');
+//        $porsche1->setCarac($carac);
+//        $porsche1->setType($type);
+//        $porsche1->setLoueur($loueurDemo);
+//        $file = null;
+//        $porsche1->setImageFile($file);
+//
+//        $porsche2 = new Vehicule();
+//        $porsche2->setEtat('disponible');
+//        $porsche2->setPrix(52.5);
+//        $carac = array('boite' => 'manuelle',
+//            'moteur' => 'diesell',
+//            'carburant' => 'essence');
+//        $porsche2->setCarac($carac);
+//        $porsche2->setType($type);
+//        $porsche2->setLoueur($loueurDemo);
+//        $porsche2->setImageFile($file);
 
         $manager->persist($admin);
         $manager->persist($loueurDemo);
         $manager->persist($userDemo);
         $manager->persist($type);
-        $manager->persist($porsche1);
-        $manager->persist($porsche2);
+//        $manager->persist($porsche1);
+//        $manager->persist($porsche2);
         $manager->flush();
     }
 }

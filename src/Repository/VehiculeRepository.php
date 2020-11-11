@@ -25,12 +25,16 @@ class VehiculeRepository extends ServiceEntityRepository
     /**
      * @return Vehicule[] Retourne tous les véhicules du loueur $username
      */
-    public function findOwnedBy(User $user): array
+    public function findOwnedBy(User $loueur)
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.loueur = :user')
-            ->setParameter('user', $user)
-            ->orderBy('p.updatedAt', 'DESC')
+        return $this->createQueryBuilder('v')
+            ->leftJoin('App\Entity\Location','l', Expr\Join::WITH, 'v.id = l.vehicule')
+            ->andWhere('v.loueur = :loueur')
+            ->setParameter('loueur', $loueur)
+            ->select('v as vehicule, IFELSE(l.estReccurent = 1 AND l.dateDebut <= :now OR 
+            l.dateDebut <= :now AND l.dateFin >= :now,1,0) as estLoue')
+            ->setParameter('now', date_create("now"))
+            ->groupBy('v')
             ->getQuery()
             ->getResult()
             ;

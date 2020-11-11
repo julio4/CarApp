@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\TypeVehicule;
 use App\Entity\Vehicule;
+use App\Repository\LocationRepository;
+use App\Repository\UserRepository;
 use App\Repository\VehiculeRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -38,7 +40,7 @@ class LoueurController extends AbstractController
     public function vehicules(VehiculeRepository $vehiculeRepository, UserInterface $user)
     {
         $vehicules = $vehiculeRepository->findOwnedBy($user);
-
+        dump($vehicules);
         return $this->render('loueur/vehicules.html.twig', [
             "vehicules" => $vehicules
         ]);
@@ -103,7 +105,7 @@ class LoueurController extends AbstractController
     /**
      * @Route("/vehicules/ajouter", name="_vehicules_ajouter")
      */
-    public function ajoutVehicules(Request $request)
+    public function ajoutVehicules(Request $request, UserInterface $user)
     {
         $PRIX_MAX = 20000;
         $form = $this->createFormBuilder()
@@ -161,7 +163,7 @@ class LoueurController extends AbstractController
 //                'imagine_pattern' => '...', If set, image will automatically transformed using LiipImagineBundle. ex 'imagine_pattern' => 'product_photo_320x240',
                 'asset_helper' => true,
             ])
-            ->add('etat',  CheckboxType::class, [
+            ->add('disponible',  CheckboxType::class, [
                 'label'    => 'Rendre disponible directement ?',
                 'required' => false,
                 'value' => 'disponible',
@@ -187,10 +189,8 @@ class LoueurController extends AbstractController
                 'carburant' => $data['carburant']);
             $vehicule->setCarac($carac);
             $vehicule->setImageFile($data['img']);
-            $etat = $data['etat'] ? 'Disponible' : 'Non disponible';
-            $vehicule->setEtat($etat);
-            // \App\Entity\User implémente UserInterface donc erreur à ignorer
-            $vehicule->setLoueur($this->getUser());
+            $vehicule->setDisponible($data['disponible']);
+            $vehicule->setLoueur($user);
             $data['type']->addVehicule($vehicule);
 
             $em = $this->getDoctrine()->getManager();
@@ -221,23 +221,25 @@ class LoueurController extends AbstractController
     /**
      * @Route ("/clients", name="_clients")
      */
-    public function afficherClients(VehiculeRepository $vehiculeRepository, UserInterface $user){
+    public function afficherClients(UserRepository $userRepository, UserInterface $user){
 
-        $vehicules = $vehiculeRepository->findOwnedBy($user);
+        $clients = $userRepository->findByLocationOfLoueur($user);
+
         return $this->render('loueur/clients.html.twig', [
-            "vehicules" => $vehicules
+            "clients" => $clients
         ]);
 
     }
 
     /**
-     * @Route ("/reservations", name="_reservations")
+     * @Route ("/locations", name="_locations")
      */
-    public function afficherResa(VehiculeRepository $vehiculeRepository, UserInterface $user){
+    public function afficherlocations(LocationRepository $locationRepository, UserInterface $user){
 
-        $vehicules = $vehiculeRepository->findOwnedBy($user);
-        return $this->render('loueur/reservations.html.twig', [
-            "vehicules" => $vehicules
+        $locations = $locationRepository->findLoueur($user);
+
+        return $this->render('loueur/locations.html.twig', [
+            "locations" => $locations
         ]);
 
     }

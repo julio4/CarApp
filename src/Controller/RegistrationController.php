@@ -32,7 +32,7 @@ class RegistrationController extends AbstractController
                 $passwordEncoder->encodePassword(
                     $user,
                     $form->get('password')->getData()
-                ));
+            ));
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);

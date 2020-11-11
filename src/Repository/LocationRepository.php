@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Location;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\Expr;
 
 /**
  * @method Location|null find($id, $lockMode = null, $lockVersion = null)
@@ -47,4 +48,21 @@ class LocationRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function findLoueur($loueur)
+    {
+        return $this->createQueryBuilder('l')
+            ->innerJoin('App\Entity\Vehicule','v', Expr\Join::WITH, 'v.id = l.vehicule')
+            ->innerJoin('App\Entity\TypeVehicule','t', Expr\Join::WITH, 't.id = v.type')
+            ->innerJoin('App\Entity\User','u', Expr\Join::WITH, 'l.user = u.id')
+            ->andWhere('v.loueur = :loueur')
+            ->setParameter('loueur', $loueur)
+            ->orderBy('l.dateDebut', 'DESC')
+            ->Select('l as location,IFELSE(l.estReccurent = 1 AND l.dateDebut <= :now OR 
+            l.dateDebut <= :now AND l.dateFin >= :now,1,0) as enCours')
+            ->setParameter('now', date_create("now"))
+            ->groupBy('l')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }

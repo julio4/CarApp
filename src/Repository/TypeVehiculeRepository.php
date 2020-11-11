@@ -29,6 +29,7 @@ class TypeVehiculeRepository extends ServiceEntityRepository
             ->innerJoin('App\Entity\Vehicule','v', Expr\Join::WITH, 't.id = v.type')
             ->leftJoin('App\Entity\Location', 'l', Expr\Join::WITH, 'v.id = l.vehicule')
             ->andWhere('l is NULL OR l.dateFin < :now')
+            ->andWhere('v.disponible = 1')
             ->setParameter('now', date_create("now"))
             ->groupBy('t');
 
@@ -46,6 +47,7 @@ class TypeVehiculeRepository extends ServiceEntityRepository
             ->innerJoin('App\Entity\Vehicule','v', Expr\Join::WITH, 't.id = v.type')
             ->leftJoin('App\Entity\Location', 'l', Expr\Join::WITH, 'v.id = l.vehicule')
             ->andWhere('l is NULL OR (l.dateDebut < :dateDebut AND l.dateFin < :dateDebut) OR (l.dateDebut > :dateFin AND l.dateFin > :dateFin)')
+            ->andWhere('v.disponible = 1')
             ->setParameter('dateDebut', $dateDebut->format('Y-m-d'))
             ->setParameter('dateFin', $dateFin->format('Y-m-d'))
             ->groupBy('t');

@@ -24,27 +24,34 @@ class LocationController extends AbstractController
         $post_date = $request->request->get('date', '');
         $dates = preg_split('/( - )/', $post_date);
         if(sizeof($dates) == 2) {
-            $isReccurent = false;
-            $this->get('session')->set('dateDebut', $dates[0]);
-            $this->get('session')->set('dateFin', $dates[1]);
+            if($this->isValidDate($dates[0], $dates[1])) {
+                $isReccurent = false;
+                $this->get('session')->set('dateDebut', $dates[0]);
+                $this->get('session')->set('dateFin', $dates[1]);
+            }
+            else {
+                $this->addFlash('danger','Erreur, veuillez accepter nos cookies pour le bon fonctionnement du site');
+                return $this->redirect($this->generateUrl('index_type', ["id" => $vehicule->getType()->getId()]));
+            }
         }
         else {
             $isReccurent = true;
         }
-        //TODO VERIFIER DATE VALIDE --> ( en cas de manipulation des données de la page )
-        if($this->isGranted("ROLE_USER") and $this->isValidDate($dates[0], $dates[1])) {
+        if($this->isGranted("ROLE_USER")) {
 
             $location = new Location();
             $location->setVehicule($vehicule);
             $location->setUser($this->getUser());
-
-            $days = $this->countDays($dates[0], $dates[1]);
+            $location->setEstPayee(false);
 
             if($isReccurent) {
                 $location->setEstReccurent(true);
                 $location->setPrix($vehicule->getPrix() * 0.9 * 30); //PROMOTION 10%
+                $location->setDateDebut(date_create("now"));
             }
             else {
+                $days = $this->countDays($dates[0], $dates[1]);
+
                 $location->setDateDebut($this->frDateToEn($dates[0]));
                 $location->setDateFin($this->frDateToEn($dates[1]));
                 $location->setEstReccurent(false);
