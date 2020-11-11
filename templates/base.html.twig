@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}CarApp!{% endblock %}</title>
+    <title>{% block title %}Car'App{% endblock %}</title>
     {{ encore_entry_link_tags('app') }}
     {% block style %}
     {% endblock %}
@@ -19,8 +19,9 @@
             <ul class="navbar-nav mr-auto"></ul>
             {% if app.user %}
             <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
-                    Bonjour, {{ app.user.name }}
+                <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+                    Bonjour {{ app.user.name }}
                 </button>
                 <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                     {% if is_granted('ROLE_ADMIN') %}
@@ -40,8 +41,8 @@
             {% endif %}
 
             {% if not app.user %}
-            <a class="btn btn-success navbar-right" type="button" href="{{ path('app_connexion') }}">
-                Connexion
+            <a class="btn border-dark navbar-right" type="button" href="{{ path('app_connexion') }}">
+                Inscription/Connexion
             </a>
             {% endif %}
 
