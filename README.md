@@ -93,7 +93,7 @@ L'utilisateur est le plus souvent une entreprise qui souhaite louer des véhicul
 * Page de modification d'un véhicule (non loué), avec possibilité de retirer le véhicule du stock 
 ![Status][s-en-cours]
 * Formulaire d'ajout d'un nouveau véhicule 
-![Status][s-en-cours]
+![Status][s-finis]
 * Page de tout les clients 
 ![Status][s-a-faire]
 * Calcul des factures pour chaque client du mois courant 
