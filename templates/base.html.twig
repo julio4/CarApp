@@ -29,6 +29,10 @@
                     {% endif %}
                     {% if is_granted('ROLE_LOUEUR') %}
                         <li><a class="dropdown-item" href="{{ path('loueur_panel') }}">Panel</a></li>
+                        <li><a class="dropdown-item" href="{{ path('loueur_vehicules') }}">Véhicules</a></li>
+                        <li><a class="dropdown-item" href="{{ path('loueur_reservations') }}">Réservations</a></li>
+                        <li><a class="dropdown-item" href="{{ path('loueur_clients') }}">Clients</a></li>
+                        <li><a class="dropdown-item" href="{{ path('loueur_statistiques') }}">Statistiques</a></li>
                     {% endif %}
                     {% if is_granted('ROLE_USER') %}
                         <li><a class="dropdown-item" href="{{ path('user_panel') }}">Compte</a></li>
