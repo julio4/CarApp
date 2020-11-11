@@ -37,76 +37,38 @@ class VehiculeRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Vehicule[]
+     * @return Vehicule[] Retourne les véhicules d'un type donné disponible pour une réservation sans date
      */
-    public function findAllType(TypeVehicule $type): array
+    public function findAllAvailableByType(TypeVehicule $type)
     {
-        return $this->createQueryBuilder('vehicule')
-            ->andWhere('vehicule.type = :type')
+        $qb = $this->createQueryBuilder('v')
+            ->leftJoin('App\Entity\Location', 'l', Expr\Join::WITH, 'v.id = l.vehicule')
+            ->andWhere('v.type = :type')
             ->setParameter('type', $type)
+            ->andWhere('l is NULL OR l.dateFin < :now')
+            ->setParameter('now', date_create("now"));
+
+        return $qb
             ->getQuery()
-            ->getResult()
-            ;
+            ->getArrayResult();
     }
 
     /**
-     * @return Vehicule[] disponible du type indiqué
+     * @return Vehicule[] Retourne les véhicules d'un type donné disponible pour une réservation entre les dates précisées
      */
-    public function findTypeAvailable(TypeVehicule $type): array
+    public function findAllAvailableByTypeBetween(TypeVehicule $type, $dateDebut, $dateFin)
     {
-        //TODO faudrait vérifier que les locations des voitures demandé si elles sont liés à une location vérifier que la date n'est pas atteinte OU non récurrente
-        //On précisera un autre findtypeavaiablebycriteria avec les dates précises (+detection automatique si session dates)
-        return $this->createQueryBuilder('v')
+        $qb = $this->createQueryBuilder('v')
             ->andWhere('v.type = :type')
             ->setParameter('type', $type)
-            ->leftJoin('App\Entity\Location','l',Expr\Join::WITH, 'v.id = l.vehicule')
-            ->andWhere('l is NULL')
-            ->orderBy('v.prix','ASC')
+            ->leftJoin('App\Entity\Location', 'l', Expr\Join::WITH, 'v.id = l.vehicule')
+            ->andWhere('l is NULL OR (l.dateDebut < :dateDebut AND l.dateFin < :dateDebut) OR (l.dateDebut > :dateFin AND l.dateFin > :dateFin)')
+            ->setParameter('dateDebut', $dateDebut->format('Y-m-d'))
+            ->setParameter('dateFin', $dateFin->format('Y-m-d'));
+
+        return $qb
             ->getQuery()
-            ->getResult()
-            ;
+            ->getArrayResult();
     }
 
-//    /**
-//     * @return Vehicule Retourne tous les véhicules du loueur $username
-//     */
-//    public function findLowestPrice(TypeVehicule $type): Vehicule
-//    {
-//        return $this->createQueryBuilder('v')
-//            ->select('MIN(v.prix) AS min_prix')
-//            ->where('v.type = :type')
-//            ->setParameter('type', $type)
-//            ->orderBy('min_prix', 'ASC')
-//            ->getQuery()
-//            ->getSingleResult();
-//    }
-
-    // /**
-    //  * @return Vehicule[] Returns an array of Vehicule objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('v.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Vehicule
-    {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

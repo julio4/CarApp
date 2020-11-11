@@ -43,6 +43,7 @@ class LoueurController extends AbstractController
             "vehicules" => $vehicules
         ]);
     }
+
     /**
      * @Route("/modele/ajouter", name="_type_ajouter")
      */
@@ -212,8 +213,8 @@ class LoueurController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $vehicule = $em->getRepository(Vehicule::class)->find($id);
 
-        return $this->render('loueur/vehicules_modifier.html.twig',[
-        'id'=>$id
+        return $this->render('loueur/vehicules_modifier.html.twig', [
+            'id' => $id
         ]);
     }
 }

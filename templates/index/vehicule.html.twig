@@ -33,7 +33,12 @@
 
                             <div class="form-row align-items-center">
                                 <div class="form-group col-xl-3 col-md-12 col-xs-12 input">
-                                    <span>Date : du {{ savedDates.Debut }} au {{ savedDates.Fin }}</span>
+{#                                    TODO mise en page ici#}
+                                    {% if savedDates.Debut is empty and savedDates.Fin is empty%}
+                                        <span>Réservation récurrente: paiement mensuel à -10%</span>
+                                    {% else %}
+                                        <span>Date : du {{ savedDates.Debut }} au {{ savedDates.Fin }}</span>
+                                    {% endif %}
                                 </div>
                                 {#TODO Trier les résultats#}
 {#                                <div class="form-group col-xl-3 col-md-6 col-xs-12">#}
@@ -92,11 +97,11 @@
                                         <h3>
                                             {{ type.name }}
                                         </h3>
-                                        {# TODO Ajouter la page de loueur#}
-                                        <p class="small text-muted">Loueur: <a href="loueur.html">{{ vehicule.loueur.name }}</a></p>
+
+{#                                        <p class="small text-muted">Loueur: <a href="loueur.html">{{ vehicule.loueur.name }}</a></p>#}
                                         <div class="row">
                                             <div class="col-md-4">
-                                                <img class="img-fluid d-block rounded" alt="Nom de l'annonce" src="{{ asset('media/img/vehicules/' ~ vehicule.image.name) }}" />
+                                                <img class="img-fluid d-block rounded" alt="Nom de l'annonce" src="{{ asset('media/img/vehicules/' ~ vehicule['image.name']) }}" />
                                             </div>
                                             <div class="col-md-4">
                                                 <dl>
@@ -111,7 +116,17 @@
                                                 </dl>
                                             </div>
                                             <div class="col-md-4">
-                                                <h3 class="text-center">{{ vehicule.prix }} €</h3>
+{#                                                //TODO Mise en page#}
+                                                {% if savedDates.Debut is empty and savedDates.Fin is empty%}
+                                                    <h3 class="text-center">{{ vehicule.prix * 0.9 * 30}} €/mois</h3>
+                                                    <small class="text-center">{{ vehicule.prix * 0.9 }} €/jours -10%</small>
+                                                {% elseif days >= 30 %}
+                                                    <h3 class="text-center">{{ vehicule.prix * 0.9 * days }} €</h3>
+                                                    <small class="text-center">{{ vehicule.prix * 0.9 }} €/jours -10%</small>
+                                                {% else %}
+                                                    <h3 class="text-center">{{ vehicule.prix * days }} €</h3>
+                                                    <small class="text-center">{{ vehicule.prix }} €/jours</small>
+                                                {% endif %}
                                                 {# TODO Lien panier#}
 {#                                                <label for="form_select_{{ loop.index - 1 }}" class="btn btn-main btn-outline-primary m-2 px-2">Ajouter au panier</label>#}
                                                     <input type="submit" class="validateLocation btn btn-main btn-outline-primary m-2 px-2" value="Réserver Maintenant">

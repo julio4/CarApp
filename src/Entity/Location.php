@@ -18,12 +18,6 @@ class Location
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity=Vehicule::class, inversedBy="location", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $vehicule;
-
-    /**
      * @ORM\Column(type="date")
      */
     private $dateDebut;
@@ -49,21 +43,15 @@ class Location
      */
     private $user;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Vehicule::class, inversedBy="locations")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $vehicule;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getVehicule(): ?Vehicule
-    {
-        return $this->vehicule;
-    }
-
-    public function setVehicule(Vehicule $vehicule): self
-    {
-        $this->vehicule = $vehicule;
-
-        return $this;
     }
 
     public function getDateDebut(): ?\DateTimeInterface
@@ -122,6 +110,18 @@ class Location
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getVehicule(): ?Vehicule
+    {
+        return $this->vehicule;
+    }
+
+    public function setVehicule(?Vehicule $vehicule): self
+    {
+        $this->vehicule = $vehicule;
 
         return $this;
     }
