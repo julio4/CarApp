@@ -217,4 +217,40 @@ class LoueurController extends AbstractController
             'id' => $id
         ]);
     }
+
+    /**
+     * @Route ("/clients", name="_clients")
+     */
+    public function afficherClients(VehiculeRepository $vehiculeRepository, UserInterface $user){
+
+        $vehicules = $vehiculeRepository->findOwnedBy($user);
+        return $this->render('loueur/clients.html.twig', [
+            "vehicules" => $vehicules
+        ]);
+
+    }
+
+    /**
+     * @Route ("/reservations", name="_reservations")
+     */
+    public function afficherResa(VehiculeRepository $vehiculeRepository, UserInterface $user){
+
+        $vehicules = $vehiculeRepository->findOwnedBy($user);
+        return $this->render('loueur/reservations.html.twig', [
+            "vehicules" => $vehicules
+        ]);
+
+    }
+
+    /**
+     * @Route ("/statistiques", name="_statistiques")
+     */
+    public function afficherStats(VehiculeRepository $vehiculeRepository, UserInterface $user){
+
+        $vehicules = $vehiculeRepository->findOwnedBy($user);
+        return $this->render('loueur/statistiques.html.twig', [
+            "vehicules" => $vehicules
+        ]);
+
+    }
 }
