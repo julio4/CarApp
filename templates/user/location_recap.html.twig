@@ -47,3 +47,12 @@
         </ol>
     </nav>
 {% endblock %}
+{% block dashboard_body %}
+    <h1>Merci pour votre location {{ location.user }}</h1>
+    <h1>Test{{ location.id }}</h1>
+    <h2>Prix : {{ location.prix }}</h2>
+    <h3>Durée restante : {{ location.dateFin }}-{{ location.dateDebut }}</h3>
+    {% if location.estReccurent %}
+        <h1>Yes</h1>
+    {% endif %}
+{% endblock %}

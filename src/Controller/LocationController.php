@@ -99,9 +99,13 @@ class LocationController extends AbstractController
     /**
      * @Route("/details/{id}", name="_location_recap")
      */
-    public function recapLocation($id){
+    public function recapLocation($id, Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $location = $em->getRepository(Location::class)->find($id);
+
         return $this->render('user/location_recap.html.twig', [
-            'id' => $id
+            'id' => $id,
+            'location' => $location
         ]);
     }
 }
