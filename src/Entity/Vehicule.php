@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\VehiculeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -50,28 +52,6 @@ class Vehicule
      * )
      */
     private $prix;
-
-    /**
-     * @ORM\OneToOne(targetEntity=Location::class, mappedBy="vehicule", cascade={"persist", "remove"})
-     */
-    private $location;
-
-    public function getLocation(): ?Location
-    {
-        return $this->location;
-    }
-
-    public function setLocation(Location $location): self
-    {
-        $this->location = $location;
-
-        // set the owning side of the relation if necessary
-        if ($location->getVehicule() !== $this) {
-            $location->setVehicule($this);
-        }
-
-        return $this;
-    }
 
     public function getPrix(): ?float
     {
@@ -161,9 +141,15 @@ class Vehicule
      */
     private $updatedAt;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Location::class, mappedBy="vehicule", orphanRemoval=true)
+     */
+    private $locations;
+
     public function __construct()
     {
         $this->image = new EmbeddedFile();
+        $this->locations = new ArrayCollection();
     }
 
     /**
@@ -199,5 +185,36 @@ class Vehicule
     public function getImage(): ?EmbeddedFile
     {
         return $this->image;
+    }
+
+    /**
+     * @return Collection|Location[]
+     */
+    public function getLocations(): Collection
+    {
+        return $this->locations;
+    }
+
+    public function addLocation(Location $location): self
+    {
+        if (!$this->locations->contains($location)) {
+            $this->locations[] = $location;
+            $location->setVehicule($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLocation(Location $location): self
+    {
+        if ($this->locations->contains($location)) {
+            $this->locations->removeElement($location);
+            // set the owning side to null (unless already changed)
+            if ($location->getVehicule() === $this) {
+                $location->setVehicule(null);
+            }
+        }
+
+        return $this;
     }
 }

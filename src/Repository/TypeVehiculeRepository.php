@@ -29,7 +29,8 @@ class TypeVehiculeRepository extends ServiceEntityRepository
             ->innerJoin('App\Entity\Vehicule','v', Expr\Join::WITH, 't.id = v.type')
             ->leftJoin('App\Entity\Location', 'l', Expr\Join::WITH, 'v.id = l.vehicule')
             ->andWhere('l is NULL OR l.dateFin < :now')
-            ->setParameter('now', $date = date('Y-m-d', time()));
+            ->setParameter('now', date_create("now"))
+            ->groupBy('t');
 
         return $qb
             ->getQuery()
@@ -53,6 +54,5 @@ class TypeVehiculeRepository extends ServiceEntityRepository
             ->getQuery()
             ->getArrayResult();
     }
-
 
 }

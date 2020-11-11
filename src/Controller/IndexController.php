@@ -27,7 +27,7 @@ class IndexController extends AbstractController
                 ])
             ->getForm();
 
-        if($this->get('session')->has('dateDebut') and $this->get('session')->has('dateFin')) {
+        if($this->isValidCookieDate()) {
             $types = $typeVehiculeRepository->findAllAvailableBetween(
                 $this->frDateToEn($this->get('session')->get('dateDebut')),
                 $this->frDateToEn($this->get('session')->get('dateFin'))
@@ -70,36 +70,49 @@ class IndexController extends AbstractController
     public function afficherType($id,Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        //TODO récupéré uniquement les véhicule loué ... Querrybuilder depuis Vehicule en prenant en paramètre l'id type
         $type = $em->getRepository(TypeVehicule::class)->find($id);
-        $vehicules =  $em->getRepository(Vehicule::class)->findTypeAvailable($type);
 
-        $form = $this->createFormBuilder()
-//                ->add('date', null, [
-//                    'label' => "Dates de location:",
-//                    'attr' => ['class' => 'picker'],
-//                    'required' => false,
-//                ])
-                ->getForm();
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $data = $form->getData();
-
-            //TODO ici on trie les résultat des véhicules et on change $vehicules
-
+        $vehiculesRepo = $em->getRepository(Vehicule::class);
+        if($this->isValidCookieDate()) {
+            $savedDates = [
+                "Debut" => $this->get('session')->get('dateDebut'),
+                "Fin" => $this->get('session')->get('dateFin')];
+            $vehicules = $vehiculesRepo->findAllAvailableByTypeBetween( $type,
+                $this->frDateToEn($savedDates["Debut"]),
+                $this->frDateToEn($savedDates["Fin"])
+            );
+        }
+        else {
+            $vehicules = $vehiculesRepo->findAllAvailableByType($type);
         }
 
-        return $this->render("index/vehicule.html.twig", [
-            'type' => $type,
-            'vehicules' => $vehicules,
-            'savedDates' => [
-                "Debut" => $this->get('session')->get('dateDebut'),
-                "Fin" => $this->get('session')->get('dateFin')
-            ],
-            'form' => $form->createView()
-        ]);
+        if(count($vehicules) > 0) {
+            $form = $this->createFormBuilder()
+                ->getForm();
+
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+
+                $data = $form->getData();
+
+                //TODO ici on trie les résultat des véhicules et on change $vehicules
+
+            }
+            $days = $this->countDays();
+            dump($days);
+            return $this->render("index/vehicule.html.twig", [
+                'type' => $type,
+                'vehicules' => $vehicules,
+                'savedDates' => [
+                    "Debut" => $this->get('session')->get('dateDebut'),
+                    "Fin" => $this->get('session')->get('dateFin'),
+                ],
+                'days' => $days,
+                'form' => $form->createView()
+            ]);
+        }
+        //TODO ajouter un flash d'erreur ?
+        return $this->redirect($this->generateUrl('index_home'));
     }
 
     /**
@@ -112,8 +125,29 @@ class IndexController extends AbstractController
         return $this->redirect($this->generateUrl('index_home'));
     }
 
+    private function isValidCookieDate() {
+        if($this->get('session')->has('dateDebut') and $this->get('session')->has('dateFin')) {
+            if($this->frDateToEn($this->get('session')->get('dateDebut'))
+                < $this->frDateToEn($this->get('session')->get('dateFin')))
+                if($this->frDateToEn($this->get('session')->get('dateDebut') >= date('Y-m-d', time())))
+                    return true;
+        }
+        return false;
+    }
+
+    private function countDays() {
+        if($this->isValidCookieDate()) {
+            $dateDeb = $this->frDateToEn($this->get('session')->get('dateDebut'));
+            $dateFin = $this->frDateToEn($this->get('session')->get('dateFin'));
+
+            $datediff = $dateFin->diff($dateDeb)->format("%a");
+            return $dateFin->diff($dateDeb)->format("%a") + 1;
+        }
+        return null;
+    }
+
     private function frDateToEn($date_string) {
-        return new \Datetime(strtr(strtolower($date_string), array('janvier'=>'jan','février'=>'feb','mars'=>'march','avril'=>'apr','mai'=>'may','juin'=>'jun','juillet'=>'jul','août'=>'aug','septembre'=>'sep','octobre'=>'oct','novembre'=>'nov','décembre'=>'dec')));
+        return date_create(strtr(mb_strtolower($date_string), array('janvier'=>'jan','février'=>'feb','mars'=>'march','avril'=>'apr','mai'=>'may','juin'=>'jun','juillet'=>'jul','août'=>'aug','septembre'=>'sep','octobre'=>'oct','novembre'=>'nov','décembre'=>'dec')));
     }
 
 }

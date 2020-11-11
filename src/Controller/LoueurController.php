@@ -43,6 +43,7 @@ class LoueurController extends AbstractController
             "vehicules" => $vehicules
         ]);
     }
+
     /**
      * @Route("/modele/ajouter", name="_type_ajouter")
      */
@@ -202,6 +203,19 @@ class LoueurController extends AbstractController
 
         return $this->render('loueur/vehicules_formulaire.html.twig', [
             'form' => $form->createView()
+        ]);
+    }
+
+
+    /**
+     * @Route ("/vehicules/modifier/{id}", name="_vehicules_modifier")
+     */
+    public function modifVehicules($id, Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $vehicule = $em->getRepository(Vehicule::class)->find($id);
+
+        return $this->render('loueur/vehicules_modifier.html.twig', [
+            'id' => $id
         ]);
     }
 }

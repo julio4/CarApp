@@ -50,7 +50,7 @@ class LocationController extends AbstractController
                 $location->setEstReccurent(false);
 
                 $datediff = $dateFin->diff($dateDeb)->format("%a");
-                if(round($datediff / (60 * 60 * 24)) > 30) {
+                if($datediff + 1 > 30) {
                     $location->setPrix($vehicule->getPrix() * 0.9);
                 }
                 else {

@@ -48,19 +48,19 @@ L'utilisateur est le plus souvent une entreprise qui souhaite louer des véhicul
 * Connexion (non obligatoire) 
 ![Status][s-finis]
 * Page d'accueil qui affiche les différents modèles proposé 
-![Status][s-en-cours]
+![Status][s-bug]
 * Sélection d'une intervalle de date 
-![Status][s-en-cours]
+![Status][s-finis]
 * Possibilité de réaliser un paiement mensuel sans date limite (Abonnement) 
-![Status][s-a-faire]
+![Status][s-bug]
 * Filtrage par caractéristiques et prix 
-![Status][s-en-cours]
+![Status][s-a-faire]
 * Affichage des modèles disponibles à la locations selon les dates entrée 
-![Status][s-en-cours]
+![Status][s-bug]
 * Récapitulatif de commande pour valider la location d'un ou plusieurs véhicules 
-![Status][s-en-cours]
+![Status][s-a-faire]
 * Page de récapitulatif d'une location 
-![Status][s-en-cours]
+![Status][s-a-faire]
 * Panel de toutes les locations effectuées 
 ![Status][s-a-faire]
 * Accès au facture 
@@ -68,7 +68,7 @@ L'utilisateur est le plus souvent une entreprise qui souhaite louer des véhicul
 * Paramètres du comptes (changer de mot de passe, d'adresse email, etc) 
 ![Status][s-a-faire]
 * Réduction de 10% si paiement mensuel (à partir d'un mois) 
-![Status][s-en-cours]
+![Status][s-bug]
 
 #### Loueur
 L'utilisateur est le plus souvent une entreprise qui souhaite louer des véhicules:
@@ -276,6 +276,7 @@ Mehdi Hachisman - [@Mehachi](https://github.com/Mehachi/) - mehdi.hachisman@etu.
 [s-a-faire]: https://img.shields.io/static/v1?label=Status&message=A%20faire&color=red
 [s-en-cours]: https://img.shields.io/static/v1?label=Status&message=En%20cours&color=orange
 [s-finis]: https://img.shields.io/static/v1?label=Status&message=Finis&color=green
+[s-bug]: https://img.shields.io/static/v1?label=Status&message=Bug&color=purple
 [s-frontend]: https://img.shields.io/static/v1?label=Front-end&message=90%&color=green
 [s-backend]: https://img.shields.io/static/v1?label=Back-end&message=40%&color=orange
 [screenshot]: images/screenshot.png
