@@ -72,12 +72,12 @@
                             <div class="form-group">
                                 <label>Photo du véhicule</label>
 
-                                {{ form_widget(form.img) }}
+                                {{ form_widget(form.imageFile) }}
 
-                                <small>{{ form_help(form.img) }}</small>
+                                <small>{{ form_help(form.imageFile) }}</small>
 
                                 <div class="form-error">
-                                    {{ form_errors(form.img) }}
+                                    {{ form_errors(form.imageFile) }}
                                 </div>
                             </div>
                         </div>
@@ -86,7 +86,7 @@
                         <div class="col">
                             <div class="text-center">
                                 {{ form_row(form.save) }}
-                                {{ form_row(form.etat) }}
+                                {{ form_row(form.disponible) }}
                             </div>
                         </div>
                     </div>

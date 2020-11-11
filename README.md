@@ -155,6 +155,15 @@ Voici comment mettre en place l'application dans votre environnement de dévelop
 ### Prérequis
 
 * [PHP >7.2.5](https://www.php.net/downloads)
+
+Configuration du fichier php.ini:
+```php
+extension=fileinfo
+extension=gd2
+extension=exif
+extension=mysqli
+extension=pdo_mysql
+```
 * [Composer](https://getcomposer.org/download/)
 ```sh
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
@@ -181,6 +190,10 @@ composer install
 @.env:28
 DATABASE_URL='mysql://root:@127.0.0.1:3306/<BASE>'
 ```
+  - A partir de notre base : Importer la base dans mysql et vérifier la configuration ci-dessus dans le .env
+  
+  OU
+  
   - A partir d'une nouvelle base, importer le schéma avec doctrine:
 ```sh
 php bin/console doctrine:schema:update --force
@@ -190,6 +203,7 @@ php bin/console doctrine:schema:update --force
   php bin/console doctrine:fixtures:load
 ```
   - Démarrer le serveur mySql (exemple: [XAMPP](https://www.apachefriends.org/fr/index.html))
+  
 4. (optionel) Installer les certificats
 ```sh
 symfony server:ca:install
@@ -198,18 +212,12 @@ symfony server:ca:install
 ```sh
 symfony server:start
 ```
-6. (Optionel) Ajouter un administrateur dans la base après avoir réalisée une inscription classique sur le site (pour obtenir un mot de passe hashé):
-```sh
-php bin/console doctrine:query:sql \
-    "UPDATE User
-    SET roles = ['ROLE_ADMIN']
-    WHERE name = <UTILISATEUR>"
-```
 
 L'application est disponible en environnement de développement en local à l'adresse [localhost:8000](https://127.0.0.1:8000/)
 
 Le compte administrateur de base est accessible avec l'utilisateur `admin` et le mot de passe `password`
-Un comtpe loueur est accessible avec l'utilisateur `demoLoueur` et le mot de passe `password`
+Un compte loueur est accessible avec l'utilisateur `demoLoueur` et le mot de passe `password`
+Un compte utilisateur est accessible avec l'utilisateur `demoUser` et le mot de passe `password`
 
 ### Extensions utilisées
 

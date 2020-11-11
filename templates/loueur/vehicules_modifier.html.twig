@@ -69,12 +69,12 @@
                             <div class="form-group">
                                 <label>Photo du véhicule</label>
 
-                                {{ form_widget(form.img) }}
+                                {{ form_widget(form.imageFile) }}
 
-                                <small>{{ form_help(form.img) }}</small>
+                                <small>{{ form_help(form.imageFile) }}</small>
 
                                 <div class="form-error">
-                                    {{ form_errors(form.img) }}
+                                    {{ form_errors(form.imageFile) }}
                                 </div>
                             </div>
                         </div>
@@ -83,7 +83,7 @@
                         <div class="col">
                             <div class="text-center">
                                 {{ form_row(form.save) }}
-                                {{ form_row(form.etat) }}
+                                {{ form_row(form.disponible) }}
                             </div>
                         </div>
                     </div>
@@ -94,5 +94,42 @@
         </div>
     </div>
     </div>
+{% endblock %}
+{% block panel_scripts %}
+    {{ encore_entry_script_tags('form') }}
+    <script>
+        $(".numberpicker").val({{ vehicule.prix }});
+        var $inputPrix = $(".numberpicker");
+        var $1semaine = $("#1semaine");
+        var $1mois = $("#1mois");
+        var $1an = $("#1an");
+        $inputPrix.on("input", function (event) {
+            $1semaine.html(($inputPrix.val() * 7).toFixed(2) + " €");
+            $1mois.html(($inputPrix.val() * 7 * 4 * 0.9).toFixed(2) + " €");
+            $1an.html(($inputPrix.val() * 7 * 4 * 12 * 0.9).toFixed(2) + " €");
+        })
+
+        var checkExist = setInterval(function() {
+            if ($('.no-results').length) {
+                var ajoutMod = document.querySelector('.no-results');
+                ajoutMod.addEventListener('click', function() {
+                    // AJOUT MODELE
+                    searchValue = document.querySelector('.bs-searchbox input').value;
+                    var form = document.createElement('form');
+                    document.body.appendChild(form);
+                    form.method = 'post';
+                    form.action = "{{ path('loueur_type_ajouter')|escape('js') }}";
+                    var input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'default_name';
+                    input.value = searchValue;
+                    form.appendChild(input);
+                    form.submit();
+                });
+                clearInterval(checkExist);
+            }
+        }, 100); // check every 100ms
+
+    </script>
 {% endblock %}
 

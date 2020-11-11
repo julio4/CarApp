@@ -6,6 +6,10 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" packagePrefix="App\" />
       <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/beberlei/doctrineextensions" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/imagine/imagine" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/liip/imagine-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/process" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/templating" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

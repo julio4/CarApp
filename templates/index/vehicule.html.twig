@@ -14,7 +14,7 @@
                     <div class="card-body p-4">
                         <div class='row align-items-center'>
                             <div class="col-8">
-                                <img src="{{ asset('media/img/types/' ~ type.image.name) }}" alt="" class="img-fluid d-block mx-auto mb-3">
+                                <img src="{{ vich_uploader_asset(type, 'imageFile', 'App\\Entity\\TypeVehicule') | imagine_filter('thumb_4_3') }}" alt="" class="img-fluid d-block mx-auto mb-3">
                             </div>
                             <div class="col-4">
                                 <h5>{{ type.name }}</h5>
@@ -101,7 +101,8 @@
 {#                                        <p class="small text-muted">Loueur: <a href="loueur.html">{{ vehicule.loueur.name }}</a></p>#}
                                         <div class="row">
                                             <div class="col-md-4">
-                                                <img class="img-fluid d-block rounded" alt="Nom de l'annonce" src="{{ asset('media/img/vehicules/' ~ vehicule['image.name']) }}" />
+                                                <img class="img-fluid d-block rounded" alt="{{vehicule['image.name']}}"
+                                                     src="{{ vich_uploader_asset(vehicule, 'imageFile', 'App\\Entity\\Vehicule') | imagine_filter('thumb_4_3') }}" />
                                             </div>
                                             <div class="col-md-4">
                                                 <dl>

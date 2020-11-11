@@ -63,46 +63,43 @@ class AppFixtures extends Fixture
         $userDemo->setRoles(['ROLE_USER']);
 
         $type = new TypeVehicule();
-        $src = __DIR__."/../../public/media/img/types/1.png";
+        copy(__DIR__."/../../public/media/img/fixtures/porsche.png", __DIR__."/../../public/media/img/fixtures/porsche_type.png");
+        $src = __DIR__."/../../public/media/img/fixtures/porsche_type.png";
         $file = new UploadedFile(
             $src,
-            '1.png',
+            'porsche_type.png',
             'image/png',
             null,
-            true //  Set test mode true !!! " Local files are used in test mode hence the code should not enforce HTTP uploads."
+            true
         );
         $type->setName('Porsche')
             ->setImageFile($file);
 
-//        $porsche1 = new Vehicule();
-//        $porsche1->setEtat('disponible');
-//        $porsche1->setPrix(24.5);
-//        $carac = array('boite' => 'automatique',
-//            'moteur' => 'diesel',
-//            'carburant' => 'essence');
-//        $porsche1->setCarac($carac);
-//        $porsche1->setType($type);
-//        $porsche1->setLoueur($loueurDemo);
-//        $file = null;
-//        $porsche1->setImageFile($file);
-//
-//        $porsche2 = new Vehicule();
-//        $porsche2->setEtat('disponible');
-//        $porsche2->setPrix(52.5);
-//        $carac = array('boite' => 'manuelle',
-//            'moteur' => 'diesell',
-//            'carburant' => 'essence');
-//        $porsche2->setCarac($carac);
-//        $porsche2->setType($type);
-//        $porsche2->setLoueur($loueurDemo);
-//        $porsche2->setImageFile($file);
+        $porsche1 = new Vehicule();
+        $porsche1->setDisponible(1);
+        $porsche1->setPrix(24.5);
+        $carac = array('boite' => 'Automatique',
+            'moteur' => 'Electrique',
+            'carburant' => 'Electrique');
+        $porsche1->setCarac($carac);
+        $porsche1->setType($type);
+        $porsche1->setLoueur($loueurDemo);
+        copy(__DIR__."/../../public/media/img/fixtures/voiture.png", __DIR__."/../../public/media/img/fixtures/voiture_vehicule.png");
+        $src = __DIR__."/../../public/media/img/fixtures/voiture_vehicule.png";
+        $file = new UploadedFile(
+            $src,
+            'voiture_vehicule.png',
+            'image/png',
+            null,
+            true
+        );
+        $porsche1->setImageFile($file);
 
         $manager->persist($admin);
         $manager->persist($loueurDemo);
         $manager->persist($userDemo);
         $manager->persist($type);
-//        $manager->persist($porsche1);
-//        $manager->persist($porsche2);
+        $manager->persist($porsche1);
         $manager->flush();
     }
 }

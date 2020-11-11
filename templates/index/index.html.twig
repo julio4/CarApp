@@ -19,12 +19,26 @@
                 </div>
             </div>
             {{ form_rest(form) }}
-            <div class="row justify-content-md-center">
+            <div class="row justify-content-md-center my-3">
                 <div class="col-3">
                     <a href="{{ path('index_date_reset') }}" class="btn btn-info">Location mensuelle</a>
                 </div>
                 <div class="col-3">
                     <input class="btn btn-primary" type="submit" value="Valider les dates">
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-6">
+                    {% for message in app.flashes('success') %}
+                        <div class="alert alert-success">
+                            {{ message|raw }}
+                        </div>
+                    {% endfor %}
+                    {% for message in app.flashes('danger') %}
+                        <div class="alert alert-danger">
+                            {{ message|raw }}
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
             {{ form_end(form) }}
@@ -38,8 +52,9 @@
                     <!-- Card-->
                     <div class="card rounded shadow-sm border-0">
                         <a href="{{ path('index_type', {id: type.id})}}" class="text-dark">
-                            <div class="card-body p-4"><img src="{{ asset('media/img/types/' ~ type["image.name"] ) }}" alt=""
-                                                            class="img-fluid d-block mx-auto mb-3">
+                            <div class="card-body p-4">
+                                <img src="{{ vich_uploader_asset(type, 'imageFile', 'App\\Entity\\TypeVehicule') | imagine_filter('thumb_4_3') }}"
+                                     alt="{{ type['image.name'] }}" class="img-fluid d-block mx-auto mb-3">
                                 <h3>
                                     {{ type.name }}
                                 </h3>

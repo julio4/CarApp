@@ -41,11 +41,6 @@ class Vehicule
     private $carac = [];
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $etat;
-
-    /**
      * @ORM\Column(type="float")
      * @Assert\Positive(
      *      message = "Le prix ne peut être nul ou négatif."
@@ -106,18 +101,6 @@ class Vehicule
         return $this;
     }
 
-    public function getEtat(): ?string
-    {
-        return $this->etat;
-    }
-
-    public function setEtat(string $etat): self
-    {
-        $this->etat = $etat;
-
-        return $this;
-    }
-
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      *
@@ -140,6 +123,22 @@ class Vehicule
      * @var \DateTimeInterface|null
      */
     private $updatedAt;
+
+    /**
+     * @return \DateTimeInterface|null
+     */
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param \DateTimeInterface|null $updatedAt
+     */
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
+    }
 
     /**
      * @ORM\OneToMany(targetEntity=Location::class, mappedBy="vehicule", orphanRemoval=true)

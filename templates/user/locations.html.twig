@@ -42,6 +42,7 @@
                                 <th scope="col">Loueur</th>
                                 <th scope="col">Dates</th>
                                 <th scope="col">Prix</th>
+                                <th scope="col">Status</th>
                                 <th scope="col"></th>
                             </tr>
                             </thead>
@@ -58,6 +59,13 @@
                                         <span class="badge badge-success">Paiement mensuel</span> {{ location.prix }} €/Mois
                                     {% else %}
                                         {{ location.prix }} €
+                                    {% endif %}
+                                    </td>
+                                    <td>
+                                    {% if location.estPayee %}
+                                        <span class="badge badge-success">Payée</span>
+                                    {% else %}
+                                        <h5><a href="" class="badge badge-warning">À payer ></a></h5>
                                     {% endif %}
                                     </td>
 {#                                    TODO page détail location#}
