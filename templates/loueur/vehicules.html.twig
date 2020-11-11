@@ -51,14 +51,14 @@
         <div class="col">
             <div class="card rounded shadow-sm border-0">
                 <div class="card-body">
-                    <h5 class="card-title">Mes Véhicules en location <a class="btn btn-primary" href="{{ path('loueur_vehicules_ajouter') }}" role="button">Ajouter +</a></h5>
+                    <h5 class="card-title">Listes des véhicules du parc de location <a class="btn btn-primary" href="{{ path('loueur_vehicules_ajouter') }}" role="button">Ajouter +</a></h5>
                     <div class="table-responsive">
                         <table class="table">
                             <thead>
                             <tr>
                                 <th scope="col">Modèle</th>
                                 <th scope="col">Caractéristiques</th> <!-- Idées : https://bootsnipp.com/snippets/Veob -->
-                                <th scope="col">Prix/j</th>
+                                <th scope="col">Prix/Jour</th>
                                 <th scope="col">Disponibilité</th>
                                 <th scope="col"></th>
                             </tr>
@@ -77,7 +77,7 @@
                                     <td>{{ v.vehicule.prix }} €</td>
                                     <td>
                                     {% if v.estLoue %}
-                                        <span class="badge badge-success">Loué</span>
+                                        <span class="badge badge-success">Louée</span>
                                     {% else %}
                                         {% if v.vehicule.disponible %}
                                             <span class="badge badge-primary">Disponible</span>

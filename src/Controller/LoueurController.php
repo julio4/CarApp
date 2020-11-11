@@ -31,9 +31,12 @@ class LoueurController extends AbstractController
     /**
      * @Route("/", name="_panel")
      */
-    public function dashboard()
+    public function dashboard(LocationRepository $locationRepository)
     {
-        return $this->render('loueur/index.html.twig');
+        $locations = $locationRepository->findAll();
+        return $this->render('loueur/index.html.twig', [
+            'locations' => $locations,
+        ]);
     }
 
     /**

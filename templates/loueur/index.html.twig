@@ -96,64 +96,23 @@
                         <table class="table table-sm">
                             <thead>
                             <tr>
-                                <th scope="col">No</th>
-                                <th scope="col">Véhicule</th>
+                                <th scope="col">#</th>
+                                <th scope="col">Modèle</th>
                                 <th scope="col">Client</th>
-                                <th scope="col">Total</th>
-                                <th scope="col">Date</th>
+                                <th scope="col">Montant</th>
                                 <th scope="col"></th>
                             </tr>
                             </thead>
                             <tbody>
-
+                            {% for location in locations|slice(0,10) %}
                             <tr>
-                                <th scope="row">17371705</th>
-                                <td>Porsche Cayenne</td>
-                                <td>johndoe@gmail.com</td>
-                                <td>61.11€</td>
-                                <td>Oct 31 2020</td>
+                                <th scope="row">{{ location.id }}</th>
+                                <td>{{ location.vehicule.type.name }}</td>
+                                <td>{{ location.user.email }}</td>
+                                <td>{{ location.prix }} €</td>
                                 <td><a href="#" class="btn btn-sm btn-primary">Voir</a></td>
                             </tr>
-                            <tr>
-                                <th scope="row">17370540</th>
-                                <td>Porsche Cayenne</td>
-                                <td>jacob.monroe@company.com</td>
-                                <td>153.11€</td>
-                                <td>Oct 28 2020</td>
-                                <td><a href="#" class="btn btn-sm btn-primary">Voir</a></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">17371705</th>
-                                <td>Porsche Cayenne</td>
-                                <td>johndoe@gmail.com</td>
-                                <td>61.11€</td>
-                                <td>Oct 31 2020</td>
-                                <td><a href="#" class="btn btn-sm btn-primary">Voir</a></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">17370540</th>
-                                <td>Porsche Cayenne</td>
-                                <td>jacob.monroe@company.com</td>
-                                <td>153.11€</td>
-                                <td>Oct 28 2020</td>
-                                <td><a href="#" class="btn btn-sm btn-primary">Voir</a></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">17371705</th>
-                                <td>Porsche Cayenne</td>
-                                <td>johndoe@gmail.com</td>
-                                <td>61.11€</td>
-                                <td>Oct 31 2020</td>
-                                <td><a href="#" class="btn btn-sm btn-primary">Voir</a></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">17370540</th>
-                                <td>Porsche Cayenne</td>
-                                <td>jacob.monroe@company.com</td>
-                                <td>153.11€</td>
-                                <td>Oct 28 2020</td>
-                                <td><a href="#" class="btn btn-sm btn-primary">Voir</a></td>
-                            </tr>
+                            {% endfor %}
                             </tbody>
                         </table>
                     </div>
@@ -165,7 +124,7 @@
 
             <div class="card rounded shadow-sm border-0 mb-4">
                 <div class="card-body">
-                    <h5 class="card-title">Revenue sur 6 mois</h5>
+                    <h5 class="card-title">Revenus sur 6 mois</h5>
                     <canvas id="revChart"></canvas>
                 </div>
             </div>
