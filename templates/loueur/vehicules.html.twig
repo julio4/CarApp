@@ -77,7 +77,7 @@
                                     {% elseif vehicule.etat == "En location" %}
                                         <td><span class="badge badge-success">{{ vehicule.etat }}</span></td>
                                     {% endif %}
-                                    <td><a href="{{ path('loueur_vehicules') }}">Détails</a></td>
+                                    <td><a href="{{ path('loueur_vehicules_modifier', { 'id': vehicule.id }) }}">Détails</a></td>
                                 </tr>
                             {% endfor %}
                             </tbody>

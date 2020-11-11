@@ -206,7 +206,6 @@ class LoueurController extends AbstractController
         ]);
     }
 
-
     /**
      * @Route ("/vehicules/modifier/{id}", name="_vehicules_modifier")
      */

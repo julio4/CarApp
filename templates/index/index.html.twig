@@ -3,10 +3,10 @@
 {% block body %}
     <div class="container py-5">
         <div class="text-center mb-5">
-            <h1 class="display-4 font-weight-bold">Nos modèles</h1>
+            <h1 class="display-4 font-weight-bold">Car'App</h1>
             {% if types|length > 1 %}
             <p class="font-italic text-muted mb-0">Choisissez parmis nos <strong>{{ types|length }}</strong>
-                modèles différents</p>
+                modèles</p>
             {% endif %}
             {{ form_start(form) }}
             <div class="my-custom-class-for-errors">
@@ -55,7 +55,7 @@
                 {% endfor %}
             {% else %}
             <div class="col-lg-12 col-md-12 mb-12">
-                Aucune voiture disponible! Revenez plus tard
+                Oops, aucune voiture disponible ! Revenez plus tard
             </div>
             {% endif %}
 

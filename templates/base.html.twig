@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}CarApp!{% endblock %}</title>
@@ -16,15 +16,7 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{ path('index_home') }}">Accueil</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('index_home') }}">Louer un véhicule</a>
-                </li>
-
-            </ul>
+            <ul class="navbar-nav mr-auto"></ul>
             {% if app.user %}
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
@@ -48,8 +40,8 @@
             {% endif %}
 
             {% if not app.user %}
-            <a class="btn btn-success navbar-righ" type="button" href="{{ path('app_connexion') }}">
-                Se Connecter
+            <a class="btn btn-success navbar-right" type="button" href="{{ path('app_connexion') }}">
+                Connexion
             </a>
             {% endif %}
 
