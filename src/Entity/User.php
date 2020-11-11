@@ -23,6 +23,13 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 50,
+     *      minMessage = "minimum {{ limit }}",
+     *      maxMessage = "maximum {{ limit }}",
+     *      allowEmptyString = false
+     * )
      */
     private $name;
 

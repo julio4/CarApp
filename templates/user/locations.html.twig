@@ -1,0 +1,69 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block sidebard %}
+    <li class="nav-item">
+        <a class="nav-link" href="{{ path("user_panel") }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            <span class="ml-2">Accueil</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="{{ path('loueur_vehicules') }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
+            <span class="ml-2">Mes Locations</span>
+        </a>
+    </li>
+{% endblock %}
+{% block dashboard_current %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('user_panel') }}">Panel</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Mes Locations</li>
+        </ol>
+    </nav>
+{% endblock %}
+{% block panel_scripts %}
+    <h1 class="h2">Mes Locations</h1>
+    <div class="row">
+        <div class="col">
+            <div class="card rounded shadow-sm border-0">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Modèle</th> <!-- Idées : https://bootsnipp.com/snippets/Veob -->
+                                <th scope="col">Dates</th>
+                                <th scope="col">Prix</th>
+                                <th scope="col"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for location in locations %}
+                                <tr>
+                                    <th scope="row">{{ location.id }}</th>
+                                    <td>{{ location.vehicule }}</td>
+                                    <td>{{ location.dateDebut|date("m/d/Y") }} - {{ location.dateFin|date("m/d/Y") }}</td>
+                                    <td>
+
+                                    </td>
+                                    {% if vehicule.etat == "Disponible" %}
+                                        <td><span class="badge badge-primary">{{ vehicule.etat }}</span></td>
+                                    {% elseif vehicule.etat == "Non disponible" %}
+                                        <td><span class="badge badge-secondary">{{ vehicule.etat }}</span></td>
+                                    {% elseif vehicule.etat == "En location" %}
+                                        <td><span class="badge badge-success">{{ vehicule.etat }}</span></td>
+                                    {% endif %}
+                                    <td><a href="{{ path('loueur_vehicules') }}">Détails</a></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

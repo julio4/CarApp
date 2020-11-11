@@ -1,0 +1,161 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block panel_style %}
+{% endblock %}
+
+{% block sidebard %}
+    <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="{{ path("user_panel") }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            <span class="ml-2">Accueil</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ path('loueur_vehicules') }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
+            <span class="ml-2">Mes Locations</span>
+        </a>
+    </li>
+{% endblock %}
+{% block dashboard_current %}
+{% endblock %}
+{% block dashboard_body %}
+    <h1 class="h2">Panel</h1>
+
+    <!-- résumé cards-->
+    <div class="row equal my-4">
+
+        <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
+            <div class="card rounded shadow-sm border-0">
+                <div class="card-body p-4 text-center">
+                    <p class="card-title">Véhicules louées</p>
+                    <h2 class="card-text">_TODO</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
+            <div class="card rounded shadow-sm border-0">
+                <div class="card-body p-4 text-center">
+                    <p class="card-title">En cours</p>
+                    <h2 class="card-text">_TODO</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
+            <div class="card rounded shadow-sm border-0">
+                <div class="card-body p-4 text-center">
+                    <p class="card-title">_TODO</p>
+                    <h2 class="card-text">_TODO%</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
+            <div class="card rounded shadow-sm border-0">
+                <div class="card-body p-4 text-center">
+                    <p class="card-title">_TODO</p>
+                    <h2 class="card-text">_TODO</h2>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <!-- Dernières réservations-->
+        <div class="col-12 col-xl-8 mb-4 mb-lg-0">
+            <div class="card rounded shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="card-title">Dernières réservations</h5>
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                            <tr>
+                                <th scope="col">No</th>
+                                <th scope="col">Véhicule</th>
+                                <th scope="col">Client</th>
+                                <th scope="col">Total</th>
+                                <th scope="col">Date</th>
+                                <th scope="col"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <th scope="row">17371705</th>
+                                <td>Porsche Cayenne</td>
+                                <td>johndoe@gmail.com</td>
+                                <td>61.11€</td>
+                                <td>Oct 31 2020</td>
+                                <td><a href="#" class="btn btn-sm btn-primary">Voir</a></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">17370540</th>
+                                <td>Porsche Cayenne</td>
+                                <td>jacob.monroe@company.com</td>
+                                <td>153.11€</td>
+                                <td>Oct 28 2020</td>
+                                <td><a href="#" class="btn btn-sm btn-primary">Voir</a></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">17371705</th>
+                                <td>Porsche Cayenne</td>
+                                <td>johndoe@gmail.com</td>
+                                <td>61.11€</td>
+                                <td>Oct 31 2020</td>
+                                <td><a href="#" class="btn btn-sm btn-primary">Voir</a></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">17370540</th>
+                                <td>Porsche Cayenne</td>
+                                <td>jacob.monroe@company.com</td>
+                                <td>153.11€</td>
+                                <td>Oct 28 2020</td>
+                                <td><a href="#" class="btn btn-sm btn-primary">Voir</a></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">17371705</th>
+                                <td>Porsche Cayenne</td>
+                                <td>johndoe@gmail.com</td>
+                                <td>61.11€</td>
+                                <td>Oct 31 2020</td>
+                                <td><a href="#" class="btn btn-sm btn-primary">Voir</a></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">17370540</th>
+                                <td>Porsche Cayenne</td>
+                                <td>jacob.monroe@company.com</td>
+                                <td>153.11€</td>
+                                <td>Oct 28 2020</td>
+                                <td><a href="#" class="btn btn-sm btn-primary">Voir</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <a href="loueur_dashboard_reservations.html" class="btn btn-block btn-light">Tout voir</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-xl-4">
+
+            <div class="card rounded shadow-sm border-0 mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Revenue sur 6 mois</h5>
+                    <canvas id="revChart"></canvas>
+                </div>
+            </div>
+
+            <div class="card rounded shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="card-title">Réservations sur 6 mois</h5>
+                    <canvas id="resChart"></canvas>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block panel_scripts %}
+{% endblock %}

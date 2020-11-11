@@ -8,16 +8,25 @@
             <p class="font-italic text-muted mb-0">Choisissez parmis nos <strong>{{ types|length }}</strong>
                 modèles différents</p>
             {% endif %}
-{#            TODO mise en page#}
             {{ form_start(form) }}
             <div class="my-custom-class-for-errors">
                 {{ form_errors(form) }}
             </div>
-            {{ form_row(form.date) }}
+            <div class="row justify-content-md-center">
+                <div class="col-6">
+                    {{ form_row(form.date) }}
+                </div>
+            </div>
             {{ form_rest(form) }}
-            <input class="btn btn-primary float-right" type="submit" value="Valider les dates">
+            <div class="row justify-content-md-center">
+                <div class="col-3">
+                    <a href="{{ path('index_date_reset') }}" class="btn btn-info">Location mensuelle</a>
+                </div>
+                <div class="col-3">
+                    <input class="btn btn-primary" type="submit" value="Valider les dates">
+                </div>
+            </div>
             {{ form_end(form) }}
-            <a href="{{ path('index_date_reset') }}" class="btn-danger">réinitialiser les dates</a>
         </div>
 
         <div class="row pb-5 mb-4" id="grid-types">

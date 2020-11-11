@@ -140,7 +140,6 @@ class IndexController extends AbstractController
             $dateDeb = $this->frDateToEn($this->get('session')->get('dateDebut'));
             $dateFin = $this->frDateToEn($this->get('session')->get('dateFin'));
 
-            $datediff = $dateFin->diff($dateDeb)->format("%a");
             return $dateFin->diff($dateDeb)->format("%a") + 1;
         }
         return null;
