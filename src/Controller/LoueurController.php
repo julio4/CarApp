@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\TypeVehicule;
 use App\Entity\Vehicule;
+use App\Form\TypeVehiculeFormType;
+use App\Form\VehiculeFormType;
 use App\Repository\LocationRepository;
 use App\Repository\UserRepository;
 use App\Repository\VehiculeRepository;
@@ -51,43 +53,15 @@ class LoueurController extends AbstractController
      */
     public function ajoutType(Request $request)
     {
-        //TODO vérifier automatiquement que le type ajouter n'existe pas
-        $form = $this->createFormBuilder()
-            ->add('nom', TextType::class, [
-                'label' => 'Nom',
-                'data' => $request->request->get('default_name', null)
-            ])
-            ->add('img', VichImageType::class, [
-                'required' => true,
-                'allow_delete' => true,
-                'label' => 'Parcourir',
-                'label_attr' => [
-                    'class' => 'custom-file-label',
-                    'data-browse' => 'Parcourir'
-                ],
-                'delete_label' => 'Supprimer',
-                'download_label' => 'Télécharger',
-                'download_uri' => true,
-                'image_uri' => true,
-//                'imagine_pattern' => '...', If set, image will automatically transformed using LiipImagineBundle. ex 'imagine_pattern' => 'product_photo_320x240',
-                'asset_helper' => true,
-            ])
-            ->add('save', SubmitType::class, [
-                'attr' => [
-                    'class' => 'btn btn-lg btn-primary my-4'
-                ],
-                'label' => "Ajouter"
-            ])
-            ->getForm();
+        $type = new TypeVehicule();
+        $form = $this->createForm(TypeVehiculeFormType::class, $type);
+        $form->get('name')->setData($request->request->get('default_name', null));
 
         //TODO Dynamic form validation http://growingcookies.com/en/dynamic-form-validation-in-symfony-using-ajax/
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-
-            $type = new TypeVehicule();
-            $type->setName($data['nom']);
-            $type->setImageFile($data['img']);
+//            $data = $form->getData();
+            dump($type);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($type);
@@ -107,95 +81,19 @@ class LoueurController extends AbstractController
      */
     public function ajoutVehicules(Request $request, UserInterface $user)
     {
-        $PRIX_MAX = 20000;
-        $form = $this->createFormBuilder()
-            ->add('type', EntityType::class, [
-                'label' => 'Modèle',
-                'class' => TypeVehicule::class,
-                'choice_label' => 'name',
-                'attr' => [
-                    'class' => "selectpicker form-control",
-                    'data-live-search' => "true",
-                    'data-style' => "btn-primary"
-                ]
-            ])
-            ->add('prix', NumberType::class, [
-                'attr' => [
-                    'value' => "0",
-                    'data-suffix' => "€/jour",
-                    "data-decimals" => "2",
-                    "min" => "1",
-                    "max" => strval($PRIX_MAX),
-                    "step" => "1",
-                    "class" => "numberpicker"
-                ]
-            ])
-            ->add('boite', ChoiceType::class, [
-                'choices' => [
-                    'Automatique' => 'auto',
-                    'Manuelle' => 'manuelle'
-                ],
-            ])
-            ->add('moteur', ChoiceType::class, [
-                'choices' => [
-                    'Diesel' => 'diesel',
-                    'Hybride' => 'hybride'
-                ],
-            ])
-            ->add('carburant', ChoiceType::class, [
-                'choices' => [
-                    'Essence' => 'essence',
-                    'Pétrole' => 'petrole'
-                ],
-            ])
-            ->add('img', VichImageType::class, [
-                'required' => true,
-                'allow_delete' => true,
-                'label' => 'Parcourir',
-                'label_attr' => [
-                    'class' => 'custom-file-label',
-                    'data-browse' => 'Parcourir'
-                ],
-                'delete_label' => 'Supprimer',
-                'download_label' => 'Télécharger',
-                'download_uri' => true,
-                'image_uri' => true,
-//                'imagine_pattern' => '...', If set, image will automatically transformed using LiipImagineBundle. ex 'imagine_pattern' => 'product_photo_320x240',
-                'asset_helper' => true,
-            ])
-            ->add('disponible',  CheckboxType::class, [
-                'label'    => 'Rendre disponible directement ?',
-                'required' => false,
-                'value' => 'disponible',
-                'label_attr' => ['class' => 'switch-custom']
-            ])
-            ->add('save', SubmitType::class, [
-                'attr' => [
-                    'class' => 'btn btn-lg btn-primary my-4'
-                ],
-                'label' => "Ajouter"
-            ])
-            ->getForm();
+        $vehicule = new Vehicule();
+        $form = $this->createForm(VehiculeFormType::class, $vehicule);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-
-            $vehicule = new Vehicule();
-            $vehicule->setType($data['type']);
-            $vehicule->setPrix($data['prix']);
-            $carac = array('boite' => $data['boite'],
-                'moteur' => $data['moteur'],
-                'carburant' => $data['carburant']);
+            $carac = array('boite' => $form->get('boite')->getData(),
+                'moteur' => $form->get('moteur')->getData(),
+                'carburant' => $form->get('carburant')->getData());
             $vehicule->setCarac($carac);
-            $vehicule->setImageFile($data['img']);
-            $vehicule->setDisponible($data['disponible']);
             $vehicule->setLoueur($user);
-            $data['type']->addVehicule($vehicule);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($vehicule);
-            $em->persist($data['type']);
             $em->flush();
 
             return $this->redirect($this->generateUrl('loueur_vehicules'));
@@ -209,12 +107,22 @@ class LoueurController extends AbstractController
     /**
      * @Route ("/vehicules/modifier/{id}", name="_vehicules_modifier")
      */
-    public function modifVehicules($id, Request $request){
-        $em = $this->getDoctrine()->getManager();
-        $vehicule = $em->getRepository(Vehicule::class)->find($id);
+    public function modifVehicules($id, VehiculeRepository $vehiculeRepository,Request $request){
+        $vehicule = $vehiculeRepository->find($id);
+
+        $form = $this->createForm(VehiculeFormType::class, $vehicule);
+        dump($form->createView());
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+            return $this->redirect($this->generateUrl('loueur_vehicules'));
+        }
 
         return $this->render('loueur/vehicules_modifier.html.twig', [
-            'id' => $id
+            'form' => $form->createView(),
+            'vehicule' => $vehicule
         ]);
     }
 
@@ -228,6 +136,17 @@ class LoueurController extends AbstractController
         return $this->render('loueur/clients.html.twig', [
             "clients" => $clients
         ]);
+
+    }
+
+    /**
+     * @Route ("/facturation/{id}", name="_facturation")
+     */
+    public function facturation(UserRepository $userRepository, $id){
+        $client = $userRepository->find($id);
+        echo($client->getId());
+        //TODO
+        return $this->render('loueur/index.html.twig');
 
     }
 

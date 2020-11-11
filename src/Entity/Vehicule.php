@@ -125,6 +125,22 @@ class Vehicule
     private $updatedAt;
 
     /**
+     * @return \DateTimeInterface|null
+     */
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param \DateTimeInterface|null $updatedAt
+     */
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
+    /**
      * @ORM\OneToMany(targetEntity=Location::class, mappedBy="vehicule", orphanRemoval=true)
      */
     private $locations;

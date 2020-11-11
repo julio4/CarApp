@@ -67,7 +67,7 @@ class LocationController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($location);
             $em->flush();
-            $this->addFlash('success','Nouvelle réservation <a href="'. "TODO lien vers facture/location" .'">#'. $location->getId() . '</a> validée');
+            $this->addFlash('success','Nouvelle réservation <a href="'. "TODO lien vers facture/location" .'">#'. $location->getId() . '</a> validée à payer.');
         }
         else {
             $this->addFlash('danger','Veuiller vous <a href="'.$this->generateUrl("app_connexion").'">connecter</a> avec un compte utilisateur pour pouvoir louer des véhicules');

@@ -47,11 +47,18 @@ class IndexController extends AbstractController
                 $isReccurent = false;
                 $this->get('session')->set('dateDebut', $dates[0]);
                 $this->get('session')->set('dateFin', $dates[1]);
-            }
 
-            //TODO VERIFIER DATE VALIDE --> ( en cas de manipulation des données de la page )
-            //TODO ici on trie les résultat des véhicules et on change $vehicules
-            $types = $typeVehiculeRepository->findAllAvailableBetween($this->frDateToEn($dates[0]), $this->frDateToEn($dates[1]));
+                if ($this->isValidDate($dates[0], $dates[1]))
+                    $types = $typeVehiculeRepository->findAllAvailableBetween($this->frDateToEn($dates[0]), $this->frDateToEn($dates[1]));
+                else {
+                    $this->addFlash('danger', 'La date fournit n\'est pas valide. Réessayer!');
+                    return $this->redirect($this->generateUrl('index_home'));
+                }
+            }
+            else {
+                $this->addFlash('danger', 'Veuillez fournir une date au format jour mois année - jour mois année ');
+                return $this->redirect($this->generateUrl('index_home'));
+            }
         }
         dump($types);
         return $this->render("index/index.html.twig", [
@@ -125,12 +132,16 @@ class IndexController extends AbstractController
         return $this->redirect($this->generateUrl('index_home'));
     }
 
+    private function isValidDate($dateDeb, $dateFin) {
+        if($this->frDateToEn($dateDeb) < $this->frDateToEn($dateFin))
+            if($this->frDateToEn($dateDeb) >= date('Y-m-d', time()))
+                return true;
+        return false;
+    }
+
     private function isValidCookieDate() {
         if($this->get('session')->has('dateDebut') and $this->get('session')->has('dateFin')) {
-            if($this->frDateToEn($this->get('session')->get('dateDebut'))
-                < $this->frDateToEn($this->get('session')->get('dateFin')))
-                if($this->frDateToEn($this->get('session')->get('dateDebut') >= date('Y-m-d', time())))
-                    return true;
+            return $this->isValidDate($this->get('session')->get('dateDebut'), $this->get('session')->get('dateFin'));
         }
         return false;
     }

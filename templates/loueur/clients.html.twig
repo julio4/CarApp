@@ -58,6 +58,7 @@
                             <tr>
                                 <th scope="col">Nom</th>
                                 <th scope="col">email</th> <!-- Idées : https://bootsnipp.com/snippets/Veob -->
+                                <th scope="col">Facturation</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -65,6 +66,7 @@
                                 <tr>
                                     <th scope="row">{{ client.name }}</th>
                                     <td>{{ client.email }}</td>
+                                    <td><a href="{{ path('loueur_facturation', {"id": client.id}) }}">Accéder à la facture ></a></td>
                                 </tr>
                             {% endfor %}
                             </tbody>
