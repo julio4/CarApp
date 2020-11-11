@@ -31,12 +31,17 @@
             <span class="ml-2">Statistiques</span>
         </a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ path('app_deconnexion') }}">
+            <span class="ml-2">Déconnexion</span>
+        </a>
+    </li>
 {% endblock %}
 {% block dashboard_current %}
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ path('loueur_panel') }}">Panel</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Statistique</li>
+            <li class="breadcrumb-item active" aria-current="page">Statistiques</li>
         </ol>
     </nav>
 {% endblock %}

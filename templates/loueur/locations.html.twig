@@ -31,6 +31,11 @@
             <span class="ml-2">Statistiques</span>
         </a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ path('app_deconnexion') }}">
+            <span class="ml-2">Déconnexion</span>
+        </a>
+    </li>
 {% endblock %}
 {% block dashboard_current %}
     <nav aria-label="breadcrumb">
@@ -55,7 +60,7 @@
                                 <th scope="col">Dates</th>
                                 <th scope="col">Prix</th>
                                 <th scope="col">Paiement</th>
-                                <th scope="col">Status</th>
+                                <th scope="col">Statut</th>
                                 <th scope="col"></th>
                             </tr>
                             </thead>
@@ -73,7 +78,7 @@
                                     <td>
                                         {{ l.location.prix }} €
                                         {% if l.location.estReccurent %}
-                                            /Mois
+                                            /mois
                                         {% endif %}
                                     </td>
                                     <td>
@@ -87,7 +92,12 @@
                                         {% if l.enCours%}
                                             <span class="badge badge-primary">En cours</span>
                                         {% else %}
-                                            <span class="badge badge-secondary">Finis</span>
+                                            <span class="badge badge-secondary">Terminée</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if l.enCours%}
+                                            <span><a href="{{ path('location_location_recap', { 'id': l.location.id }) }}" class="btn btn-sm btn-primary">Voir</a><span>
                                         {% endif %}
                                     </td>
                                 </tr>
