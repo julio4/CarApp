@@ -8,6 +8,7 @@
             <p class="font-italic text-muted mb-0">Choisissez parmis nos <strong>{{ types|length }}</strong>
                 modèles</p>
             {% endif %}
+            <br />
             {{ form_start(form) }}
             <div class="my-custom-class-for-errors">
                 {{ form_errors(form) }}
@@ -44,7 +45,7 @@
                                 </h3>
 {#                                TODO PRIX MINIMAL#}
 {#                                {% if type.vehicules|length > 0 %}#}
-{#                                    <p class="small font-bold float-right">À partir de {{ type.vehicules.0.prix }} €/j</p>#}
+{#                                    <p class="small font-bold float-right">À partir de {{ type.vehicules.0.prix }} €/jour</p>#}
 {#                                {% else %}#}
 {#                                    <p class="small font-bold float-right text-danger">En rupture de stock</p>#}
 {#                                {% endif %}#}

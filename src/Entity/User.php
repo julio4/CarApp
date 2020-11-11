@@ -24,32 +24,61 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\Length(
+     * @ORM\Column(type="string", length=50, unique=true)
+     * @Assert\NotBlank (
+     *     message="Merci de saisir votre nom"
+     * )
+     * @Assert\Length (
      *      min = 2,
      *      max = 50,
-     *      minMessage = "minimum {{ limit }}",
-     *      maxMessage = "maximum {{ limit }}",
-     *      allowEmptyString = false
+     *      minMessage = "Votre nom doit contenir au minimum {{ limit }} caractères",
+     *      maxMessage = "Votre nom peut contenir au maximum {{ limit }} caractères",
+     *      allowEmptyString=false
+     * )
+     * @Assert\Regex(
+     *     pattern="#^[a-zA-Z\-\é\è\ê\ë\ï\ö|\s]{1,50}$#",
+     *     match=true,
+     *     message="Merci de saisir un nom valide"
      * )
      */
     private $name;
 
     /**
      * @ORM\Column(type="json")
+     * @Assert\NotBlank
      */
     private $roles = [];
 
     /**
      * @var string The hashed password
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank (
+     *     message="Merci de saisir un mot de passe"
+     * )
+     * @Assert\Length (
+     *      min = 12,
+     *      max = 255,
+     *      minMessage = "Votre nom doit contenir au minimum {{ limit }} caractères",
+     *      maxMessage = "Votre nom peut contenir au maximum {{ limit }} caractères",
+     *      allowEmptyString=false
+     * )
+     * @Assert\Regex (
+     *     pattern="#^[!-~àèìòùäëïöüÿéâêîôûÀÈÌÒÙÄËÏÖÜÂÊÎÔÛ]{12,128}$#",
+     *     match=true,
+     *     message="Merci de saisir un mot de passe valide"
+     * )
      */
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Email(
-     *      message = "L'adresse '{{ value }}' n'est pas une adresse email valide."
+     * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\NotBlank (
+     *      message = "Merci de saisir une adresse mail"
+     * )
+     * @Assert\Regex (
+     *     pattern="#^[^\W][a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\@[a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\.[a-zA-Z]{2,6}$#",
+     *     match=true,
+     *     message="Merci de saisir une adresse mail valide"
      * )
      */
     private $email;

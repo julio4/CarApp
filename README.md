@@ -1,7 +1,7 @@
 <br />
 <p align="center">
 
-  <h3 align="center">Projet Pweb 2020: CarApp</h3>
+  <h3 align="center">Projet Pweb 2020: Car'App</h3>
 
   <p align="center">
     Une web app pour gérer la locations de voitures
@@ -44,13 +44,13 @@ Celle-ci implémente un nombre de services à la fois pour les utilisateurs et l
 #### Utilisateurs
 L'utilisateur est le plus souvent une entreprise qui souhaite louer des véhicules:
 * Page d'inscription 
-![Status][s-finis]
+![Status][s-fini]
 * Connexion (non obligatoire) 
-![Status][s-finis]
+![Status][s-fini]
 * Page d'accueil qui affiche les différents modèles proposé 
 ![Status][s-bug]
 * Sélection d'une intervalle de date 
-![Status][s-finis]
+![Status][s-fini]
 * Possibilité de réaliser un paiement mensuel sans date limite (Abonnement) 
 ![Status][s-bug]
 * Filtrage par caractéristiques et prix 
@@ -73,9 +73,9 @@ L'utilisateur est le plus souvent une entreprise qui souhaite louer des véhicul
 #### Loueur
 L'utilisateur est le plus souvent une entreprise qui souhaite louer des véhicules:
 * Connexion obligatoire 
-![Status][s-finis]
+![Status][s-fini]
 * Panel de gestion 
-![Status][s-finis]
+![Status][s-fini]
 * Affichage des revenue, des réservations du mois en cour 
 ![Status][s-a-faire]
 * Affichage du pourcentage de véhicules en cour de location 
@@ -93,7 +93,7 @@ L'utilisateur est le plus souvent une entreprise qui souhaite louer des véhicul
 * Page de modification d'un véhicule (non loué), avec possibilité de retirer le véhicule du stock 
 ![Status][s-en-cours]
 * Formulaire d'ajout d'un nouveau véhicule 
-![Status][s-finis]
+![Status][s-fini]
 * Page de tout les clients 
 ![Status][s-a-faire]
 * Calcul des factures pour chaque client du mois courant 
@@ -104,34 +104,34 @@ L'utilisateur est le plus souvent une entreprise qui souhaite louer des véhicul
 #### Administrateur
 Un rôle Administrateur est aussi implémenté:
 * Accès sécurisé 
-![Status][s-finis]
+![Status][s-fini]
 * Panel d'administration 
-![Status][s-finis]
+![Status][s-fini]
 * Affichage du nombres d'utilisateurs inscrits 
-![Status][s-finis]
+![Status][s-fini]
 * Affichage du nombres de loueurs 
 ![Status][s-a-faire]
 * Affichage du nombres d'utilisateurs 
-![Status][s-finis]
+![Status][s-fini]
 * tableau de tout les utilisateurs inscrits 
-![Status][s-finis]
+![Status][s-fini]
 * Possibilité de supprimer un compte 
-![Status][s-finis]
+![Status][s-fini]
 * Possibilité de définir un compte utilisateur en compte loueur 
-![Status][s-finis]
+![Status][s-fini]
 * Possibilité de définir un compte loueur en compte utilisateur 
-![Status][s-finis]
+![Status][s-fini]
 
 #### Sécurité
 L'application repose sur une structure solide qui permet de garantir la sécurité:
 * Authentification sécurisé avec token de connexion 
-![Status][s-finis]
+![Status][s-fini]
 * Mot de passe hashé, avec possibilité de rehasher le mot de passe 
-![Status][s-finis]
+![Status][s-fini]
 * Restrictions d'accès à certaines url en fonction du rôle 
-![Status][s-finis]
+![Status][s-fini]
 * Données stockés dans une base de donnée avec accès sécurisé 
-![Status][s-finis]
+![Status][s-fini]
 
 
 ### Technologies
@@ -275,7 +275,7 @@ Mehdi Hachisman - [@Mehachi](https://github.com/Mehachi/) - mehdi.hachisman@etu.
 [s-url]: (#roadmap)
 [s-a-faire]: https://img.shields.io/static/v1?label=Status&message=A%20faire&color=red
 [s-en-cours]: https://img.shields.io/static/v1?label=Status&message=En%20cours&color=orange
-[s-finis]: https://img.shields.io/static/v1?label=Status&message=Finis&color=green
+[s-fini]: https://img.shields.io/static/v1?label=Status&message=Termin%C3%A9e&color=green
 [s-bug]: https://img.shields.io/static/v1?label=Status&message=Bug&color=purple
 [s-frontend]: https://img.shields.io/static/v1?label=Front-end&message=90%&color=green
 [s-backend]: https://img.shields.io/static/v1?label=Back-end&message=40%&color=orange
