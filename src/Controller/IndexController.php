@@ -21,7 +21,7 @@ class IndexController extends AbstractController
     {
         $form = $this->createFormBuilder()
                 ->add('date', null, [
-                    'label' => "Dates de location:",
+                    'label' => "Saisissez vos dates de location",
                     'attr' => ['class' => 'picker'],
                     'required' => false,
                 ])
