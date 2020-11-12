@@ -81,7 +81,7 @@ class VehiculeFormType extends AbstractType
                 'label_attr' => ['class' => 'switch-custom']
             ])
             ->add('imageFile', VichImageType::class, [
-                'required' => true,
+                'required' => false,
                 'allow_delete' => true,
                 'label' => 'Parcourir',
                 'label_attr' => [

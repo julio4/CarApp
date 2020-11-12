@@ -16,7 +16,9 @@
         <div class="col-10">
             <div class="card rounded shadow-sm border-0 mr-2">
                 <div class="card-body">
-
+                    <a class="fa_icon" href="{{ path('loueur_vehicules') }}" >
+                        <span class="fa fa-angle-left"></span>
+                    </a>
                     {{ form_start(form) }}
 
                     <div class="my-custom-class-for-errors">
@@ -83,7 +85,30 @@
                         <div class="col">
                             <div class="text-center">
                                 {{ form_row(form.save) }}
-                                {{ form_row(form.disponible) }}
+                                {{ form_row(form.disponible, {'label': 'Disponible à la location'}) }}
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#deleteModal">
+                        Retirer le véhicule
+                    </button>
+
+                    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Le véhicule sera définitivement supprimé
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Annuler</button>
+                                    <button type="button" class="btn btn-danger">Supprimer</button>
+                                </div>
                             </div>
                         </div>
                     </div>

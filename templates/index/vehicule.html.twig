@@ -133,7 +133,49 @@
                                                 {% endif %}
                                                 {# TODO Lien panier#}
 {#                                                <label for="form_select_{{ loop.index - 1 }}" class="btn btn-main btn-outline-primary m-2 px-2">Ajouter au panier</label>#}
-                                                    <input type="submit" class="validateLocation btn btn-main btn-outline-primary m-2 px-2" value="Réserver Maintenant">
+
+                                                <!-- Button trigger modal -->
+                                                {% if is_granted('ROLE_USER') %}
+                                                <button type="button" class="validateLocation btn btn-main btn-outline-primary m-2 px-2" data-toggle="modal" data-target="#M_{{ vehicule.id }}">
+                                                    Réserver Maintenant
+                                                </button>
+                                                {% else %}
+                                                    <button type="button" class="validateLocation btn btn-main btn-outline-primary m-2 px-2" data-toggle="modal" data-target="#needLogin">
+                                                        Réserver Maintenant
+                                                    </button>
+                                                {% endif %}
+
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="M_{{ vehicule.id }}" tabindex="-1" role="dialog" aria-labelledby="BuyM_{{ vehicule.id }}" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="BuyM_{{ vehicule.id }}">Confirmation de location</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                Ce véhicule vous sera facturé
+                                                                {% if estReccurent %}
+                                                                    <strong>{{ vehicule.prix * 0.9 * 30}}€/mois</strong>
+                                                                     à partir du
+                                                                    {{ savedDates.Debut }}
+                                                                {% elseif days >= 30 %}
+                                                                    <strong>{{ vehicule.prix * 0.9 * days }} €</strong> du
+                                                                    {{ savedDates.Debut }} au {{ savedDates.Fin }}
+                                                                {% else %}
+                                                                    <strong>{{ vehicule.prix * days }} €</strong> du
+                                                                    {{ savedDates.Debut }} au {{ savedDates.Fin }}
+                                                                {% endif %}
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Annuler</button>
+                                                                <input type="submit" class="btn btn-primary validateLocation" value="Confirmer">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
     {#                                            {{ form_label(form.select[loop.index - 1]) }}#}
     {#                                            {{ form_widget(form.select[loop.index - 1], {'attr': {'class': 'form-check-input', 'onchange':'registerLocation()'}}) }}#}
                                             </div>
@@ -142,6 +184,25 @@
                                 </div>
                             </div>
                             {% endfor %}
+                            <div class="modal fade" id="needLogin" tabindex="-1" role="dialog" aria-labelledby="NeedLoginLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="NeedLoginLabel">Veuillez vous connecter</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            La réservation d'un véhicule nécessite un compte utilisateur.
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Annuler</button>
+                                            <a href="{{ path('app_connexion') }}" class="btn btn-primary">Connexion/Inscription</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                         </div>
                     </div>

@@ -85,8 +85,7 @@
                                             {{ location.prix }} €
                                         {% endif %}
                                     </td>
-                                    {#                                    TODO page détail location#}
-                                    <td><a href="{{ path('location_location_recap', { 'id': location.id }) }}">Détails</a></td>
+                                    <td><a href="{{ path('user_location_recap', { 'id': location.id }) }}">Détails</a></td>
                                 </tr>
                             {% endfor %}
                             </tbody>

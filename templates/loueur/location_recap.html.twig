@@ -1,5 +1,4 @@
-{% extends 'loueur/index.html.twig' %}
-
+{% extends 'dashboard.html.twig' %}
 
 {% block sidebard %}
     <li class="nav-item">
@@ -15,13 +14,13 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{{ path('loueur_locations') }}">
+        <a class="nav-link active" aria-current="page" href="{{ path('loueur_locations') }}">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-cart"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
             <span class="ml-2">Locations</span>
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="{{ path('loueur_clients') }}">
+        <a class="nav-link" href="{{ path('loueur_clients') }}">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
             <span class="ml-2">Clients</span>
         </a>
@@ -38,52 +37,66 @@
         </a>
     </li>
 {% endblock %}
+
 {% block dashboard_current %}
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ path('loueur_panel') }}">Panel</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Clients</li>
+            <li class="breadcrumb-item"><a href="{{ path('loueur_locations') }}">Locations</a></li>
+            <li class="breadcrumb-item active" aria-current="page">#{{ location.id }}</li>
         </ol>
     </nav>
 {% endblock %}
+
 {% block dashboard_body %}
-    <h1 class="h2">Clients</h1>
-    <div class="row">
-        <div class="col">
-            <div class="card rounded shadow-sm border-0">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                            <tr>
-                                <th scope="col">Nom</th>
-                                <th scope="col">email</th> <!-- Idées : https://bootsnipp.com/snippets/Veob -->
-                                <th scope="col">Facturation</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for client in clients %}
-                                <tr class='clickable-row' data-href='{{ path('loueur_facturation', {"id": client.id}) }}' style="cursor: pointer;">
-                                    <th scope="row">{{ client.name }}</th>
-                                    <td>{{ client.email }}</td>
-                                    <td><a href="{{ path('loueur_facturation', {"id": client.id}) }}">Accéder à la facture <i class="fas fa-file-invoice-dollar"></i></a></td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
+    {{ encore_entry_script_tags('details') }}
+    <div class="container">
+        <div class="container px-1 px-md-4 py-5 mx-auto">
+            <div class="card">
+                <a class="fa_icon" href="{{ path('loueur_locations') }}" style="margin-left: 10px;">
+                    <span class="fa fa-angle-left"></span>
+                </a>
+                <div class="row d-flex justify-content-between px-3 top">
+                    <div class="d-flex">
+                        <h5>Réservation <span class="text-primary font-weight-bold">#{{ location.id }}</span></h5>
+                    </div>
+                    <div class="d-flex flex-column text-sm-right">
+                        <p class="mb-0">Client <span>{{ location.user.name }}</span></p>
+                        <p>Contact <span class="font-weight-bold">{{ location.user.email }}</span></p>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-center">
+                    <div class="col-12">
+                        <ul id="progressbar" class="text-center">
+                            <li class="active step0"></li>
+                            <li class="{% if location.estPayee %}active{% endif %} step0"></li>
+                            <li class="{% if location.estPayee %}active{% endif %} step0"></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row justify-content-between top">
+                    <div class="row d-flex icon-content"> <img class="icon" src="https://i.imgur.com/9nnc9Et.png">
+                        <div class="d-flex flex-column">
+                            <p class="font-weight-bold">Réservation <br>Enregistrée</p>
+                        </div>
+                    </div>
+                    <div class="row d-flex icon-content"> <img class="icon" src="https://i.imgur.com/u1AzR7w.png">
+                        <div class="d-flex flex-column">
+                            {% if location.estPayee %}
+                                <p class="font-weight-bold">Réservation<br>Payée</p>
+                            {% else %}
+                                <p class="font-weight-bold">Réservation<br>en attente de paiement</p>
+{#                                TODO boutton supprimer/annuler ici pour loueur ?#}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row d-flex icon-content"> <img class="icon" src="https://i.imgur.com/TkPm63y.png">
+                        <div class="d-flex flex-column">
+                            <p class="font-weight-bold">Véhicule<br>Prêt</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-{% endblock %}
-
-{% block panel_scripts %}
-    <script>
-        jQuery(document).ready(function($) {
-            $(".clickable-row").click(function() {
-                window.location = $(this).data("href");
-            });
-        });
-    </script>
 {% endblock %}

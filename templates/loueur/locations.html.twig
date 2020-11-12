@@ -52,7 +52,7 @@
             <div class="card rounded shadow-sm border-0">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table">
+                        <table class="table table-hover">
                             <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -66,7 +66,7 @@
                             </thead>
                             <tbody>
                             {% for l in locations %}
-                                <tr>
+                                <tr class='clickable-row' data-href='{{ path('loueur_location_recap', { 'id': l.location.id }) }}' style="cursor: pointer;">
                                     <th scope="row">{{ l.location.id }}</th>
                                     <td>{{ l.location.vehicule.type.name }}</td>
                                     <td>{{ l.location.dateDebut|date("m/d/Y") }}
@@ -97,7 +97,7 @@
                                     </td>
                                     <td>
                                         {% if l.enCours%}
-                                            <span><a href="{{ path('location_location_recap', { 'id': l.location.id }) }}" class="btn btn-sm btn-primary">Voir</a><span>
+                                            <span><a href="{{ path('loueur_location_recap', { 'id': l.location.id }) }}" class="btn btn-sm btn-primary">Détails <i class="fas fa-plus-square"></i></a></span>
                                         {% endif %}
                                     </td>
                                 </tr>
@@ -109,4 +109,14 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block panel_scripts %}
+    <script>
+        jQuery(document).ready(function($) {
+            $(".clickable-row").click(function() {
+                window.location = $(this).data("href");
+            });
+        });
+    </script>
 {% endblock %}

@@ -67,7 +67,7 @@ class LocationController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($location);
             $em->flush();
-            $this->addFlash('success','Nouvelle réservation <a href="'.$this->generateUrl("location_location_recap",['id'=>$location->getId()]).'">#'. $location->getId() . '</a> validée à payer.');
+            $this->addFlash('success','Nouvelle réservation <a href="'.$this->generateUrl("user_location_recap",['id'=>$location->getId()]).'">#'. $location->getId() . '</a> validée à payer.');
         }
         else {
             $this->addFlash('danger','Veuiller vous <a href="'.$this->generateUrl("app_connexion").'">connecter</a> avec un compte utilisateur pour pouvoir louer des véhicules');
@@ -94,18 +94,5 @@ class LocationController extends AbstractController
 
     private function frDateToEn($date_string) {
         return date_create(strtr(mb_strtolower($date_string), array('janvier'=>'jan','février'=>'feb','mars'=>'march','avril'=>'apr','mai'=>'may','juin'=>'jun','juillet'=>'jul','août'=>'aug','septembre'=>'sep','octobre'=>'oct','novembre'=>'nov','décembre'=>'dec')));
-    }
-
-    /**
-     * @Route("/details/{id}", name="_location_recap")
-     */
-    public function recapLocation($id, Request $request){
-        $em = $this->getDoctrine()->getManager();
-        $location = $em->getRepository(Location::class)->find($id);
-
-        return $this->render('user/location_recap.html.twig', [
-            'id' => $id,
-            'location' => $location
-        ]);
     }
 }

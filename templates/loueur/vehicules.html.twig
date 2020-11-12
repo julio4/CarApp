@@ -53,7 +53,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Listes des véhicules du parc de location <a class="btn btn-primary" href="{{ path('loueur_vehicules_ajouter') }}" role="button">Ajouter +</a></h5>
                     <div class="table-responsive">
-                        <table class="table">
+                        <table class="table table-hover">
                             <thead>
                             <tr>
                                 <th scope="col">Modèle</th>
@@ -65,7 +65,7 @@
                             </thead>
                             <tbody>
                             {% for v in vehicules %}
-                                <tr>
+                                <tr {% if not v.estLoue %}class='clickable-row' data-href='{{ path('loueur_vehicules_modifier', { 'id': v.vehicule.id }) }}' style="cursor: pointer;"{% endif %}>
                                     <th scope="row">{{ v.vehicule.type.name }}</th>
                                     <td>
                                         <ul>
@@ -86,7 +86,11 @@
                                         {% endif %}
                                     {% endif %}
                                     </td>
-                                    <td><a href="{{ path('loueur_vehicules_modifier', { 'id': v.vehicule.id }) }}" class="btn btn-sm btn-primary">Modifier</a></td>
+                                    {% if v.estLoue %}
+                                        <td><a href="#" class="btn btn-sm btn-secondary disabled">En location</a></td>
+                                    {% else %}
+                                        <td><a href="{{ path('loueur_vehicules_modifier', { 'id': v.vehicule.id }) }}" class="btn btn-sm btn-primary">Modifier <i class="fas fa-edit"></i></a></td>
+                                    {% endif %}
                                 </tr>
                             {% endfor %}
                             </tbody>
@@ -98,6 +102,12 @@
     </div>
 {% endblock %}
 
-{% block scripts %}
-    {{ encore_entry_script_tags('chart') }}
+{% block panel_scripts %}
+    <script>
+        jQuery(document).ready(function($) {
+            $(".clickable-row").click(function() {
+                window.location = $(this).data("href");
+            });
+        });
+    </script>
 {% endblock %}

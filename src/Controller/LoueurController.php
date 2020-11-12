@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Location;
 use App\Entity\TypeVehicule;
 use App\Entity\Vehicule;
 use App\Form\TypeVehiculeFormType;
@@ -114,7 +115,6 @@ class LoueurController extends AbstractController
         $vehicule = $vehiculeRepository->find($id);
 
         $form = $this->createForm(VehiculeFormType::class, $vehicule);
-        dump($form->createView());
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -164,6 +164,24 @@ class LoueurController extends AbstractController
             "locations" => $locations
         ]);
 
+    }
+
+    /**
+     * @Route("/details/{id}", name="_location_recap")
+     */
+    public function recapLocation($id, Request $request, UserInterface $user){
+        $em = $this->getDoctrine()->getManager();
+        //TODO vérifier loueur ici
+        $location = $em->getRepository(Location::class)->findOneBy(['id' => $id]);
+        if($location != null) {
+            return $this->render('loueur/location_recap.html.twig', [
+                'location' => $location
+            ]);
+        }
+        else {
+            //TODO ajouter erreur 403 interdit?
+            return $this->redirect($this->generateUrl('user_panel_locations'));
+        }
     }
 
     /**
