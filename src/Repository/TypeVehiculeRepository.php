@@ -30,14 +30,14 @@ class TypeVehiculeRepository extends ServiceEntityRepository
             ->leftJoin('App\Entity\Location', 'l', Expr\Join::WITH, 'v.id = l.vehicule')
             ->andWhere('l is NULL OR l.dateFin < :date')
             ->andWhere(':date > :now')
-            ->andWhere('v.disponible = 1')
+            ->andWhere('v.disponible = 1 AND v.estArchivee <> 1')
             ->setParameter('date', $date)
             ->setParameter('now', date('now'))
             ->groupBy('t');
 
         return $qb
             ->getQuery()
-            ->getArrayResult();
+            ->getResult();
     }
 
     /**
@@ -52,12 +52,12 @@ class TypeVehiculeRepository extends ServiceEntityRepository
             AND :dateDebut >= CURRENT_TIMESTAMP() AND :dateDebut <= :dateFin')
             ->setParameter('dateDebut', $dateDebut->format('Y-m-d'))
             ->setParameter('dateFin', $dateFin->format('Y-m-d'))
-            ->andWhere('v.disponible = 1')
+            ->andWhere('v.disponible = 1 AND v.estArchivee <> 1')
             ->groupBy('t');
 
         return $qb
             ->getQuery()
-            ->getArrayResult();
+            ->getResult();
     }
 
 }

@@ -54,6 +54,11 @@ class Location
      */
     private $estPayee;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $nbMoisPayee;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -139,6 +144,19 @@ class Location
     public function setEstPayee(bool $estPayee): self
     {
         $this->estPayee = $estPayee;
+
+        return $this;
+    }
+
+
+    public function getNbMoisPayee(): ?int
+    {
+        return $this->nbMoisPayee;
+    }
+
+    public function setNbMoisPayee(?int $nbMoisPayee): self
+    {
+        $this->nbMoisPayee = $nbMoisPayee;
 
         return $this;
     }

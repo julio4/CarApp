@@ -39,9 +39,13 @@ class Vehicule
 
     /**
      * @ORM\Column(type="json", nullable=true)
-     * @Assert\NotBlank
      */
     private $carac = [];
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $estArchivee;
 
     /**
      * @ORM\Column(type="float")
@@ -100,6 +104,18 @@ class Vehicule
     public function setCarac(?array $carac): self
     {
         $this->carac = $carac;
+
+        return $this;
+    }
+
+    public function getEstArchivee(): ?bool
+    {
+        return $this->estArchivee;
+    }
+
+    public function setEstArchivee(bool $estArchivee): self
+    {
+        $this->estArchivee = $estArchivee;
 
         return $this;
     }

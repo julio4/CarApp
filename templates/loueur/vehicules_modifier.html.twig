@@ -28,6 +28,7 @@
                     <div class="form-row">
                         <div class="col">
                             {{ form_row(form.type) }}
+                            <a href="{{ path('loueur_type_modifier', {'id': vehicule.type.id}) }}">Modifier <i class="fas fa-edit"></i></a>
                         </div>
                     </div>
                     <div class="form-row">
@@ -68,15 +69,17 @@
                     </div>
                     <div class="form-row">
                         <div class="col">
-                            <div class="form-group">
-                                <label>Photo du véhicule</label>
+                            <div class="text-center">
+                                <div class="form-group">
+                                    <label>Photo du véhicule</label>
 
-                                {{ form_widget(form.imageFile) }}
+                                    {{ form_widget(form.imageFile) }}
 
-                                <small>{{ form_help(form.imageFile) }}</small>
+                                    <small>{{ form_help(form.imageFile) }}</small>
 
-                                <div class="form-error">
-                                    {{ form_errors(form.imageFile) }}
+                                    <div class="form-error">
+                                        {{ form_errors(form.imageFile) }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -84,14 +87,16 @@
                     <div class="form-row">
                         <div class="col">
                             <div class="text-center">
-                                {{ form_row(form.save) }}
+                                {{ form_row(form.save, {'label': 'Confirmer les modifications'}) }}
                                 {{ form_row(form.disponible, {'label': 'Disponible à la location'}) }}
+                            </div>
+                            <div class="text-center">
+                                <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#deleteModal">
+                                    Retirer le véhicule
+                                </button>
                             </div>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#deleteModal">
-                        Retirer le véhicule
-                    </button>
 
                     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
@@ -103,11 +108,11 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    Le véhicule sera définitivement supprimé
+                                    Le véhicule sera définitivement supprimé et ne pourra plus être mis en location
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Annuler</button>
-                                    <button type="button" class="btn btn-danger">Supprimer</button>
+                                    <a href="{{ path('loueur_vehicules_archiver', {'id': vehicule.id}) }}" class="btn btn-danger">Supprimer</a>
                                 </div>
                             </div>
                         </div>

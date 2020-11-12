@@ -52,6 +52,22 @@
             <div class="card rounded shadow-sm border-0">
                 <div class="card-body">
                     <h5 class="card-title">Listes des véhicules du parc de location <a class="btn btn-primary" href="{{ path('loueur_vehicules_ajouter') }}" role="button">Ajouter +</a></h5>
+                    {% for message in app.flashes('success') %}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ message|raw }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endfor %}
+                    {% for message in app.flashes('danger') %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{ message|raw }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endfor %}
                     <div class="table-responsive">
                         <table class="table table-hover">
                             <thead>

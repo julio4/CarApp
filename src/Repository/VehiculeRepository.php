@@ -24,6 +24,42 @@ class VehiculeRepository extends ServiceEntityRepository
     }
 
     /**
+     * @return Vehicule Retourne tous les véhicules du loueur $username
+     */
+    public function findByIDAndCurrent($id, $loueur)
+    {
+        return $this->createQueryBuilder('v')
+            ->leftJoin('App\Entity\Location','l', Expr\Join::WITH, 'v.id = l.vehicule')
+            ->andWhere('v.loueur = :loueur AND v.id = :id')
+            ->setParameter('loueur', $loueur)
+            ->setParameter('id', $id)
+            ->andWhere('v.estArchivee <> 1')
+            ->groupBy('v')
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
+    /**
+     * @return Vehicule Retourne tous les véhicules du loueur $username
+     */
+    public function estLouee($id)
+    {
+        return $this->createQueryBuilder('v')
+            ->leftJoin('App\Entity\Location','l', Expr\Join::WITH, 'v.id = l.vehicule')
+            ->andWhere('v.id = :id')
+            ->setParameter('id', $id)
+            ->select('IFELSE(l.estReccurent = 1 AND l.dateDebut <= :now OR 
+            l.dateDebut <= :now AND l.dateFin >= :now,1,0) as estLouee')
+            ->setParameter('now', date_create("now"))
+            ->andWhere('v.estArchivee <> 1')
+            ->groupBy('v')
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
+    /**
      * @return Vehicule[] Retourne tous les véhicules du loueur $username
      */
     public function findOwnedBy(User $loueur)
@@ -35,6 +71,7 @@ class VehiculeRepository extends ServiceEntityRepository
             ->select('v as vehicule, IFELSE(l.estReccurent = 1 AND l.dateDebut <= :now OR 
             l.dateDebut <= :now AND l.dateFin >= :now,1,0) as estLoue')
             ->setParameter('now', date_create("now"))
+            ->andWhere('v.estArchivee <> 1')
             ->groupBy('v')
             ->getQuery()
             ->getResult()
@@ -51,7 +88,8 @@ class VehiculeRepository extends ServiceEntityRepository
             ->andWhere('v.type = :type')
             ->setParameter('type', $type)
             ->andWhere('l is NULL OR l.dateFin < :now')
-            ->setParameter('now', date_create("now"));
+            ->setParameter('now', date_create("now"))
+            ->andWhere('v.estArchivee <> 1');
 
         return $qb
             ->getQuery()
@@ -59,7 +97,7 @@ class VehiculeRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Vehicule[] Retourne les véhicules d'un type donné disponible pour une réservation sans date
+     * @return Vehicule[] Retourne les véhicules d'un type donné disponible pour une réservation sans fin à une date
      */
     public function findAllAvailableByTypeAt($date, TypeVehicule $type)
     {
@@ -68,7 +106,8 @@ class VehiculeRepository extends ServiceEntityRepository
             ->andWhere('v.type = :type')
             ->setParameter('type', $type)
             ->andWhere('l is NULL OR l.dateFin < :date')
-            ->setParameter('date', $date);
+            ->setParameter('date', $date)
+            ->andWhere('v.estArchivee <> 1');
 
         return $qb
             ->getQuery()
@@ -86,7 +125,8 @@ class VehiculeRepository extends ServiceEntityRepository
             ->leftJoin('App\Entity\Location', 'l', Expr\Join::WITH, 'v.id = l.vehicule')
             ->andWhere('l is NULL OR (l.dateDebut < :dateDebut AND l.dateFin < :dateDebut) OR (l.dateDebut > :dateFin AND l.dateFin > :dateFin)')
             ->setParameter('dateDebut', $dateDebut->format('Y-m-d'))
-            ->setParameter('dateFin', $dateFin->format('Y-m-d'));
+            ->setParameter('dateFin', $dateFin->format('Y-m-d'))
+            ->andWhere('v.estArchivee <> 1');
 
         return $qb
             ->getQuery()

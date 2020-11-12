@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container py-5">
+    <div class="container py-5" xmlns="http://www.w3.org/1999/html">
         <div class="row pb-5 mb-4">
             <div class="col">
                 <!-- Card-->
@@ -27,53 +27,26 @@
                                 {% endif %}
                             </div>
                         </div>
-                        {{ form_start(form) }}
 
-                        <div class="my-custom-class-for-errors">
-                            {{ form_errors(form) }}
-                        </div>
-
-                            <div class="form-row align-items-center">
-                                <div class="form-group col-xl-3 col-md-12 col-xs-12 input">
-{#                                    TODO mise en page ici#}
+                            <div class="row align-items-center">
                                     {% if estReccurent %}
-                                        <span>Réservation récurrente: paiement mensuel à -10% à partir du {{ savedDates.Debut }}</span>
+                                        <div class="jumbotron w-100">
+                                            <div class="container">
+                                                <h1 class="display-4">Location mensuelle</h1>
+                                                <p class="lead">Un paiement chaque mois, réservé pour vous pour une durée indéterminé, annulable à partir du premier mois! </p>
+                                                <span>A partir du {{ savedDates.Debut }}</span>
+                                            </div>
+                                        </div>
                                     {% else %}
-                                        <span>Location du {{ savedDates.Debut }} au {{ savedDates.Fin }}</span>
+                                        <div class="jumbotron w-100">
+                                            <div class="container">
+                                                <h1 class="display-5">Location personalisée</h1>
+                                                <p class="lead">Profiter d'une location à des dates précises, qui convient à tous, à partir d'un jour!</p>
+                                                <span>Location du <strong>{{ savedDates.Debut }}</strong> au <strong>{{ savedDates.Fin }}</strong></span>
+                                            </div>
+                                        </div>
                                     {% endif %}
-                                </div>
-                                {#TODO Trier les résultats#}
-{#                                <div class="form-group col-xl-3 col-md-6 col-xs-12">#}
-{#                                    <label for="sel2">Critères 2:</label>#}
-{#                                    <select class="form-control" id="sel2">#}
-{#                                        <option>1</option>#}
-{#                                        <option>2</option>#}
-{#                                        <option>3</option>#}
-{#                                        <option>4</option>#}
-{#                                    </select>#}
-{#                                </div>#}
-{#                                <div class="form-group col-xl-3 col-md-6 col-xs-12">#}
-{#                                    <label for="sel3">Critères 3:</label>#}
-{#                                    <select class="form-control" id="sel3">#}
-{#                                        <option>1</option>#}
-{#                                        <option>2</option>#}
-{#                                        <option>3</option>#}
-{#                                        <option>4</option>#}
-{#                                    </select>#}
-{#                                </div>#}
-{#                                <div class="form-group col-xl-3 col-md-6 col-xs-12">#}
-{#                                    <label for="sel4">Critères 4:</label>#}
-{#                                    <select class="form-control" id="sel4">#}
-{#                                        <option>1</option>#}
-{#                                        <option>2</option>#}
-{#                                        <option>3</option>#}
-{#                                        <option>4</option>#}
-{#                                    </select>#}
-{#                                </div>#}
                             </div>
-                            <input name="hiddenDate" class="currentDate" type="hidden" hidden>
-                            <input class="btn btn-primary float-right" type="submit" value="Afficher les résultats">
-                        {{ form_end(form) }}
 
                         <div class="container-fluid py-5">
 
@@ -120,21 +93,17 @@
                                                 </dl>
                                             </div>
                                             <div class="col-md-4">
-{#                                                //TODO Mise en page#}
                                                 {% if estReccurent %}
                                                     <h3 class="text-center">{{ vehicule.prix * 0.9 * 30}} €/mois</h3>
-                                                    <small class="text-center">{{ vehicule.prix * 0.9 }} €/jours -10%</small>
+                                                    <small class="float-right" style="color:orangered"><small style="color:black;text-decoration: line-through;">{{ vehicule.prix }}</small> <strong>{{ vehicule.prix * 0.9 }}</strong> €/jours -10%</small>
                                                 {% elseif days >= 30 %}
                                                     <h3 class="text-center">{{ vehicule.prix * 0.9 * days }} €</h3>
-                                                    <small class="text-center">{{ vehicule.prix * 0.9 }} €/jours -10%</small>
+                                                    <small class="float-right" style="color:orangered"><small style="color:black;text-decoration: line-through;">{{ vehicule.prix }}</small> <strong>{{ vehicule.prix * 0.9 }}</strong> €/jours -10%</small>
                                                 {% else %}
                                                     <h3 class="text-center">{{ vehicule.prix * days }} €</h3>
-                                                    <small class="text-center">{{ vehicule.prix }} €/jours</small>
+                                                    <small class="float-right">{{ vehicule.prix }} €/jours</small>
                                                 {% endif %}
-                                                {# TODO Lien panier#}
-{#                                                <label for="form_select_{{ loop.index - 1 }}" class="btn btn-main btn-outline-primary m-2 px-2">Ajouter au panier</label>#}
 
-                                                <!-- Button trigger modal -->
                                                 {% if is_granted('ROLE_USER') %}
                                                 <button type="button" class="validateLocation btn btn-main btn-outline-primary m-2 px-2" data-toggle="modal" data-target="#M_{{ vehicule.id }}">
                                                     Réserver Maintenant
@@ -145,7 +114,7 @@
                                                     </button>
                                                 {% endif %}
 
-                                                <!-- Modal -->
+                                                <!-- Confirmation -->
                                                 <div class="modal fade" id="M_{{ vehicule.id }}" tabindex="-1" role="dialog" aria-labelledby="BuyM_{{ vehicule.id }}" aria-hidden="true">
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
@@ -176,8 +145,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-    {#                                            {{ form_label(form.select[loop.index - 1]) }}#}
-    {#                                            {{ form_widget(form.select[loop.index - 1], {'attr': {'class': 'form-check-input', 'onchange':'registerLocation()'}}) }}#}
                                             </div>
                                         </div>
                                     </form>
@@ -196,6 +163,7 @@
                                         <div class="modal-body">
                                             La réservation d'un véhicule nécessite un compte utilisateur.
                                         </div>
+                                        <input name="hiddenDate" class="currentDate" type="hidden" hidden>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Annuler</button>
                                             <a href="{{ path('app_connexion') }}" class="btn btn-primary">Connexion/Inscription</a>

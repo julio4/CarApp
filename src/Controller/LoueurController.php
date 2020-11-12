@@ -8,10 +8,12 @@ use App\Entity\Vehicule;
 use App\Form\TypeVehiculeFormType;
 use App\Form\VehiculeFormType;
 use App\Repository\LocationRepository;
+use App\Repository\TypeVehiculeRepository;
 use App\Repository\UserRepository;
 use App\Repository\VehiculeRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -63,7 +65,6 @@ class LoueurController extends AbstractController
         $form = $this->createForm(TypeVehiculeFormType::class, $type);
         $form->get('name')->setData($request->request->get('default_name', null));
 
-        //TODO Dynamic form validation http://growingcookies.com/en/dynamic-form-validation-in-symfony-using-ajax/
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 //            $data = $form->getData();
@@ -81,6 +82,28 @@ class LoueurController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/modele/modifier/{id}", name="_type_modifier")
+     */
+    public function modifierType($id, TypeVehiculeRepository $typeVehiculeRepository,Request $request)
+    {
+        $type = $typeVehiculeRepository->find($id);
+        $form = $this->createForm(TypeVehiculeFormType::class, $type);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            $this->addFlash('success', 'Type '.$type->getName().' modifié !');
+            return $this->redirect($this->generateUrl('loueur_vehicules'));
+        }
+
+        return $this->render('loueur/type_modifier.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
 
     /**
      * @Route("/vehicules/ajouter", name="_vehicules_ajouter")
@@ -88,6 +111,9 @@ class LoueurController extends AbstractController
     public function ajoutVehicules(Request $request, UserInterface $user)
     {
         $vehicule = new Vehicule();
+        $vehicule->setLoueur($user);
+        $vehicule->setEstArchivee(false);
+
         $form = $this->createForm(VehiculeFormType::class, $vehicule);
 
         $form->handleRequest($request);
@@ -96,7 +122,6 @@ class LoueurController extends AbstractController
                 'moteur' => $form->get('moteur')->getData(),
                 'carburant' => $form->get('carburant')->getData());
             $vehicule->setCarac($carac);
-            $vehicule->setLoueur($user);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($vehicule);
@@ -122,6 +147,7 @@ class LoueurController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->flush();
+            $this->addFlash('success', 'Vehicule '.$vehicule->getId().' modifié !');
             return $this->redirect($this->generateUrl('loueur_vehicules'));
         }
 
@@ -129,6 +155,30 @@ class LoueurController extends AbstractController
             'form' => $form->createView(),
             'vehicule' => $vehicule
         ]);
+    }
+
+    /**
+     * @Route ("/vehicules/archiver/{id}", name="_vehicules_archiver")
+     */
+    public function archiverVehicule($id, VehiculeRepository $vehiculeRepository, UserInterface $user){
+        $vehicule = $vehiculeRepository->findByIDAndCurrent($id, $user);
+        $estLouee = $vehiculeRepository->estLouee($id);
+        dump($vehicule);
+        if($vehicule != null and isset($estLouee['estLouee'])) {
+            if(!$estLouee['estLouee']) {
+                $vehicule->setEstArchivee(true);
+                $em = $this->getDoctrine()->getManager();
+                $em->flush();
+                $this->addFlash('success', 'Vehicule '.$vehicule->getId().' supprimé !');
+            }
+            else {
+                $this->addFlash('danger', 'Impossible de supprimer un véhicule en cours de location');
+            }
+        }
+        else {
+            $this->addFlash('danger', 'Véhicule inaccessible ou inexistant');
+        }
+        return $this->redirect($this->generateUrl('loueur_vehicules'));
     }
 
     /**
@@ -147,10 +197,13 @@ class LoueurController extends AbstractController
     /**
      * @Route ("/facturation/{id}", name="_facturation")
      */
-    public function facturation(UserRepository $userRepository, $id){
+    public function facturation(LocationRepository $locationRepository, UserRepository $userRepository, $id, UserInterface $user){
         $client = $userRepository->find($id);
+        $locations = $locationRepository->findOfUserOfLoueur($client, $user);
+        dump($locations);
         return $this->render('loueur/facturation.html.twig', [
-            "id" => $id
+            "locations" => $locations,
+            "client" => $client
         ]);
 
     }
@@ -171,17 +224,17 @@ class LoueurController extends AbstractController
     /**
      * @Route("/details/{id}", name="_location_recap")
      */
-    public function recapLocation($id, Request $request, UserInterface $user){
+    public function recapLocation($id,LocationRepository $locationRepository,Request $request, UserInterface $user){
         $em = $this->getDoctrine()->getManager();
-        //TODO vérifier loueur ici
-        $location = $em->getRepository(Location::class)->findOneBy(['id' => $id]);
+
+        $location = $locationRepository->findOneOf($id, $user);
         if($location != null) {
             return $this->render('loueur/location_recap.html.twig', [
                 'location' => $location
             ]);
         }
         else {
-            //TODO ajouter erreur 403 interdit?
+            $this->addFlash('danger','Erreur location inaccessible ou inexistante!');
             return $this->redirect($this->generateUrl('user_panel_locations'));
         }
     }

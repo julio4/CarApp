@@ -44,11 +44,131 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ path('loueur_panel') }}">Panel</a></li>
             <li class="breadcrumb-item"><a href="{{ path('loueur_clients') }}">Clients</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Facturation #todo</li>
+            <li class="breadcrumb-item active" aria-current="page">Facturation #{{ client.id }}</li>
         </ol>
     </nav>
 {% endblock %}
 {% block dashboard_body %}
-    <h1 class="h2">Facturation</h1>
+    <h1 class="h2">Facturation client {{ client.name }}</h1>
 
+    <div class="row equal my-4">
+
+        <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
+            <div class="card rounded shadow-sm border-0">
+                <div class="card-body p-4 text-center">
+                    <p class="card-title">Réservations</p>
+                    <h2 class="card-text">{{ locations|length }}</h2>
+                </div>
+            </div>
+        </div>
+
+        {% set prixtotal = 0 %}
+        {% set totalPayee = 0 %}
+        {% set enCours = 0 %}
+        {% for l in locations %}
+            {% if not l.location.estReccurent %}
+                {% set prixtotal = prixtotal + l.location.prix %}
+                {% if l.location.estPayee %}
+                    {% set totalPayee = totalPayee + l.location.prix %}
+                {% endif %}
+            {% else %}
+{#                //TODO ici il faut corriger quand on aura mis à jour nbMoisPayé quand récurrent#}
+                {% set prixtotal = prixtotal + l.location.prix %}
+            {% endif %}
+            {% if l.enCours %}
+                {% set enCours = enCours + 1 %}
+            {% endif %}
+        {% endfor %}
+        {% set restant = prixtotal - totalPayee %}
+
+        <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
+            <div class="card rounded shadow-sm border-0">
+                <div class="card-body p-4 text-center">
+                    <p class="card-title">En cours</p>
+                    <h2 class="card-text">{{ enCours }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
+            <div class="card rounded shadow-sm border-0">
+                <div class="card-body p-4 text-center">
+                    <p class="card-title">Total payé</p>
+                    <h2 class="card-text">{{ totalPayee }} €</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
+            <div class="card rounded shadow-sm border-0">
+                <div class="card-body p-4 text-center">
+                    <p class="card-title">Restant à payer</p>
+                    <h2 class="card-text">{{ restant }} €</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="card rounded shadow-sm border-0">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Modèle</th> <!-- Idées : https://bootsnipp.com/snippets/Veob -->
+                                <th scope="col">Dates</th>
+                                <th scope="col">Montant</th>
+                                <th scope="col">Paiement</th>
+                                <th scope="col">Statut</th>
+                                <th scope="col"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for l in locations %}
+                                <tr class='clickable-row' data-href='{{ path('loueur_location_recap', { 'id': l.location.id }) }}' style="cursor: pointer;">
+                                    <th scope="row">{{ l.location.id }}</th>
+                                    <td>{{ l.location.vehicule.type.name }}</td>
+                                    <td>{{ l.location.dateDebut|date("m/d/Y") }}
+                                        {% if not l.location.estReccurent %}
+                                            - {{ l.location.dateFin|date("m/d/Y") }}
+                                        {% else %}
+                                            <span class="badge badge-warning">Mensuel</span>
+                                        {% endif %}</td>
+                                    <td>
+                                        {{ l.location.prix }} €
+                                        {% if l.location.estReccurent %}
+                                            /mois
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if l.location.estPayee %}
+                                            <span class="badge badge-success">Payée</span>
+                                        {% else %}
+                                            <span class="badge badge-danger">En attente du paiement</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if l.enCours%}
+                                            <span class="badge badge-primary">En cours</span>
+                                        {% else %}
+                                            <span class="badge badge-secondary">Terminée</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if l.enCours%}
+                                            <span><a href="{{ path('loueur_location_recap', { 'id': l.location.id }) }}" class="btn btn-sm btn-primary">Détails <i class="fas fa-plus-square"></i></a></span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

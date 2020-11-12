@@ -39,19 +39,20 @@ class UserController extends AbstractController
     /**
      * @Route("/facturation/{id}", name="_location_facturation")
      */
-    public function facturation($id, Request $request, UserInterface $user){
-        $em = $this->getDoctrine()->getManager();
-        $location = $em->getRepository(Location::class)->findOneBy(['id' => $id, 'user' => $user]);
+    public function facturation($id, LocationRepository $locationRepository, Request $request, UserInterface $user){
+        $location = $locationRepository->findOneBy(['id' => $id, 'user' => $user]);
 
         if($location != null) {
             $location->setEstPayee(true);
+
+            $em = $this->getDoctrine()->getManager();
             $em->flush();
 
             $this->addFlash('success', 'Paiement pour la location #'.$id.' effectué avec succès!');
             return $this->redirect($this->generateUrl('user_panel_locations'));
         }
         else {
-            //TODO ajouter erreur 403 interdit?
+            $this->addFlash('danger','Erreur facturation inaccessible ou inexistante!');
             return $this->redirect($this->generateUrl('user_panel_locations'));
         }
     }
@@ -59,16 +60,15 @@ class UserController extends AbstractController
     /**
      * @Route("/details/{id}", name="_location_recap")
      */
-    public function recapLocation($id, Request $request, UserInterface $user){
-        $em = $this->getDoctrine()->getManager();
-        $location = $em->getRepository(Location::class)->findOneBy(['id' => $id, 'user' => $user]);
+    public function recapLocation($id, LocationRepository $locationRepository, Request $request, UserInterface $user){
+        $location = $locationRepository->findOneBy(['id' => $id, 'user' => $user]);
         if($location != null) {
             return $this->render('user/location_recap.html.twig', [
                 'location' => $location
             ]);
         }
         else {
-            //TODO ajouter erreur 403 interdit?
+            $this->addFlash('danger','Erreur location inaccessible ou inexistante!');
             return $this->redirect($this->generateUrl('user_panel_locations'));
         }
     }

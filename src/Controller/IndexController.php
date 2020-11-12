@@ -96,9 +96,7 @@ class IndexController extends AbstractController
 
         $estRecurrent ? $this->addMessageRecurrent() : $this->addMessageDates();
 
-        dump($this->get('session')->get('récurrent'));
-        dump($this->get('session')->get('dateDebut'));
-        dump($this->get('session')->get('dateFin'));
+        dump($types);
         return $this->render("index/index.html.twig", [
             'types' => $types,
             'savedDates' => [
@@ -144,36 +142,18 @@ class IndexController extends AbstractController
             return $this->redirect($this->generateUrl('index_home'));
         }
 
-        if(count($vehicules) > 0) {
+        $days = $this->countDays();
 
-            $form = $this->createFormBuilder()->getForm();
-
-            $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid()) {
-                $data = $form->getData();
-
-                //TODO ici on trie les résultat des véhicules et on change $vehicules
-
-            }
-            $days = $this->countDays();
-
-            dump($this->get('session')->get('récurrent'));
-            dump($this->get('session')->get('dateDebut'));
-            dump($this->get('session')->get('dateFin'));
-            return $this->render("index/vehicule.html.twig", [
-                'type' => $type,
-                'vehicules' => $vehicules,
-                'savedDates' => [
-                    "Debut" => $this->get('session')->get('dateDebut'),
-                    "Fin" => $this->get('session')->get('dateFin'),
-                ],
-                'days' => $days,
-                'form' => $form->createView(),
-                'estReccurent' => $estRecurrent
-            ]);
-        }
-        $this->addFlash('danger','Véhicule en rupture de stock!');
-        return $this->redirect($this->generateUrl('index_home'));
+        return $this->render("index/vehicule.html.twig", [
+            'type' => $type,
+            'vehicules' => $vehicules,
+            'savedDates' => [
+                "Debut" => $this->get('session')->get('dateDebut'),
+                "Fin" => $this->get('session')->get('dateFin'),
+            ],
+            'days' => $days,
+            'estReccurent' => $estRecurrent
+        ]);
     }
 
     /**

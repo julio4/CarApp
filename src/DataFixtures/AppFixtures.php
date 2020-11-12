@@ -94,6 +94,7 @@ class AppFixtures extends Fixture
             true
         );
         $porsche1->setImageFile($file);
+        $porsche1->setEstArchivee(false);
 
         $manager->persist($admin);
         $manager->persist($loueurDemo);

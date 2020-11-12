@@ -72,10 +72,10 @@
                             <tbody>
                             <!-- seulement les 10 dernières réservations -->
                             {% for location in locations|slice(0,10) %}
+{#                                TODO clickable tableau#}
                                 <tr>
                                     <th scope="row">{{ location.id }}</th>
                                     <td>{{ location.vehicule.type.name }}</td>
-                                    {#                                    TODO PAGE LOUEUR#}
                                     <td>{{ location.vehicule.loueur.name }}</td>
                                     <td>{{ location.dateDebut|date("m/d/Y") }} - {{ location.dateFin|date("m/d/Y") }}</td>
                                     <td>
