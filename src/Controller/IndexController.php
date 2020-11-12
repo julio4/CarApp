@@ -197,11 +197,11 @@ class IndexController extends AbstractController
     }
 
     private function addMessageRecurrent() {
-        $this->addFlash('info', 'Vous consulter les véhicules disponibles pour une location mensuelles à durée indéterminée!');
+        $this->addFlash('info', 'Vous consultez les véhicules disponibles pour une location mensuelle à durée indéterminée !');
     }
 
     private function addMessageDates() {
-        $this->addFlash('warning', 'Vous consulter les véhicules disponibles à une intervalle de dates précise!');
+        $this->addFlash('warning', 'Vous consultez les véhicules disponibles pour une location fixe !');
     }
 
     private function isValidDates($dateDeb, $dateFin) {

@@ -35,7 +35,7 @@ class LoueurController extends AbstractController
     {
         $locations = $locationRepository->findAll();
         return $this->render('loueur/index.html.twig', [
-            'locations' => $locations,
+            'locations' => $locations
         ]);
     }
 
