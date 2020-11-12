@@ -108,7 +108,7 @@ doctrine:
 #                greatest: DoctrineExtensions\Query\Mysql\Greatest
 #                group_concat: DoctrineExtensions\Query\Mysql\GroupConcat
 #                hex: DoctrineExtensions\Query\Mysql\Hex
-                ifelse: DoctrineExtensions\Query\Mysql\IfElse
+                 ifelse: DoctrineExtensions\Query\Mysql\IfElse
 #                ifnull: DoctrineExtensions\Query\Mysql\IfNull
 #                inet_aton: DoctrineExtensions\Query\Mysql\InetAton
 #                inet_ntoa: DoctrineExtensions\Query\Mysql\InetNtoa

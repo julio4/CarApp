@@ -10,8 +10,10 @@ const $ = require('jquery');
 
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.scss';
-require('bootstrap');
 
+require('bootstrap');
+require('@fortawesome/fontawesome-free/css/all.min.css');
+require('@fortawesome/fontawesome-free/js/all.min');
 // create global $ and jQuery variables
 global.$ = global.jQuery = $;
 

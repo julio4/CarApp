@@ -1,5 +1,6 @@
 {
     "devDependencies": {
+        "@fortawesome/fontawesome-free": "^5.15.1",
         "@popperjs/core": "^2.5.3",
         "@symfony/webpack-encore": "^0.30.0",
         "bootstrap": "^4.5.3",

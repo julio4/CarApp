@@ -6,12 +6,14 @@
 
 {% block body %}
     <div class="container py-5">
-        <span class="glyphicon glyphicon-arrow-left"></span>
         <div class="row pb-5 mb-4">
             <div class="col">
                 <!-- Card-->
                 <div class="card rounded shadow-sm border-0">
                     <div class="card-body p-4">
+                        <a class="fa_icon" href="{{ path('index_home') }}">
+                            <span class="fa fa-angle-left"></span>
+                        </a>
                         <div class='row align-items-center'>
                             <div class="col-8">
                                 <img src="{{ vich_uploader_asset(type, 'imageFile', 'App\\Entity\\TypeVehicule') | imagine_filter('thumb_4_3') }}" alt="" class="img-fluid d-block mx-auto mb-3">
@@ -34,10 +36,10 @@
                             <div class="form-row align-items-center">
                                 <div class="form-group col-xl-3 col-md-12 col-xs-12 input">
 {#                                    TODO mise en page ici#}
-                                    {% if savedDates.Debut is empty and savedDates.Fin is empty%}
-                                        <span>Réservation récurrente: paiement mensuel à -10%</span>
+                                    {% if estReccurent %}
+                                        <span>Réservation récurrente: paiement mensuel à -10% à partir du {{ savedDates.Debut }}</span>
                                     {% else %}
-                                        <span>Date : du {{ savedDates.Debut }} au {{ savedDates.Fin }}</span>
+                                        <span>Location du {{ savedDates.Debut }} au {{ savedDates.Fin }}</span>
                                     {% endif %}
                                 </div>
                                 {#TODO Trier les résultats#}
@@ -119,7 +121,7 @@
                                             </div>
                                             <div class="col-md-4">
 {#                                                //TODO Mise en page#}
-                                                {% if savedDates.Debut is empty and savedDates.Fin is empty%}
+                                                {% if estReccurent %}
                                                     <h3 class="text-center">{{ vehicule.prix * 0.9 * 30}} €/mois</h3>
                                                     <small class="text-center">{{ vehicule.prix * 0.9 }} €/jours -10%</small>
                                                 {% elseif days >= 30 %}
