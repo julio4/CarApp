@@ -32,11 +32,14 @@ class LoueurController extends AbstractController
     /**
      * @Route("/", name="_panel")
      */
-    public function dashboard(LocationRepository $locationRepository)
+    public function dashboard(LocationRepository $locationRepository, UserRepository $userRepository)
     {
         $locations = $locationRepository->findAll();
+        $nbClients = $userRepository->countClient();
+        dump($nbClients);
         return $this->render('loueur/index.html.twig', [
             'locations' => $locations,
+            'nbClients' => $nbClients
         ]);
     }
 
@@ -46,7 +49,6 @@ class LoueurController extends AbstractController
     public function vehicules(VehiculeRepository $vehiculeRepository, UserInterface $user)
     {
         $vehicules = $vehiculeRepository->findOwnedBy($user);
-        dump($vehicules);
         return $this->render('loueur/vehicules.html.twig', [
             "vehicules" => $vehicules
         ]);

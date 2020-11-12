@@ -26,7 +26,7 @@ class VehiculeFormType extends AbstractType
                 'attr' => [
                     'class' => "selectpicker form-control",
                     'data-live-search' => "true",
-                    'data-style' => "btn border"
+                    'data-style' => "btn btn-primary border"
                 ]
             ])
             ->add('prix', NumberType::class, [
