@@ -67,6 +67,16 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         ;
     }
 
+    public function countClient(){
+        return $this->createQueryBuilder('u')
+            ->select('count(u.id)')
+            ->where('u.roles = :role')
+            ->setParameter('role', '["ROLE_USER"]')
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
 
     /*
     public function findOneBySomeField($value): ?User
