@@ -147,9 +147,9 @@ class LoueurController extends AbstractController
      */
     public function facturation(UserRepository $userRepository, $id){
         $client = $userRepository->find($id);
-        echo($client->getId());
-        //TODO
-        return $this->render('loueur/index.html.twig');
+        return $this->render('loueur/facturation.html.twig', [
+            "id" => $id
+        ]);
 
     }
 
