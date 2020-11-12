@@ -1,5 +1,13 @@
 {% extends 'base.html.twig' %}
 
+{% block style %}
+    {% if estRecurrent %}
+        {{ encore_entry_link_tags('date') }}
+    {% else %}
+        {{ encore_entry_link_tags('dates') }}
+    {% endif %}
+{% endblock %}
+
 {% block body %}
     <div class="container py-5">
         <div class="text-center mb-5">
@@ -15,16 +23,26 @@
             </div>
             <div class="row justify-content-md-center">
                 <div class="col-6">
-                    {{ form_row(form.date) }}
+                    {% if estRecurrent %}
+                        {{ form_row(form.date, {'label': 'Choississez la date de début de location:'}) }}
+                    {% else %}
+                        {{ form_row(form.date, {'label': 'Choississez vos dates de location:'}) }}
+                    {% endif %}
                 </div>
             </div>
             {{ form_rest(form) }}
             <div class="row justify-content-md-center my-3">
                 <div class="col-3">
-                    <a href="{{ path('index_date_reset') }}" class="btn btn-info">Location mensuelle</a>
+                    {% if estRecurrent %}
+                        <a href="{{ path('index_date_init') }}" class="btn btn-warning">Location à des dates précises</a>
+                    {% else %}
+                        <a href="{{ path('index_date_reset') }}" class="btn btn-info">Location mensuelle</a>
+                    {% endif %}
                 </div>
                 <div class="col-3">
-                    <input class="btn btn-primary" type="submit" value="Valider les dates">
+                    <button class="btn btn-primary" type="submit">
+                        Valider {% if estRecurrent %}la date{% else %}les dates{% endif %} <span class='fa fa-calendar-alt'></span>
+                    </button>
                 </div>
             </div>
             <div class="row justify-content-center">
@@ -36,6 +54,16 @@
                     {% endfor %}
                     {% for message in app.flashes('danger') %}
                         <div class="alert alert-danger">
+                            {{ message|raw }}
+                        </div>
+                    {% endfor %}
+                    {% for message in app.flashes('info') %}
+                        <div class="alert alert-info">
+                            {{ message|raw }}
+                        </div>
+                    {% endfor %}
+                    {% for message in app.flashes('warning') %}
+                        <div class="alert alert-warning">
                             {{ message|raw }}
                         </div>
                     {% endfor %}
@@ -100,14 +128,24 @@
     </div>
 {% endblock %}
 {% block javascripts %}
+    {% if estRecurrent %}
+        {{ encore_entry_script_tags('date') }}
+    {% else %}
         {{ encore_entry_script_tags('dates') }}
+    {% endif %}
 <script>
     $(document).ready(function () {
+        {% if estRecurrent %}
 
-        {% if savedDates.Debut is not empty and savedDates.Fin is not empty%}
-        picker.setDateRange("{{ savedDates.Debut }}", "{{ savedDates.Fin }}");
+        picker.setDate("{{ savedDates.Debut }}");
+
+        {% else %}
+
+            {% if savedDates.Debut is not empty and savedDates.Fin is not empty%}
+            picker.setDateRange("{{ savedDates.Debut }}", "{{ savedDates.Fin }}");
+            {% endif %}
+
         {% endif %}
-
     });
 </script>
 {% endblock %}

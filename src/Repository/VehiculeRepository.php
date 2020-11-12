@@ -8,6 +8,7 @@ use App\Entity\Vehicule;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr;
+use DoctrineExtensions\Query\Mysql\Date;
 
 /**
  * @method Vehicule|null find($id, $lockMode = null, $lockVersion = null)
@@ -51,6 +52,23 @@ class VehiculeRepository extends ServiceEntityRepository
             ->setParameter('type', $type)
             ->andWhere('l is NULL OR l.dateFin < :now')
             ->setParameter('now', date_create("now"));
+
+        return $qb
+            ->getQuery()
+            ->getArrayResult();
+    }
+
+    /**
+     * @return Vehicule[] Retourne les véhicules d'un type donné disponible pour une réservation sans date
+     */
+    public function findAllAvailableByTypeAt($date, TypeVehicule $type)
+    {
+        $qb = $this->createQueryBuilder('v')
+            ->leftJoin('App\Entity\Location', 'l', Expr\Join::WITH, 'v.id = l.vehicule')
+            ->andWhere('v.type = :type')
+            ->setParameter('type', $type)
+            ->andWhere('l is NULL OR l.dateFin < :date')
+            ->setParameter('date', $date);
 
         return $qb
             ->getQuery()

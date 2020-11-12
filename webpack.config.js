@@ -33,6 +33,7 @@ Encore
     .addEntry('diagram', './assets/diagram.js')
     .addEntry('form', './assets/form.js')
     .addEntry('dates', './assets/dates.js')
+    .addEntry('date', './assets/date.js')
     .addEntry('details', './assets/details.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.

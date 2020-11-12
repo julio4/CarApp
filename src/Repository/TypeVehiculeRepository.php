@@ -23,14 +23,16 @@ class TypeVehiculeRepository extends ServiceEntityRepository
     /**
      * @return TypeVehicule[] Returns an array of TypeVehicule
      */
-    public function findAllAvailable()
+    public function findAllAvailable($date)
     {
         $qb = $this->createQueryBuilder('t')
             ->innerJoin('App\Entity\Vehicule','v', Expr\Join::WITH, 't.id = v.type')
             ->leftJoin('App\Entity\Location', 'l', Expr\Join::WITH, 'v.id = l.vehicule')
-            ->andWhere('l is NULL OR l.dateFin < :now')
+            ->andWhere('l is NULL OR l.dateFin < :date')
+            ->andWhere(':date > :now')
             ->andWhere('v.disponible = 1')
-            ->setParameter('now', date_create("now"))
+            ->setParameter('date', $date)
+            ->setParameter('now', date('now'))
             ->groupBy('t');
 
         return $qb
@@ -46,10 +48,11 @@ class TypeVehiculeRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('t')
             ->innerJoin('App\Entity\Vehicule','v', Expr\Join::WITH, 't.id = v.type')
             ->leftJoin('App\Entity\Location', 'l', Expr\Join::WITH, 'v.id = l.vehicule')
-            ->andWhere('l is NULL OR (l.dateDebut < :dateDebut AND l.dateFin < :dateDebut) OR (l.dateDebut > :dateFin AND l.dateFin > :dateFin)')
-            ->andWhere('v.disponible = 1')
+            ->andWhere('l is NULL OR (l.dateDebut < :dateDebut AND l.dateFin < :dateDebut) OR (l.dateDebut > :dateFin AND l.dateFin > :dateFin)
+            AND :dateDebut >= CURRENT_TIMESTAMP() AND :dateDebut <= :dateFin')
             ->setParameter('dateDebut', $dateDebut->format('Y-m-d'))
             ->setParameter('dateFin', $dateFin->format('Y-m-d'))
+            ->andWhere('v.disponible = 1')
             ->groupBy('t');
 
         return $qb

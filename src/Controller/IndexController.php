@@ -27,47 +27,86 @@ class IndexController extends AbstractController
                 ])
             ->getForm();
 
-        if($this->isValidCookieDate()) {
-            $types = $typeVehiculeRepository->findAllAvailableBetween(
-                $this->frDateToEn($this->get('session')->get('dateDebut')),
-                $this->frDateToEn($this->get('session')->get('dateFin'))
-            );
+        //On récupère le cookie pour les dates
+        if(!$this->get('session')->has('récurrent'))
+            $this->get('session')->set('récurrent', true);
+        $estRecurrent = $this->get('session')->get('récurrent') ? true : false;
+
+        //Recherche des types disponibles avec les dates fournis
+        if(!$estRecurrent) {
+            if($this->isValidCookieDates()) {
+                $types = $typeVehiculeRepository->findAllAvailableBetween(
+                    $this->frDateToEn($this->get('session')->get('dateDebut')),
+                    $this->frDateToEn($this->get('session')->get('dateFin'))
+                );
+            }
+            else
+                $types = $typeVehiculeRepository->findAllAvailable(date_create('now'));
         }
         else {
-            $types = $typeVehiculeRepository->findAllAvailable();
+            $this->get('session')->set('récurrent', true);
+            if($this->isValidDate($this->get('session')->get('dateDebut')))
+                $types = $typeVehiculeRepository
+                    ->findAllAvailable($this->frDateToEn($this->get('session')->get('dateDebut')));
+            else
+                $types = $typeVehiculeRepository->findAllAvailable(date_create('now'));
         }
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
             $data = $form->getData();
 
-            $dates = preg_split('/( - )/', $data['date']);
-            if(sizeof($dates) == 2) {
-                $isReccurent = false;
-                $this->get('session')->set('dateDebut', $dates[0]);
-                $this->get('session')->set('dateFin', $dates[1]);
+            if($estRecurrent) {
+                //Mise à jour du cookie récurrent
+                $this->get('session')->set('récurrent', true);
 
-                if ($this->isValidDate($dates[0], $dates[1]))
-                    $types = $typeVehiculeRepository->findAllAvailableBetween($this->frDateToEn($dates[0]), $this->frDateToEn($dates[1]));
+                //Récupération de la date
+                $date = $data['date'];
+                if($this->isValidDate($date)){
+                    $this->get('session')->set('dateDebut', $date);
+                    $types = $typeVehiculeRepository->findAllAvailable($this->frDateToEn($date));
+                }
+                //date invalide, on retourne une erreur
                 else {
-                    $this->addFlash('danger', 'La date fournit n\'est pas valide. Réessayer!');
+                    $this->addFlash('danger', 'Veuillez fournir une date au format \'jour mois année\'');
                     return $this->redirect($this->generateUrl('index_home'));
                 }
             }
             else {
-                $this->addFlash('danger', 'Veuillez fournir une date au format jour mois année - jour mois année ');
-                return $this->redirect($this->generateUrl('index_home'));
+                //Mise à jour du cookie récurrent
+                $this->get('session')->set('récurrent', false);
+
+                //on récupère les deux dates
+                $dates = preg_split('/( - )/', $data['date']);
+                if(sizeof($dates) == 2 and $this->isValidDates($dates[0], $dates[1])) {
+                    //On met à jour les cookies
+                    $this->get('session')->set('dateDebut', $dates[0]);
+                    $this->get('session')->set('dateFin', $dates[1]);
+
+                    //On charge les types disponible avec les dates fournies
+                    $types = $typeVehiculeRepository->findAllAvailableBetween($this->frDateToEn($dates[0]), $this->frDateToEn($dates[1]));
+                }
+                //dates invalide, on retourne une erreur
+                else {
+                    $this->addFlash('danger', 'Veuillez fournir une date au format \'jour mois année - jour mois année\'');
+                    return $this->redirect($this->generateUrl('index_home'));
+                }
             }
         }
-        dump($types);
+
+        $estRecurrent ? $this->addMessageRecurrent() : $this->addMessageDates();
+
+        dump($this->get('session')->get('récurrent'));
+        dump($this->get('session')->get('dateDebut'));
+        dump($this->get('session')->get('dateFin'));
         return $this->render("index/index.html.twig", [
             'types' => $types,
             'savedDates' => [
                 "Debut" => $this->get('session')->get('dateDebut'),
                 "Fin" => $this->get('session')->get('dateFin')
             ],
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'estRecurrent' => $estRecurrent
         ]);
     }
 
@@ -80,33 +119,47 @@ class IndexController extends AbstractController
         $type = $em->getRepository(TypeVehicule::class)->find($id);
 
         $vehiculesRepo = $em->getRepository(Vehicule::class);
-        if($this->isValidCookieDate()) {
-            $savedDates = [
-                "Debut" => $this->get('session')->get('dateDebut'),
-                "Fin" => $this->get('session')->get('dateFin')];
-            $vehicules = $vehiculesRepo->findAllAvailableByTypeBetween( $type,
-                $this->frDateToEn($savedDates["Debut"]),
-                $this->frDateToEn($savedDates["Fin"])
-            );
+        $estRecurrent = $this->get('session')->get('récurrent');
+
+        if($estRecurrent) {
+            if($this->isValidDate($this->get('session')->get('dateDebut'))) {
+                $vehicules = $vehiculesRepo->findAllAvailableByTypeAt($this->frDateToEn($this->get('session')->get('dateDebut')),$type);
+            }
+            else {
+                $this->addFlash('danger','Veuillez préciser une date de début');
+                return $this->redirect($this->generateUrl('index_home'));
+            }
         }
+        elseif($this->isValidCookieDates()) {
+                $savedDates = [
+                    "Debut" => $this->get('session')->get('dateDebut'),
+                    "Fin" => $this->get('session')->get('dateFin')];
+                $vehicules = $vehiculesRepo->findAllAvailableByTypeBetween( $type,
+                    $this->frDateToEn($savedDates["Debut"]),
+                    $this->frDateToEn($savedDates["Fin"])
+                );
+            }
         else {
-            $vehicules = $vehiculesRepo->findAllAvailableByType($type);
+            $this->addFlash('danger','Veuillez préciser une intervalle de date pour la location');
+            return $this->redirect($this->generateUrl('index_home'));
         }
 
         if(count($vehicules) > 0) {
-            $form = $this->createFormBuilder()
-                ->getForm();
+
+            $form = $this->createFormBuilder()->getForm();
 
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
-
                 $data = $form->getData();
 
                 //TODO ici on trie les résultat des véhicules et on change $vehicules
 
             }
             $days = $this->countDays();
-            dump($days);
+
+            dump($this->get('session')->get('récurrent'));
+            dump($this->get('session')->get('dateDebut'));
+            dump($this->get('session')->get('dateFin'));
             return $this->render("index/vehicule.html.twig", [
                 'type' => $type,
                 'vehicules' => $vehicules,
@@ -115,10 +168,11 @@ class IndexController extends AbstractController
                     "Fin" => $this->get('session')->get('dateFin'),
                 ],
                 'days' => $days,
-                'form' => $form->createView()
+                'form' => $form->createView(),
+                'estReccurent' => $estRecurrent
             ]);
         }
-        //TODO ajouter un flash d'erreur ?
+        $this->addFlash('danger','Véhicule en rupture de stock!');
         return $this->redirect($this->generateUrl('index_home'));
     }
 
@@ -129,25 +183,50 @@ class IndexController extends AbstractController
     {
         $this->get('session')->remove('dateDebut');
         $this->get('session')->remove('dateFin');
+        $this->get('session')->set('récurrent', true);
         return $this->redirect($this->generateUrl('index_home'));
     }
 
-    private function isValidDate($dateDeb, $dateFin) {
+    /**
+     * @Route("/date_i", name="_date_init")
+     */
+    public function init_dates()
+    {
+        $this->get('session')->set('récurrent', false);
+        return $this->redirect($this->generateUrl('index_home'));
+    }
+
+    private function addMessageRecurrent() {
+        $this->addFlash('info', 'Vous consulter les véhicules disponibles pour une location mensuelles à durée indéterminée!');
+    }
+
+    private function addMessageDates() {
+        $this->addFlash('warning', 'Vous consulter les véhicules disponibles à une intervalle de dates précise!');
+    }
+
+    private function isValidDates($dateDeb, $dateFin) {
         if($this->frDateToEn($dateDeb) < $this->frDateToEn($dateFin))
             if($this->frDateToEn($dateDeb) >= date('Y-m-d', time()))
                 return true;
         return false;
     }
 
-    private function isValidCookieDate() {
-        if($this->get('session')->has('dateDebut') and $this->get('session')->has('dateFin')) {
-            return $this->isValidDate($this->get('session')->get('dateDebut'), $this->get('session')->get('dateFin'));
-        }
+    private function isValidDate($date) {
+        if($this->frDateToEn($date) >= date('Y-m-d', time()))
+            return true;
+        return false;
+    }
+
+    private function isValidCookieDates() {
+        if ($this->get('session')->has('récurrent') and !$this->get('session')->get('récurrent'))
+            if($this->get('session')->has('dateDebut') and $this->get('session')->has('dateFin')) {
+                return $this->isValidDates($this->get('session')->get('dateDebut'), $this->get('session')->get('dateFin'));
+            }
         return false;
     }
 
     private function countDays() {
-        if($this->isValidCookieDate()) {
+        if($this->isValidCookieDates()) {
             $dateDeb = $this->frDateToEn($this->get('session')->get('dateDebut'));
             $dateFin = $this->frDateToEn($this->get('session')->get('dateFin'));
 
