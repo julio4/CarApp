@@ -27,16 +27,19 @@ class Vehicule
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="vehicules")
+     * @Assert\NotBlank
      */
     private $loueur;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\TypeVehicule", inversedBy="vehicules")
+     * @Assert\NotBlank
      */
     private $type;
 
     /**
      * @ORM\Column(type="json", nullable=true)
+     * @Assert\NotBlank
      */
     private $carac = [];
 

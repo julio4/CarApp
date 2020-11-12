@@ -36,7 +36,7 @@ class User implements UserInterface
      *      allowEmptyString=false
      * )
      * @Assert\Regex(
-     *     pattern="#^[a-zA-Z\-\é\è\ê\ë\ï\ö|\s]{1,50}$#",
+     *     pattern="#^[a-zA-Z\-\é\è\ê\ë\ï\ö|\s]{2,50}$#",
      *     match=true,
      *     message="Merci de saisir un nom valide"
      * )

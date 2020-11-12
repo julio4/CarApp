@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TypeVehiculeRepository::class)
@@ -26,6 +27,21 @@ class TypeVehicule
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank (
+     *     message="Merci de saisir un nom de type"
+     * )
+     * @Assert\Length (
+     *      min = 2,
+     *      max = 50,
+     *      minMessage = "Votre nom doit contenir au minimum {{ limit }} caractères",
+     *      maxMessage = "Votre nom peut contenir au maximum {{ limit }} caractères",
+     *      allowEmptyString=false
+     * )
+     * @Assert\Regex(
+     *     pattern="#^[a-zA-Z\-\é\è\ê\ë\ï\ö|\s]{2,50}$#",
+     *     match=true,
+     *     message="Merci de saisir un nom valide"
+     * )
      */
     private $name;
 
