@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Location;
 use App\Entity\User;
+use App\Entity\Vehicule;
+use App\Repository\LocationRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,13 +18,19 @@ class AdminController extends AbstractController
     /**
      * @Route("/", name="_panel")
      */
-    public function panel()
+    public function panel(LocationRepository $locationRepository)
     {
         $em = $this->getDoctrine()->getManager();
         $nbUser = $em->getRepository(User::class)->count(array());
+        $nbLocations = $em->getRepository(Location::class)->count(array());
+        $nbVehicules = $em->getRepository(Vehicule::class)->count(array());
+        $totalRevenus =  $locationRepository->totalRevenus();
 
         return $this->render('admin/index.html.twig', [
-            'nbUsers' => $nbUser
+            'nbUsers' => $nbUser,
+            'nbLocations' => $nbLocations,
+            'nbVehicules' => $nbVehicules,
+            'totalRevenus' => $totalRevenus
         ]);
     }
 

@@ -75,4 +75,14 @@ class LocationRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
+
+    public function totalRevenus(){
+        return $this->createQueryBuilder('l')
+            ->select('sum(l.prix)')
+            ->where('l.estPayee = :valeur')
+            ->setParameter('valeur', '1')
+            ->getQuery()
+            ->getSingleScalarResult()
+            ;
+    }
 }
