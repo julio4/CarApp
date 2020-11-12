@@ -85,4 +85,5 @@ class LocationRepository extends ServiceEntityRepository
             ->getSingleScalarResult()
             ;
     }
+
 }
