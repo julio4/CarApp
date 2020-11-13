@@ -9,7 +9,7 @@
     ·
     Jules Doumèche
     ·
-    Gwnénolé Martin
+    Gwénolé Martin
     ·
     Mehdi Hachisman
   </p>
