@@ -1,0 +1,81 @@
+{
+  "entrypoints": {
+    "app": {
+      "js": [
+        "/build/runtime.js",
+        "/build/0.js",
+        "/build/vendors~app~panel.js",
+        "/build/vendors~app.js",
+        "/build/app.js"
+      ],
+      "css": [
+        "/build/vendors~app.css",
+        "/build/app.css"
+      ]
+    },
+    "panel": {
+      "js": [
+        "/build/runtime.js",
+        "/build/0.js",
+        "/build/vendors~app~panel.js",
+        "/build/panel.js"
+      ],
+      "css": [
+        "/build/panel.css"
+      ]
+    },
+    "diagram": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendors~date~dates~details~diagram~form.js",
+        "/build/1.js",
+        "/build/vendors~diagram.js",
+        "/build/diagram.js"
+      ]
+    },
+    "form": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendors~date~dates~details~diagram~form.js",
+        "/build/vendors~date~dates~details~form.js",
+        "/build/vendors~form.js",
+        "/build/form.js"
+      ]
+    },
+    "dates": {
+      "js": [
+        "/build/runtime.js",
+        "/build/0.js",
+        "/build/vendors~date~dates~details~diagram~form.js",
+        "/build/vendors~date~dates~details~form.js",
+        "/build/1.js",
+        "/build/2.js",
+        "/build/vendors~date~dates.js",
+        "/build/date~dates.js",
+        "/build/dates.js"
+      ]
+    },
+    "date": {
+      "js": [
+        "/build/runtime.js",
+        "/build/0.js",
+        "/build/vendors~date~dates~details~diagram~form.js",
+        "/build/vendors~date~dates~details~form.js",
+        "/build/1.js",
+        "/build/2.js",
+        "/build/vendors~date~dates.js",
+        "/build/date~dates.js",
+        "/build/date.js"
+      ]
+    },
+    "details": {
+      "js": [
+        "/build/runtime.js",
+        "/build/0.js",
+        "/build/vendors~date~dates~details~diagram~form.js",
+        "/build/vendors~date~dates~details~form.js",
+        "/build/details.js"
+      ]
+    }
+  }
+}
