@@ -33,7 +33,7 @@
 L'objectif du projet est de construire une application web basée sur une architecture [MVC](https://fr.wikipedia.org/wiki/Mod%C3%A8le-vue-contr%C3%B4leur) de location de voitures.
 Elle permet aux utilisateurs de parcourir les différents modèles de véhicules mis en location avec une description, une photo, et des caractéristiques pour chaque véhicule.
 
-Celle-ci implémente un nombre de services à la fois pour les utilisateurs et les loueurs :
+Celle-ci implémente différents services pour les utilisateurs et les loueurs :
 
 #### Listes des services clients/loueurs
 
