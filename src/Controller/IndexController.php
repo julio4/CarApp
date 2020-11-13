@@ -22,12 +22,12 @@ class IndexController extends AbstractController
     /**
      * La page d'accueil du site
      *
-     * @Route("/", name="_home")
+     * @Route("/{page}", defaults={"page"=1}, name="_home")
      * @param CarTypeRepository $carTypeRepository
      * @param Request $request
      * @return RedirectResponse|Response
      */
-    public function index(CarTypeRepository $carTypeRepository, Request $request)
+    public function index(CarTypeRepository $carTypeRepository, Request $request,$page)
     {
         $form = $this->createFormBuilder()
                 ->add('date', null, [
@@ -105,6 +105,7 @@ class IndexController extends AbstractController
         }
 
         $isMonthlyRecurring ? $this->addMonthlyRecurringTips() : $this->addFixedDatesTips();
+        $nbPages = ceil(count($types) / 8);
 
         return $this->render("index/index.html.twig", [
             'types' => $types,
@@ -113,7 +114,9 @@ class IndexController extends AbstractController
                 "End" => $this->get('session')->get('endDate')
             ],
             'form' => $form->createView(),
-            'isMonthlyRecurring' => $isMonthlyRecurring
+            'isMonthlyRecurring' => $isMonthlyRecurring,
+            'page' => $page,
+            'nbPages' => $nbPages
         ]);
     }
 

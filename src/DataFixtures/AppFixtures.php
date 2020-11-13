@@ -24,17 +24,12 @@ class AppFixtures extends Fixture
     {
         $adminCredentials = [
             'username' => 'admin',
-            'mail' => 'admin@mail.com',
+            'mail' => 'admin@carapp.com',
             'password' => 'password'
         ];
         $loueurCredentials = [
-            'username' => 'loueurDemo',
-            'mail' => 'loueurDemo@mail.com',
-            'password' => 'password'
-        ];
-        $userCredentials = [
-            'username' => 'userDemo',
-            'mail' => 'userDemo@mail.com',
+            'username' => 'loueur',
+            'mail' => 'loueur@carapp.com',
             'password' => 'password'
         ];
 
@@ -54,53 +49,45 @@ class AppFixtures extends Fixture
         );
         $loueurDemo->setRoles(['ROLE_LOUEUR']);
 
-        $userDemo = new User();
-        $userDemo->setName($userCredentials['username']);
-        $userDemo->setEmail($userCredentials['mail']);
-        $userDemo->setPassword(
-            $this->encoder->encodePassword($userDemo,$userCredentials['password'])
-        );
-        $userDemo->setRoles(['ROLE_USER']);
-
-        $type = new CarType();
-        copy(__DIR__."/../../public/media/img/fixtures/porsche.png", __DIR__."/../../public/media/img/fixtures/porsche_type.png");
-        $src = __DIR__."/../../public/media/img/fixtures/porsche_type.png";
-        $file = new UploadedFile(
-            $src,
-            'porsche_type.png',
-            'image/png',
-            null,
-            true
-        );
-        $type->setName('Porsche')
-            ->setImageFile($file);
-
-        $porsche1 = new Car();
-        $porsche1->setAvailable(1);
-        $porsche1->setPrice(24.5);
-        $features = array('boite' => 'Automatique',
-            'moteur' => 'Electrique',
-            'carburant' => 'Electrique');
-        $porsche1->setFeatures($features);
-        $porsche1->setType($type);
-        $porsche1->setRenter($loueurDemo);
-        copy(__DIR__."/../../public/media/img/fixtures/voiture.png", __DIR__."/../../public/media/img/fixtures/voiture_vehicule.png");
-        $src = __DIR__."/../../public/media/img/fixtures/voiture_vehicule.png";
-        $file = new UploadedFile(
-            $src,
-            'voiture_vehicule.png',
-            'image/png',
-            null,
-            true
-        );
-        $porsche1->setImageFile($file);
-        $porsche1->setIsArchived(false);
+//        $type = new CarType();
+//        copy(__DIR__."/../../public/media/img/fixtures/porsche.png", __DIR__."/../../public/media/img/fixtures/porsche_type.png");
+//        $src = __DIR__."/../../public/media/img/fixtures/porsche_type.png";
+//        $file = new UploadedFile(
+//            $src,
+//            'porsche_type.png',
+//            'image/png',
+//            null,
+//            true
+//        );
+//        $type->setName('Porsche')
+//            ->setImageFile($file);
+//
+//        $porsche1 = new Car();
+//        $porsche1->setAvailable(1);
+//        $porsche1->setPrice(24.5);
+//        $features = array('boite' => 'Automatique',
+//            'moteur' => 'Electrique',
+//            'carburant' => 'Electrique');
+//        $porsche1->setFeatures($features);
+//        $porsche1->setType($type);
+//        $porsche1->setRenter($loueurDemo);
+//        copy(__DIR__."/../../public/media/img/fixtures/voiture.png", __DIR__."/../../public/media/img/fixtures/voiture_vehicule.png");
+//        $src = __DIR__."/../../public/media/img/fixtures/voiture_vehicule.png";
+//        $file = new UploadedFile(
+//            $src,
+//            'voiture_vehicule.png',
+//            'image/png',
+//            null,
+//            true
+//        );
+//        $porsche1->setImageFile($file);
+//        $porsche1->setIsArchived(false);
 
         $manager->persist($admin);
         $manager->persist($loueurDemo);
-        $manager->persist($userDemo);
-        $manager->persist($type);
-        $manager->persist($porsche1);
+//        $manager->persist($userDemo);
+//        $manager->persist($type);
+//        $manager->persist($porsche1);
         $manager->flush();
     }
 }

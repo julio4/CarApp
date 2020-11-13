@@ -72,6 +72,7 @@
                         <table class="table table-hover">
                             <thead>
                             <tr>
+                                <th scope="col">#</th>
                                 <th scope="col">Modèle</th>
                                 <th scope="col">Caractéristiques</th> <!-- Idées : https://bootsnipp.com/snippets/Veob -->
                                 <th scope="col">Prix/Jour</th>
@@ -82,6 +83,7 @@
                             <tbody>
                             {% for c in Cars %}
                                 <tr {% if not c.isRented %}class='clickable-row' data-href='{{ path('renter_editCar', { 'id': c.getCar.id }) }}' style="cursor: pointer;"{% endif %}>
+                                    <th scope="row">#{{ c.getCar.id }}</th>
                                     <th scope="row">{{ c.getCar.type.name }}</th>
                                     <td>
                                         <ul>
@@ -98,7 +100,7 @@
                                         {% if c.getCar.available %}
                                             <span class="badge badge-primary">Disponible</span>
                                         {% else  %}
-                                            <span class="badge badge-secondary">Non available</span>
+                                            <span class="badge badge-secondary">Non disponible</span>
                                         {% endif %}
                                     {% endif %}
                                     </td>
