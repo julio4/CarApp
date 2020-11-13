@@ -170,8 +170,7 @@ class IndexController extends AbstractController
                                 if($rental->getStartDate() >= $this->frDateToEn($savedDates["Start"]))
                                     $isValid = false;
                             }
-                            elseif($rental->getStartDate() <= $this->frDateToEn($savedDates["Start"]) AND $this->frDateToEn($savedDates["Start"]) >= $this->frDateToEn($savedDates["End"])
-                            OR $rental->getStartDate() > $this->frDateToEn($savedDates["Start"]) AND  $rental->getStartDate() < $this->frDateToEn($savedDates["End"])) {
+                            elseif($rental->getEndDate() >= $this->frDateToEn($savedDates["Start"])) {
                                 $isValid = false;
                             }
                         }

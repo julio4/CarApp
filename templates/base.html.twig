@@ -32,7 +32,6 @@
                         <li><a class="dropdown-item" href="{{ path('renter_cars') }}">Véhicules <i class="fas fa-car-alt"></i></a></li>
                         <li><a class="dropdown-item" href="{{ path('renter_rents') }}">Locations <i class="fas fa-receipt"></i></a></li>
                         <li><a class="dropdown-item" href="{{ path('renter_customers') }}">Clients <i class="fas fa-users"></i></a></li>
-                        <li><a class="dropdown-item" href="{{ path('renter_stats') }}">Statistiques <i class="fas fa-chart-area"></i></a></li>
                     {% endif %}
                     {% if is_granted('ROLE_USER') %}
                         <li><a class="dropdown-item" href="{{ path('user_panel') }}">Compte <i class="fas fa-columns"></i></a></li>

@@ -285,19 +285,4 @@ class RenterController extends AbstractController
             return $this->redirect($this->generateUrl('user_rents'));
         }
     }
-
-    /**
-     * @Route ("/statistiques", name="_stats")
-     * @param CarRepository $carRepository
-     * @param UserInterface $user
-     * @return Response
-     */
-    public function stats(CarRepository $carRepository, UserInterface $user){
-
-        $cars = $carRepository->findOwnedBy($user);
-        return $this->render('renter/stats.html.twig', [
-            "Cars" => $cars
-        ]);
-
-    }
 }
