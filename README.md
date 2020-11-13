@@ -193,7 +193,12 @@ php bin/console doctrine:schema:update --force
 symfony server:ca:install
 ```
 
-7. Démarrer le serveur web
+7. (optionel) Charger le cache en avance pour accélérer le site
+```sh
+php bin/console cache:warmup
+```
+
+8. Démarrer le serveur web
 ```sh
 symfony server:start
 ```
