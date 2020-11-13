@@ -81,21 +81,21 @@
                             </thead>
                             <tbody>
                             {% for c in Cars %}
-                                <tr {% if not c.isRented %}class='clickable-row' data-href='{{ path('renter_editCar', { 'id': c.car.id }) }}' style="cursor: pointer;"{% endif %}>
-                                    <th scope="row">{{ c.car.type.name }}</th>
+                                <tr {% if not c.isRented %}class='clickable-row' data-href='{{ path('renter_editCar', { 'id': c.getCar.id }) }}' style="cursor: pointer;"{% endif %}>
+                                    <th scope="row">{{ c.getCar.type.name }}</th>
                                     <td>
                                         <ul>
-                                        {% for key, descr in c.car.features %}
+                                        {% for key, descr in c.getCar.features %}
                                             <li>{{ key }} : {{ descr }}</li>
                                         {% endfor %}
                                         </ul>
                                     </td>
-                                    <td>{{ c.car.price }} €</td>
+                                    <td>{{ c.getCar.price }} €</td>
                                     <td>
                                     {% if c.isRented %}
                                         <span class="badge badge-success">Louée</span>
                                     {% else %}
-                                        {% if c.car.available %}
+                                        {% if c.getCar.available %}
                                             <span class="badge badge-primary">Disponible</span>
                                         {% else  %}
                                             <span class="badge badge-secondary">Non available</span>
@@ -105,7 +105,7 @@
                                     {% if c.isRented %}
                                         <td><a href="#" class="btn btn-sm btn-secondary disabled">En location</a></td>
                                     {% else %}
-                                        <td><a href="{{ path('renter_editCar', { 'id': c.car.id }) }}" class="btn btn-sm btn-primary">Modifier <i class="fas fa-edit"></i></a></td>
+                                        <td><a href="{{ path('renter_editCar', { 'id': c.getCar.id }) }}" class="btn btn-sm btn-primary">Modifier <i class="fas fa-edit"></i></a></td>
                                     {% endif %}
                                 </tr>
                             {% endfor %}

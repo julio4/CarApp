@@ -49,6 +49,34 @@ class UserController extends AbstractController
     }
 
     /**
+     * Met fin à une location mensuelle
+     *
+     * @Route("/stop/{id}", name="_stopMonthlyRent")
+     * @param RentRepository $rentRepository
+     * @return Response
+     */
+    public function stop($id, UserInterface $user, RentRepository $rentRepository)
+    {
+        $rent = $rentRepository->find($id);
+
+        if($rent->getIsMonthlyRecurring()) {
+            if($rent->getUser()->getUsername() == $this->getUser()->getUsername()){
+                $rent->setFinished(true);
+                $this->getDoctrine()->getManager()->flush();
+
+                $this->addFlash('success','La location a été stoppé pour le mois prochain!');
+            }
+            else {
+                $this->addFlash('error','Erreur, location inexistante ou inaccessible!');
+            }
+        }
+        else {
+            $this->addFlash('error','Erreur, vous ne pouvez pas mettre fin à une réservation non mensuelle!');
+        }
+        return $this->redirect($this->generateUrl('user_rents'));
+    }
+
+    /**
      * Permet de payer intégralement la location
      *
      * @Route("/facturation/{id}", name="_billing")
@@ -85,6 +113,33 @@ class UserController extends AbstractController
      * @return RedirectResponse
      */
     public function facturationMois($id, RentRepository $rentRepository, UserInterface $user){
+        $rent = $rentRepository->findOneBy(['id' => $id, 'user' => $user]);
+
+        if($rent != null) {
+            $rent->setPaidMonths($rent->getPaidMonths()+1);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            $this->addFlash('success', 'Paiement mensuel pour la location #'.$id.' effectué avec succès!');
+            return $this->redirect($this->generateUrl('user_rents'));
+        }
+        else {
+            $this->addFlash('danger','Erreur facturation inaccessible ou inexistante!');
+            return $this->redirect($this->generateUrl('user_rents'));
+        }
+    }
+
+    /**
+     * Permet d'annuler
+     *
+     * @Route("/facturation_mois/{id}", name="_RecurringBilling")
+     * @param $id
+     * @param RentRepository $rentRepository
+     * @param UserInterface $user
+     * @return RedirectResponse
+     */
+    public function cancel($id, RentRepository $rentRepository, UserInterface $user){
         $rent = $rentRepository->findOneBy(['id' => $id, 'user' => $user]);
 
         if($rent != null) {

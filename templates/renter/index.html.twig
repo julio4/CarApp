@@ -95,7 +95,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Dernières réservations</h5>
                     <div class="table-responsive">
-                        <table class="table table-sm">
+                        <table class="table table-sm table-hover">
                             <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -107,12 +107,14 @@
                             </thead>
                             <tbody>
                             {% for rent in rentals|slice(0,10) %}
-                            <tr>
-                                <th scope="row">{{ rent.id }}</th>
-                                <td>{{ rent.car.type.name }}</td>
-                                <td>{{ rent.user.email }}</td>
-                                <td>{{ rent.price }} €</td>
-                                <td><a href="#" class="btn btn-sm btn-primary">Voir</a></td>
+                            <tr class='clickable-row' data-href='{{ path('renter_rent_details', { 'id': rent.getRent.id }) }}' style="cursor: pointer;">
+                                <th scope="row">{{ rent.getRent.id }}</th>
+                                <td>{{ rent.getRent.car.type.name }}</td>
+                                <td>{{ rent.getRent.user.email }}</td>
+                                <td>{{ rent.getRent.price }} €</td>
+                                <td>
+                                    <span><a href="{{ path('renter_rent_details', { 'id': rent.getRent.id }) }}" class="btn btn-sm btn-primary">Détails <i class="fas fa-plus-square"></i></a></span>
+                                </td>
                             </tr>
                             {% endfor %}
                             </tbody>
@@ -261,5 +263,11 @@
                 }
             });
         };
+
+        jQuery(document).ready(function($) {
+            $(".clickable-row").click(function() {
+                window.location = $(this).data("href");
+            });
+        });
     </script>
 {% endblock %}

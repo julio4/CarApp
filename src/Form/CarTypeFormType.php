@@ -30,7 +30,6 @@ class CarTypeFormType extends AbstractType
                 'download_label' => 'Télécharger',
                 'download_uri' => true,
                 'image_uri' => true,
-                'imagine_pattern' => 'thumb_4_3',
                 'asset_helper' => true,
             ])
             ->add('save', SubmitType::class, [

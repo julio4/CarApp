@@ -87,6 +87,7 @@
                                         {% if r.nbPaidMonths == 0 %}
                                             <span class="badge badge-success">Payée ce mois</span>
                                             <br>Prochain paiement le <strong>{{ r.nextMonth|date("d/m/Y") }}</strong>
+                                            <br><span><a href="{{ path('user_stopMonthlyRent', { 'id': r.getRent.id }) }}" class="btn btn-sm btn-danger">Stopper la location <i class="fas fa-plus-square"></i></a></span>
                                         {% else %}
                                             <h4>
                                                 <a href="{{ path('user_RecurringBilling', {'id': r.getRent.id }) }}" class="badge badge-warning">

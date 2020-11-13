@@ -89,18 +89,26 @@
                                         {% endif %}
                                     </td>
                                     <td>
-                                        {% if r.ongoing%}
-                                            <span class="badge badge-primary">En cours</span>
-                                        {% elseif l.notStarted %}
-                                            <span class="badge badge-warning">Réservé</span>
+                                        {% if r.getRent.isMonthlyRecurring %}
+                                            {% if r.getRent.finished == 1 %}
+                                                <span class="badge badge-secondary">Terminé</span>
+                                            {% elseif r.ongoing %}
+                                                <span class="badge badge-primary">En cours</span>
+                                            {% else %}
+                                                <span class="badge badge-warning">Réservé</span>
+                                            {% endif %}
                                         {% else %}
-                                            <span class="badge badge-secondary">Terminé</span>
+                                            {% if r.ongoing%}
+                                                <span class="badge badge-primary">En cours</span>
+                                            {% elseif r.notStarted %}
+                                                <span class="badge badge-warning">Réservé</span>
+                                            {% else %}
+                                                <span class="badge badge-secondary">Terminé</span>
+                                            {% endif %}
                                         {% endif %}
                                     </td>
                                     <td>
-                                        {% if l.ongoing%}
-                                            <span><a href="{{ path('renter_rent_details', { 'id': r.getRent.id }) }}" class="btn btn-sm btn-primary">Détails <i class="fas fa-plus-square"></i></a></span>
-                                        {% endif %}
+                                        <span><a href="{{ path('renter_rent_details', { 'id': r.getRent.id }) }}" class="btn btn-sm btn-primary">Détails <i class="fas fa-plus-square"></i></a></span>
                                     </td>
                                 </tr>
                             {% endfor %}

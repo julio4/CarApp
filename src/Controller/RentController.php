@@ -39,6 +39,7 @@ class RentController extends AbstractController
             $rent->setUser($user);
             $rent->setIsPaid(false);
             $rent->setPaidMonths(0);
+            $rent->setFinished(false);
 
             if (!$estRecurrent) {
                 if ($this->isValidCookieDates()) {

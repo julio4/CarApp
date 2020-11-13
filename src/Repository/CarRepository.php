@@ -75,7 +75,7 @@ class CarRepository extends ServiceEntityRepository
             ->leftJoin('App\Entity\Rent','rent', Expr\Join::WITH, 'car.id = rent.car')
             ->andWhere('car.renter = :renter')
             ->setParameter('renter', $renter)
-            ->select('car as car, 
+            ->select('car as getCar,
             IFELSE(rent.isMonthlyRecurring = 1 AND rent.startDate <= :now OR rent.startDate <= :now AND rent.endDate >= :now
                 ,1
                 ,0

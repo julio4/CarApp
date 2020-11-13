@@ -16,7 +16,7 @@
                         </a>
                         <div class='row align-items-center'>
                             <div class="col-8">
-                                <img src="{{ vich_uploader_asset(type, 'imageFile', 'App\\Entity\\CarType') | imagine_filter('photo_medium') }}" class="img-fluid d-block mx-auto mb-3" alt="">
+                                <img src="{{ asset(vich_uploader_asset(type, 'imageFile', 'App\\Entity\\CarType')) }}" class="img-fluid d-block mx-auto mb-3" alt="">
                             </div>
                             <div class="col-4">
                                 <h5>{{ type.name }}</h5>
@@ -79,7 +79,7 @@
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <img class="img-fluid d-block rounded" alt="{{car.image.name}}"
-                                                     src="{{ vich_uploader_asset(car, 'imageFile', 'App\\Entity\\Car') | imagine_filter('photo_medium') }}" />
+                                                     src="{{ asset(vich_uploader_asset(car, 'imageFile', 'App\\Entity\\Car')) }}" />
                                             </div>
                                             <div class="col-md-4">
                                                 <dl>

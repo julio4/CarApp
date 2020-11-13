@@ -44,7 +44,7 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ path('renter_panel') }}">Panel</a></li>
             <li class="breadcrumb-item"><a href="{{ path('renter_customers') }}">Clients</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Facturation #{{ client.id }}</li>
+            <li class="breadcrumb-item active" aria-current="page">Facturation #{{ customer.id }}</li>
         </ol>
     </nav>
 {% endblock %}
@@ -122,31 +122,31 @@
                             </thead>
                             <tbody>
                             {% for r in rentals %}
-                                <tr class='clickable-row' data-href='{{ path('renter_rent_details', { 'id': l.rent.id }) }}' style="cursor: pointer;">
-                                    <th scope="row">{{ r.rent.id }}</th>
-                                    <td>{{ r.rent.car.type.name }}</td>
-                                    <td>{{ r.rent.startDate|date("m/d/Y") }}
-                                        {% if not r.rent.isMonthlyRecurring %}
-                                            - {{ r.rent.endDate|date("m/d/Y") }}
+                                <tr class='clickable-row' data-href='{{ path('renter_rent_details', { 'id': r.getRent.id }) }}' style="cursor: pointer;">
+                                    <th scope="row">{{ r.getRent.id }}</th>
+                                    <td>{{ r.getRent.car.type.name }}</td>
+                                    <td>{{ r.getRent.startDate|date("m/d/Y") }}
+                                        {% if not r.getRent.isMonthlyRecurring %}
+                                            - {{ r.getRent.endDate|date("m/d/Y") }}
                                         {% else %}
                                             <span class="badge badge-warning">Mensuel</span>
                                         {% endif %}</td>
                                     <td>
-                                        {{ r.rent.price }} €
-                                        {% if r.rent.isMonthlyRecurring %}
+                                        {{ r.getRent.price }} €
+                                        {% if r.getRent.isMonthlyRecurring %}
                                             /mois
                                         {% endif %}
                                     </td>
                                     <td>
 
-                                        {% if r.rent.isMonthlyRecurring %}
+                                        {% if r.getRent.isMonthlyRecurring %}
                                             {% if r.toPay > 0 %}
                                                 <span class="badge badge-danger">En attente du paiement de {{ r.toPay }} €</span>
                                             {% else %}
                                                 <span class="badge badge-success">Payée ce mois</span>
                                             {% endif %}
                                         {% else %}
-                                            {% if r.rent.isPaid %}
+                                            {% if r.getRent.isPaid %}
                                                 <span class="badge badge-success">Payée</span>
                                             {% else %}
                                                 {% if r.toPay > 0 %}
@@ -166,7 +166,7 @@
                                     </td>
                                     <td>
                                         {% if r.ongoing%}
-                                            <span><a href="{{ path('renter_rent_details', { 'id': r.rent.id }) }}" class="btn btn-sm btn-primary">Détails <i class="fas fa-plus-square"></i></a></span>
+                                            <span><a href="{{ path('renter_rent_details', { 'id': r.getRent.id }) }}" class="btn btn-sm btn-primary">Détails <i class="fas fa-plus-square"></i></a></span>
                                         {% endif %}
                                     </td>
                                 </tr>

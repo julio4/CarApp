@@ -22,7 +22,7 @@ security:
                 authenticators:
                     - App\Security\Authenticator
             logout:
-                path: app_deconnexion
+                path: app_logout
                 # where to redirect after logout
                 target: index_home
 

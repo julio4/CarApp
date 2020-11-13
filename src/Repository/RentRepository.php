@@ -31,7 +31,7 @@ class RentRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('rent')
             ->innerJoin('App\Entity\Car','car', Expr\Join::WITH, 'car.id = rent.car')
-            ->andWhere('rent.id = :id AND car.renter = :renter')
+            ->andWhere('rent.id = :id AND car.renter = :renter AND rent.finished = 0')
             ->setParameter('id', $id)
             ->setParameter('renter', $renter)
             ->getQuery()
@@ -39,12 +39,11 @@ class RentRepository extends ServiceEntityRepository
             ;
     }
 
-    //TODO ici mise en forme
     public function findWithNbMoisAPayee($user)
     {
         return $this->createQueryBuilder('rent')
             ->innerJoin('App\Entity\Car','car', Expr\Join::WITH, 'car.id = rent.car')
-            ->andWhere('rent.user = :user')
+            ->andWhere('rent.user = :user AND rent.finished = 0')
             ->select('rent as getRent, 
             IFELSE
             (rent.isMonthlyRecurring = 1,
@@ -95,7 +94,7 @@ class RentRepository extends ServiceEntityRepository
             ->innerJoin('App\Entity\Car','car', Expr\Join::WITH, 'car.id = rent.car')
             ->innerJoin('App\Entity\CarType','type', Expr\Join::WITH, 'type.id = car.type')
             ->innerJoin('App\Entity\User','user', Expr\Join::WITH, 'rent.user = user.id')
-            ->andWhere('car.renter = :renter AND rent.user = :user')
+            ->andWhere('car.renter = :renter AND rent.user = :user AND rent.finished = 0')
             ->setParameter('renter', $renter)
             ->setParameter('user', $user)
             ->orderBy('rent.startDate', 'DESC')
@@ -126,13 +125,15 @@ class RentRepository extends ServiceEntityRepository
             OR rent.startDate <= CURRENT_DATE() AND rent.endDate >= CURRENT_DATE(),1,0) as ongoing, 
             IFELSE
             (rent.isMonthlyRecurring = 1,
+                IFELSE(rent.finished = 0,
                 (
                     (
                         DIV(DATEDIFF(CURRENT_DATE(),rent.startDate),30)+1
                         - rent.paidMonths
                     )
                     * rent.price
-                )
+                ),
+                0)
                 ,IFELSE
                 (rent.isPaid = 1,
                     0,

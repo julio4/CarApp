@@ -32,10 +32,10 @@ class RenterController extends AbstractController
      * @param UserRepository $userRepository
      * @return Response
      */
-    public function dashboard(RentRepository $rentRepository, UserRepository $userRepository)
+    public function dashboard(RentRepository $rentRepository, UserRepository $userRepository, UserInterface $user)
     {
-        $rents = $rentRepository->findAll();
-        $nbCustomers = $userRepository->countCustomers();
+        $rents = $rentRepository->findRenter($user);
+        $nbCustomers = count($userRepository->findByRentalsOfRenter($user));
 
         return $this->render('renter/index.html.twig', [
             'rentals' => $rents,
