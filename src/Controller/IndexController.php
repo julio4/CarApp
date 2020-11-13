@@ -20,9 +20,18 @@ use Symfony\Component\Routing\Annotation\Route;
 class IndexController extends AbstractController
 {
     /**
+     * autoredirect
+     * @Route("/", name="_home_redirect")
+     */
+    public function home_redirect(CarTypeRepository $carTypeRepository, Request $request)
+    {
+        return $this->redirect($this->generateUrl('index_home',['page' => 1]));
+    }
+
+    /**
      * La page d'accueil du site
      *
-     * @Route("/{page}", defaults={"page"=1}, name="_home")
+     * @Route("/page/{page}", defaults={"page"=1}, name="_home")
      * @param CarTypeRepository $carTypeRepository
      * @param Request $request
      * @return RedirectResponse|Response
