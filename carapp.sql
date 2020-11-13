@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 13, 2020 at 08:04 PM
+-- Generation Time: Nov 13, 2020 at 09:50 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.11
 
@@ -147,6 +147,21 @@ CREATE TABLE `rent` (
   `finished` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `rent`
+--
+
+INSERT INTO `rent` (`id`, `user_id`, `car_id`, `start_date`, `end_date`, `is_monthly_recurring`, `price`, `is_paid`, `paid_months`, `duration`, `finished`) VALUES
+(1, 3, 8, '2020-11-16', '2020-11-19', 0, 152, 1, 0, 4, 0),
+(2, 3, 27, '2020-11-13', '2020-11-20', 0, 720, 1, 0, 8, 0),
+(3, 3, 19, '2020-11-26', '2020-11-27', 0, 574, 0, 0, 2, 0),
+(4, 3, 36, '2020-11-14', NULL, 1, 648, 0, 1, NULL, 0),
+(5, 4, 17, '2020-11-13', NULL, 1, 1593, 0, 1, NULL, 0),
+(6, 4, 38, '2020-11-13', '2020-11-25', 0, 832, 1, 0, 13, 0),
+(7, 4, 4, '2020-11-18', '2020-12-08', 0, 1890, 1, 0, 21, 0),
+(8, 5, 21, '2020-11-13', NULL, 1, 14850, 0, 1, NULL, 0),
+(9, 5, 11, '2020-10-13', '2020-10-15', 0, 267, 1, 0, 3, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -167,7 +182,10 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `name`, `roles`, `password`, `email`) VALUES
 (1, 'admin', '[\"ROLE_ADMIN\"]', '$argon2id$v=19$m=65536,t=4,p=1$aWNNVVFhdkRzSC9oS3c0Wg$C9pBQsJRlQXrwNu8x5/7jo91YdbyHLxSKkkhLbe8DA4', 'admin@carapp.com'),
-(2, 'loueur', '[\"ROLE_LOUEUR\"]', '$argon2id$v=19$m=65536,t=4,p=1$OUlaSGlFYUE4QUZEWWVTaA$5O7joZmEz5FxkUXMD46IvCT7SW6RBhpWBJxBLvEAfp0', 'loueur@carapp.com');
+(2, 'loueur', '[\"ROLE_LOUEUR\"]', '$argon2id$v=19$m=65536,t=4,p=1$OUlaSGlFYUE4QUZEWWVTaA$5O7joZmEz5FxkUXMD46IvCT7SW6RBhpWBJxBLvEAfp0', 'loueur@carapp.com'),
+(3, 'Daisi Carignan', '[\"ROLE_USER\"]', '$argon2id$v=19$m=65536,t=4,p=1$ZkgvS1BTZ1cvWi9YNXpuTw$ZmiWGqlBToTQXSbt8+1EKJvOA59dkQ7MThjylJgGWh4', 'daisi.carignan@gmail.com'),
+(4, 'Ernest Bonenfant', '[\"ROLE_USER\"]', '$argon2id$v=19$m=65536,t=4,p=1$Nm0yNzAweS92dDJvTTlrNg$2csv1JSLxNZb8TRErF16xgnMLuInJxK26kM6gRLNH4M', 'ernest.bonenfant@gmail.com'),
+(5, 'Alita Robert', '[\"ROLE_USER\"]', '$argon2id$v=19$m=65536,t=4,p=1$ejROcEVrU2h4Y2NaNU5kaQ$R+GiyS+0Fj+COvoIsVK1Tnku4SNB8zvwxZCQb4BpEtg', 'alita.robert@gmail.com');
 
 --
 -- Indexes for dumped tables
@@ -223,13 +241,13 @@ ALTER TABLE `car_type`
 -- AUTO_INCREMENT for table `rent`
 --
 ALTER TABLE `rent`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables
