@@ -29,8 +29,8 @@ class User implements UserInterface
      * @Assert\Length (
      *      min = 2,
      *      max = 50,
-     *      minMessage = "Votre nom doit contenir au minimum {{ limit }} caractères",
-     *      maxMessage = "Votre nom peut contenir au maximum {{ limit }} caractères",
+     *      minMessage = "Votre mot de passe doit contenir au minimum {{ limit }} caractères",
+     *      maxMessage = "Votre mot de passe peut contenir au maximum {{ limit }} caractères",
      *      allowEmptyString=false
      * )
      * @Assert\Regex(

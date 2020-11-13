@@ -147,7 +147,6 @@ class IndexController extends AbstractController
             if($this->isValidDate($this->get('session')->get('startDate'))) {
                 $cars = $carRepository
                     ->findAllAvailableByTypeAt($this->frDateToEn($this->get('session')->get('startDate')),$type);
-                dump($cars);
             }
             else {
                 $this->addFlash('danger','Veuillez préciser une date de début');
@@ -159,15 +158,26 @@ class IndexController extends AbstractController
                     "Start" => $this->get('session')->get('startDate'),
                     "End" => $this->get('session')->get('endDate')];
 
-                $cars_temp = $carRepository->findAllAvailableByTypeBetween( $type,
-                    $this->frDateToEn($savedDates["Start"]),
-                    $this->frDateToEn($savedDates["End"])
-                );
-                $nbOfRents = $carRepository->countRents($type);
+                $temp = $carRepository->findAllAvailableByTypeBetween($type);
                 $cars = array();
-                for($i = 0; $i < count($cars_temp); $i++) {
-                    if($cars_temp[$i][1] == $nbOfRents[$i][1])
-                        $cars[] = $cars_temp[$i][0];
+                for($i = 1; $i < count($temp); $i++){
+                    if(count($temp[$i]->getRentals()) == 0)
+                        $cars[] = $temp[$i];
+                    else {
+                        $isValid = true;
+                        foreach ($temp[$i]->getRentals() as $rental) {
+                            if($rental->getIsMonthlyRecurring() AND !$rental->getFinished()) {
+                                if($rental->getStartDate() >= $this->frDateToEn($savedDates["Start"]))
+                                    $isValid = false;
+                            }
+                            elseif($rental->getStartDate() <= $this->frDateToEn($savedDates["Start"]) AND $this->frDateToEn($savedDates["Start"]) >= $this->frDateToEn($savedDates["End"])
+                            OR $rental->getStartDate() > $this->frDateToEn($savedDates["Start"]) AND  $rental->getStartDate() < $this->frDateToEn($savedDates["End"])) {
+                                $isValid = false;
+                            }
+                        }
+                        if($isValid)
+                            $cars[] = $temp[$i];
+                    }
                 }
             }
         else {

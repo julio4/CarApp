@@ -134,21 +134,12 @@ class CarRepository extends ServiceEntityRepository
      * @param $endDate
      * @return Car[] Retourne les véhicules d'un type donné available pour une réservation entre les dates précisées
      */
-    public function findAllAvailableByTypeBetween(CarType $type,\DateTime $startDate,\DateTime $endDate)
+    public function findAllAvailableByTypeBetween(CarType $type)
     {
         $qb = $this->createQueryBuilder('car')
             ->andWhere('car.type = :type')
             ->setParameter('type', $type)
             ->leftJoin('App\Entity\Rent', 'rent', Expr\Join::WITH, 'car.id = rent.car')
-            ->andWhere('rent IS NULL
-            OR(
-                (rent.startDate < :startDate AND rent.endDate < :startDate)
-                OR
-                (rent.startDate > :endDate AND rent.endDate > :endDate)
-            )')
-            ->addSelect('COUNT(rent)')
-            ->setParameter('startDate', $startDate->format('Y-m-d'))
-            ->setParameter('endDate', $endDate->format('Y-m-d'))
             ->andWhere('car.isArchived <> 1')
             ->andWhere('car.available = 1');
 
