@@ -4,7 +4,13 @@
 
 {% block sidebard %}
     <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="{{ path('admin_panel_utilisateur') }}">
+        <a class="nav-link active" aria-current="page" href="{{ path("admin_panel") }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            <span class="ml-2">Accueil</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ path('admin_panel_utilisateur') }}">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
             <span class="ml-2">Utilisateurs</span>
         </a>
@@ -31,8 +37,8 @@
         <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
             <div class="card rounded shadow-sm border-0">
                 <div class="card-body p-4 text-center">
-                    <p class="card-title">Réservations</p>
-                    <h2 class="card-text">_TODO</h2>
+                    <p class="card-title">Locations</p>
+                    <h2 class="card-text">{{ nbLocations }}</h2>
                 </div>
             </div>
         </div>
@@ -40,8 +46,8 @@
         <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
             <div class="card rounded shadow-sm border-0">
                 <div class="card-body p-4 text-center">
-                    <p class="card-title">Véhicules loués</p>
-                    <h2 class="card-text">_TODO</h2>
+                    <p class="card-title">Total des véhicules</p>
+                    <h2 class="card-text">{{ nbVehicules }}</h2>
                 </div>
             </div>
         </div>
@@ -49,8 +55,8 @@
         <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
             <div class="card rounded shadow-sm border-0">
                 <div class="card-body p-4 text-center">
-                    <p class="card-title">Revenue Totaux</p>
-                    <h2 class="card-text">_TODO</h2>
+                    <p class="card-title">Revenue totaux</p>
+                    <h2 class="card-text">{{ totalRevenus }} €</h2>
                 </div>
             </div>
         </div>
