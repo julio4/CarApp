@@ -6,13 +6,7 @@
     <li class="nav-item">
         <a class="nav-link active" aria-current="page" href="{{ path("admin_panel") }}">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-            <span class="ml-2">Accueil</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{{ path('admin_panel_utilisateur') }}">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-            <span class="ml-2">Utilisateurs</span>
+            <span class="ml-2">Administration</span>
         </a>
     </li>
 {% endblock %}
@@ -52,6 +46,15 @@
             </div>
         </div>
 
+        {% set totalRevenus = 0 %}
+        {% for r in rent %}
+            {% if r.isMonthlyRecurring %}
+                {% set totalRevenus = totalRevenus + (r.price * r.paidMonths) %}
+            {% elseif r.isPaid %}
+                {% set totalRevenus = totalRevenus + r.price %}
+            {% endif %}
+        {% endfor %}
+
         <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
             <div class="card rounded shadow-sm border-0">
                 <div class="card-body p-4 text-center">
@@ -61,5 +64,67 @@
             </div>
         </div>
 
+    </div>
+
+    <div class="row">
+
+        <h1 class="h2">Gérer les utilisateurs</h1>
+
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        <div class="col-12">
+            <div class="card rounded shadow-sm border-0">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                            <tr>
+                                <th scope="col">id</th>
+                                <th scope="col">Nom</th>
+                                <th scope="col">email</th>
+                                <th scope="col">role</th>
+                                <th scope="col"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for user in users %}
+                                <tr>
+                                    <th scope="row">{{ user.id }}</th>
+                                    <td>{{ user.name }}</td>
+                                    <td>{{ user.email }}</td>
+                                    <td>
+                                        {% for role in user.roles %}
+                                            {{ role }}
+                                        {% endfor %}
+                                    </td>
+                                    <td>
+                                        {% if "ROLE_ADMIN" in user.roles %}
+                                            <a href="{{ path('admin_panel') }}" class="btn btn-sm btn-danger disabled">Supprimer</a>
+                                        {% else %}
+                                            {% if "ROLE_USER" in user.roles %}
+                                                <a href="{{ path('admin_panel_utilisateur_loueur', {id: user.id}) }}" class="btn btn-sm btn-primary">Définir Loueur</a>
+                                            {% elseif "ROLE_LOUEUR" in user.roles %}
+                                                <a href="{{ path('admin_panel_utilisateur_utilisateur', {id: user.id}) }}" class="btn btn-sm btn-secondary">Définir Utilisateur</a>
+                                            {% endif %}
+                                            <a href="{{ path('admin_panel_utilisateur_supprimer', {id: user.id}) }}" class="btn btn-sm btn-danger">Supprimer</a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}

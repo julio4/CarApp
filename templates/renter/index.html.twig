@@ -49,34 +49,34 @@
     <!-- résumé cards-->
     <div class="row equal my-4">
 
-        <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
+        {% set totalRevenus = 0 %}
+        {% for r in rentals %}
+            {% if r.getRent.isMonthlyRecurring %}
+                {% set totalRevenus = totalRevenus + (r.getRent.price * r.getRent.paidMonths) %}
+            {% elseif r.getRent.isPaid %}
+                {% set totalRevenus = totalRevenus + r.getRent.price %}
+            {% endif %}
+        {% endfor %}
+
+        <div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
             <div class="card rounded shadow-sm border-0">
                 <div class="card-body p-4 text-center">
                     <p class="card-title">Revenus</p>
-                    <h2 class="card-text">_TODO</h2>
+                    <h2 class="card-text">{{ totalRevenus }} €</h2>
                 </div>
             </div>
         </div>
 
-        <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
+        <div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
             <div class="card rounded shadow-sm border-0">
                 <div class="card-body p-4 text-center">
                     <p class="card-title">Réservations</p>
-                    <h2 class="card-text">_TODO</h2>
+                    <h2 class="card-text">{{ rentals|length }}</h2>
                 </div>
             </div>
         </div>
 
-        <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
-            <div class="card rounded shadow-sm border-0">
-                <div class="card-body p-4 text-center">
-                    <p class="card-title">Véhicules loués</p>
-                    <h2 class="card-text">_TODO%</h2>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
+        <div class="col-12 col-md-12 col-lg-4 mb-4 mb-lg-0">
             <div class="card rounded shadow-sm border-0">
                 <div class="card-body p-4 text-center">
                     <p class="card-title">Clients</p>
@@ -90,7 +90,7 @@
     <div class="row">
         <!-- Dernières réservations-->
 {#        TODO clickable array#}
-        <div class="col-12 col-xl-8 mb-4 mb-lg-0">
+        <div class="col-12 col-xl-12 mb-12 mb-lg-0">
             <div class="card rounded shadow-sm border-0">
                 <div class="card-body">
                     <h5 class="card-title">Dernières réservations</h5>
@@ -124,145 +124,145 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 col-xl-4">
+{#        <div class="col-12 col-xl-4">#}
 
-            <div class="card rounded shadow-sm border-0 mb-4">
-                <div class="card-body">
-                    <h5 class="card-title">Revenus sur 6 mois</h5>
-                    <canvas id="revChart"></canvas>
-                </div>
-            </div>
+{#            <div class="card rounded shadow-sm border-0 mb-4">#}
+{#                <div class="card-body">#}
+{#                    <h5 class="card-title">Revenus sur 6 mois</h5>#}
+{#                    <canvas id="revChart"></canvas>#}
+{#                </div>#}
+{#            </div>#}
 
-            <div class="card rounded shadow-sm border-0">
-                <div class="card-body">
-                    <h5 class="card-title">Réservations sur 6 mois</h5>
-                    <canvas id="resChart"></canvas>
-                </div>
-            </div>
+{#            <div class="card rounded shadow-sm border-0">#}
+{#                <div class="card-body">#}
+{#                    <h5 class="card-title">Réservations sur 6 mois</h5>#}
+{#                    <canvas id="resChart"></canvas>#}
+{#                </div>#}
+{#            </div>#}
 
-        </div>
+{#        </div>#}
     </div>
 {% endblock %}
 
 {% block panel_scripts %}
     {{ encore_entry_script_tags('diagram') }}
     <script>
-        var MOIS = ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet']
-        var revData = {
-            labels: MOIS,
-            datasets: [{
-                label: 'Revenues',
-                borderColor: window.chartColors.green,
-                backgroundColor: window.chartColors.green,
-                fill: false,
-                data: [
-                    0,
-                    10,
-                    20,
-                    35,
-                    60,
-                    78,
-                    99
-                ],
-                yAxisID: 'y-axis-1',
-            }
-            ]
-        };
-        var resData = {
-            labels: MOIS,
-            datasets: [{
-                label: 'Revenues',
-                borderColor: window.chartColors.blue,
-                backgroundColor: window.chartColors.blue,
-                fill: false,
-                data: [
-                    14,
-                    18,
-                    20,
-                    14,
-                    25,
-                    46,
-                    54
-                ],
-                yAxisID: 'y-axis-1',
-            }
-            ]
-        };
+        // var MOIS = ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet']
+        // var revData = {
+        //     labels: MOIS,
+        //     datasets: [{
+        //         label: 'Revenues',
+        //         borderColor: window.chartColors.green,
+        //         backgroundColor: window.chartColors.green,
+        //         fill: false,
+        //         data: [
+        //             0,
+        //             10,
+        //             20,
+        //             35,
+        //             60,
+        //             78,
+        //             99
+        //         ],
+        //         yAxisID: 'y-axis-1',
+        //     }
+        //     ]
+        // };
+        // var resData = {
+        //     labels: MOIS,
+        //     datasets: [{
+        //         label: 'Revenues',
+        //         borderColor: window.chartColors.blue,
+        //         backgroundColor: window.chartColors.blue,
+        //         fill: false,
+        //         data: [
+        //             14,
+        //             18,
+        //             20,
+        //             14,
+        //             25,
+        //             46,
+        //             54
+        //         ],
+        //         yAxisID: 'y-axis-1',
+        //     }
+        //     ]
+        // };
 
-        window.onload = function() {
-            var ctx = document.getElementById('revChart').getContext('2d');
-            window.revChart = Chart.Line(ctx, {
-                data: revData,
-                options: {
-                    responsive: true,
-                    hoverMode: 'index',
-                    stacked: false,
-                    scales: {
-                        yAxes: [{
-                            type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
-                            display: true,
-                            position: 'left',
-                            id: 'y-axis-1',
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'Revenues'
-                            },
-                            ticks: {
-                                beginAtZero: true,
-                                callback: function(value, index, values) {
-                                    return value + ' €';
-                                }
-                            }
-                        }, {
-                            type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
-                            display: true,
-                            position: 'right',
-                            id: 'y-axis-2',
-
-                            // grid line settings
-                            gridLines: {
-                                drawOnChartArea: false, // only want the grid lines for one axis to show up
-                            },
-                        }],
-                    }
-                }
-            });
-
-            var ctx2 = document.getElementById('resChart').getContext('2d');
-            window.resChart = Chart.Line(ctx2, {
-                data: resData,
-                options: {
-                    responsive: true,
-                    hoverMode: 'index',
-                    stacked: false,
-                    scales: {
-                        yAxes: [{
-                            type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
-                            display: true,
-                            position: 'left',
-                            id: 'y-axis-1',
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'Réservations'
-                            },
-                            ticks: {
-                                beginAtZero: true,
-                            }
-                        }, {
-                            type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
-                            display: true,
-                            position: 'right',
-                            id: 'y-axis-2',
-
-                            // grid line settings
-                            gridLines: {
-                                drawOnChartArea: false, // only want the grid lines for one axis to show up
-                            },
-                        }],
-                    }
-                }
-            });
-        };
+        // window.onload = function() {
+        //     var ctx = document.getElementById('revChart').getContext('2d');
+        //     window.revChart = Chart.Line(ctx, {
+        //         data: revData,
+        //         options: {
+        //             responsive: true,
+        //             hoverMode: 'index',
+        //             stacked: false,
+        //             scales: {
+        //                 yAxes: [{
+        //                     type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+        //                     display: true,
+        //                     position: 'left',
+        //                     id: 'y-axis-1',
+        //                     scaleLabel: {
+        //                         display: true,
+        //                         labelString: 'Revenues'
+        //                     },
+        //                     ticks: {
+        //                         beginAtZero: true,
+        //                         callback: function(value, index, values) {
+        //                             return value + ' €';
+        //                         }
+        //                     }
+        //                 }, {
+        //                     type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+        //                     display: true,
+        //                     position: 'right',
+        //                     id: 'y-axis-2',
+        //
+        //                     // grid line settings
+        //                     gridLines: {
+        //                         drawOnChartArea: false, // only want the grid lines for one axis to show up
+        //                     },
+        //                 }],
+        //             }
+        //         }
+        //     });
+        //
+        //     var ctx2 = document.getElementById('resChart').getContext('2d');
+        //     window.resChart = Chart.Line(ctx2, {
+        //         data: resData,
+        //         options: {
+        //             responsive: true,
+        //             hoverMode: 'index',
+        //             stacked: false,
+        //             scales: {
+        //                 yAxes: [{
+        //                     type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+        //                     display: true,
+        //                     position: 'left',
+        //                     id: 'y-axis-1',
+        //                     scaleLabel: {
+        //                         display: true,
+        //                         labelString: 'Réservations'
+        //                     },
+        //                     ticks: {
+        //                         beginAtZero: true,
+        //                     }
+        //                 }, {
+        //                     type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+        //                     display: true,
+        //                     position: 'right',
+        //                     id: 'y-axis-2',
+        //
+        //                     // grid line settings
+        //                     gridLines: {
+        //                         drawOnChartArea: false, // only want the grid lines for one axis to show up
+        //                     },
+        //                 }],
+        //             }
+        //         }
+        //     });
+        // };
 
         jQuery(document).ready(function($) {
             $(".clickable-row").click(function() {

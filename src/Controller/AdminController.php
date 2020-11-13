@@ -2,10 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\Location;
+use App\Entity\Car;
+use App\Entity\Rent;
 use App\Entity\User;
-use App\Entity\Vehicule;
-use App\Repository\LocationRepository;
+use App\Repository\RentRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -23,34 +23,24 @@ class AdminController extends AbstractController
      * La page d'accueil du panel
      *
      * @Route("/", name="_panel")
+     * @param UserRepository $userRepository
+     * @param RentRepository $rentRepository
+     * @return Response
      */
-    public function panel(LocationRepository $locationRepository)
+    public function panel(UserRepository $userRepository, RentRepository $rentRepository)
     {
         $em = $this->getDoctrine()->getManager();
         $nbUser = $em->getRepository(User::class)->count(array());
-        $nbLocations = $em->getRepository(Location::class)->count(array());
-        $nbVehicules = $em->getRepository(Vehicule::class)->count(array());
-        $totalRevenus =  $locationRepository->totalRevenus();
+        $nbLocations = $em->getRepository(Rent::class)->count(array());
+        $nbVehicules = $em->getRepository(Car::class)->count(array());
+        $rent =  $rentRepository->findAll();
+        $users = $userRepository->findAll();
 
         return $this->render('admin/index.html.twig', [
             'nbUsers' => $nbUser,
             'nbLocations' => $nbLocations,
             'nbVehicules' => $nbVehicules,
-            'totalRevenus' => $totalRevenus
-        ]);
-    }
-
-    /**
-     * Affiche touts les utilisateurs inscrits sur le site
-     *
-     * @Route("/utilisateurs", name="_panel_utilisateur")
-     * @param UserRepository $userRepository
-     * @return Response
-     */
-    public function panel_userManager(UserRepository $userRepository)
-    {
-        $users = $userRepository->findAll();
-        return $this->render('admin/users.html.twig', [
+            'rent' => $rent,
             'users' => $users
         ]);
     }
@@ -69,11 +59,11 @@ class AdminController extends AbstractController
 
         if (!$user) {
             $this->addFlash('error','Utilisateur ' . $id . ' non existant!');
-            return $this->redirect($this->generateUrl('admin_panel_utilisateur'));
+            return $this->redirect($this->generateUrl('admin_panel'));
         }
         elseif ($user->checkIfAdmin()) {
             $this->addFlash('error','Aucune modification possible sur un utilisateur administrateur ');
-            return $this->redirect($this->generateUrl('admin_panel_utilisateur'));
+            return $this->redirect($this->generateUrl('admin_panel'));
         }
 
         $em = $this->getDoctrine()->getManager();
@@ -82,7 +72,7 @@ class AdminController extends AbstractController
 
         $this->addFlash('success','Utilisateur supprimé !');
 
-        return $this->redirect($this->generateUrl('admin_panel_utilisateur'));
+        return $this->redirect($this->generateUrl('admin_panel'));
     }
 
     /**
@@ -99,11 +89,11 @@ class AdminController extends AbstractController
 
         if (!$user) {
             $this->addFlash('error','Utilisateur ' . $id . ' non existant!');
-            return $this->redirect($this->generateUrl('admin_panel_utilisateur'));
+            return $this->redirect($this->generateUrl('admin_panel'));
         }
         elseif ($user->checkIfAdmin()) {
             $this->addFlash('error','Aucune modification possible sur un utilisateur administrateur ');
-            return $this->redirect($this->generateUrl('admin_panel_utilisateur'));
+            return $this->redirect($this->generateUrl('admin_panel'));
         }
 
         $roles = ["ROLE_LOUEUR"];
@@ -112,7 +102,7 @@ class AdminController extends AbstractController
 
         $this->addFlash('success','Utilisateur ' . $id . ' a maintenant le rôle de Loueur !');
 
-        return $this->redirect($this->generateUrl('admin_panel_utilisateur'));
+        return $this->redirect($this->generateUrl('admin_panel'));
     }
 
     /**
@@ -129,11 +119,11 @@ class AdminController extends AbstractController
 
         if (!$user) {
             $this->addFlash('error','Utilisateur ' . $id . ' non existant!');
-            return $this->redirect($this->generateUrl('admin_panel_utilisateur'));
+            return $this->redirect($this->generateUrl('admin_panel'));
         }
         elseif ($user->checkIfAdmin()) {
             $this->addFlash('error','Aucune modification possible sur un utilisateur administrateur ');
-            return $this->redirect($this->generateUrl('admin_panel_utilisateur'));
+            return $this->redirect($this->generateUrl('admin_panel'));
         }
 
         $roles = ["ROLE_USER"];
@@ -142,6 +132,6 @@ class AdminController extends AbstractController
 
         $this->addFlash('success','Utilisateur ' . $id . ' a maintenant le rôle d\'utilisateur !');
 
-        return $this->redirect($this->generateUrl('admin_panel_utilisateur'));
+        return $this->redirect($this->generateUrl('admin_panel'));
     }
 }

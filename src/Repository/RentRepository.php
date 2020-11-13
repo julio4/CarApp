@@ -175,13 +175,15 @@ class RentRepository extends ServiceEntityRepository
             ;
     }
 
-    public function totalRevenus(){
+    public function totalRevenus($renter){
         return $this->createQueryBuilder('l')
-            ->select('sum(l.prix)')
-            ->where('l.estPayee = :valeur')
-            ->setParameter('valeur', '1')
+            ->innerJoin('App\Entity\Car','car', Expr\Join::WITH, 'car.id = l.car')
+            ->andWhere('l.isMonthlyRecurring = 0 AND l.isPaid = 1 OR l.isMonthlyRecurring = 1')
+            ->andWhere('car.renter = :renter')
+            ->setParameter('renter', $renter)
+            ->select('sum(l.price) as total')
             ->getQuery()
-            ->getSingleScalarResult()
+            ->getResult()
             ;
     }
 }
