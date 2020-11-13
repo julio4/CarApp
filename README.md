@@ -150,17 +150,22 @@ php -r "unlink('composer-setup.php');"
 
 ### Démarrage
 
-1. Cloner le repos, ou télécharger l'archive correspondante dans votre IDE
+1. Vérifier la configuration de symfony
 ```sh
+symfony check:requirements
+```
+2. Cloner le repos, ou télécharger l'archive correspondante dans votre IDE
+```sh
+cd /carapp
 git clone https://github.com/julio4/CarApp.git
 ```
-2. Installer les dépendances
+3. Installer les dépendances
 ```sh
 composer install
 ```
-3. Démarrer le serveur mySql (exemple: [XAMPP](https://www.apachefriends.org/fr/index.html))
+4. Démarrer le serveur mySql (exemple: [XAMPP](https://www.apachefriends.org/fr/index.html))
 
-4. Configurer la base de données
+5. Configurer la base de données
 
 ##### A partir de notre base 
 Importer la base dans mysql avec l'aide du script ```carapp.sql```
@@ -183,12 +188,12 @@ php bin/console doctrine:schema:update --force
   php bin/console doctrine:fixtures:load
 ```
   
-5. (optionel) Installer les certificats
+6. (optionel) Installer les certificats
 ```sh
 symfony server:ca:install
 ```
 
-6. Démarrer le serveur web
+7. Démarrer le serveur web
 ```sh
 symfony server:start
 ```
