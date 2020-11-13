@@ -25,7 +25,6 @@
 * [Prérequis](#prérequis)
 * [Démarrage](#démarrage)
 * [Utilisation](#utilisation)
-* [Pré-Rapport](#pré-rapport)
 * [Contact](#contact)
 
 
@@ -120,7 +119,7 @@ Cette application web utilise certaines technologies et frameworks:
 * [Symfony 5](https://symfony.com/)
 * [Node.js](https://nodejs.org/en/)
 
-Une liste des dépendances est available XXXXXXXXXXXXXXX
+Une liste des dépendances est disponible ci-dessous
 
 
 <!-- Installation -->
@@ -153,47 +152,54 @@ php -r "unlink('composer-setup.php');"
 
 1. Cloner le repos, ou télécharger l'archive correspondante dans votre IDE
 ```sh
-git clone --à venir--
+git clone https://github.com/julio4/CarApp.git
 ```
 2. Installer les dépendances
 ```sh
 composer install
 ```
-3. Configurer la base de données
+3. Démarrer le serveur mySql (exemple: [XAMPP](https://www.apachefriends.org/fr/index.html))
 
-  - Configurer la connexion à la base dans le dossier `.env`:
-```php
-@.env:28
-DATABASE_URL='mysql://root:@127.0.0.1:3306/<BASE>'
-```
-  - A partir de notre base : Importer la base dans mysql et vérifier la configuration ci-dessus dans le .env
+4. Configurer la base de données
+
+##### A partir de notre base 
+Importer la base dans mysql avec l'aide du script ```carapp.sql```
   
   OU
   
-  - A partir d'une nouvelle base, importer le schéma avec doctrine:
+##### A partir d'une nouvelle base, importer le schéma avec doctrine:
+  
+   - Configurer la connexion à la base dans le dossier `.env`:
+```php
+@.env:28
+DATABASE_URL='mysql://root:@127.0.0.1:3306/<BASE>' //(par défault:carApp)
+```
+   - Charger le schéma de la base:
 ```sh
 php bin/console doctrine:schema:update --force
 ```
-  - Charger les données de base:
+   - Charger des données de base () :
 ```sh
   php bin/console doctrine:fixtures:load
 ```
-  - Démarrer le serveur mySql (exemple: [XAMPP](https://www.apachefriends.org/fr/index.html))
   
-4. (optionel) Installer les certificats
+5. (optionel) Installer les certificats
 ```sh
 symfony server:ca:install
 ```
-5. Démarrer le serveur web
+
+6. Démarrer le serveur web
 ```sh
 symfony server:start
 ```
 
 L'application est disponible en environnement de développement en local à l'adresse [localhost:8000](https://127.0.0.1:8000/)
 
-Le compte administrateur de base est accessible avec l'utilisateur `admin` et le mot de passe `password`
-Un compte loueur est accessible avec l'utilisateur `demoLoueur` et le mot de passe `password`
-Un compte client est accessible avec l'utilisateur `demoUser` et le mot de passe `password`
+- Le compte administrateur de base est accessible avec l'utilisateur `admin` et le mot de passe `password`
+
+- Un compte loueur est accessible avec l'utilisateur `loueur` et le mot de passe `password`
+
+- Trois comptes clients sont accessibles: `Daisi Carignan`,`Ernest Bonenfant`,`Alita Robert` avec le mot de passe `passwordpassword`
 
 ### Extensions utilisées
 
