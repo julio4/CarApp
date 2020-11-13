@@ -130,8 +130,13 @@
                                                                 Ce véhicule vous sera facturé
                                                                 {% if isMonthlyRecurring %}
                                                                     <strong>{{ car.price * 0.9 * 30}}€/mois</strong>
-                                                                     à partir du
-                                                                    {{ savedDates.Start }}
+                                                                     à partir
+                                                                    {% if savedDates.Start is empty %}
+                                                                        d'aujourd'hui
+                                                                    {% else %}
+                                                                        du {{ savedDates.Start }}
+
+                                                                    {% endif %}
                                                                 {% elseif days >= 30 %}
                                                                     <strong>{{ car.price * 0.9 * days }} €</strong> du
                                                                     {{ savedDates.Start }} au {{ savedDates.End }}

@@ -27,6 +27,7 @@
     </li>
     <li class="nav-item">
         <a class="nav-link" href="{{ path('app_logout') }}">
+            <i class="fas fa-sign-out-alt"></i>
             <span class="ml-2">Déconnexion</span>
         </a>
     </li>
@@ -70,15 +71,14 @@
                 </div>
                 <div class="row justify-content-between top">
                     <div class="row d-flex icon-content">
-                        <img class="icon" src="https://i.imgur.com/9nnc9Et.png">
+                        <img class="icon" src="{{ asset('media/img/1.PNG') }}">
                         <div class="d-flex flex-column">
                             <p class="font-weight-bold">Réservation <br>Enregistrée</p>
                         </div>
                     </div>
                     <div class="row d-flex icon-content">
-                        <img class="icon" src="https://i.imgur.com/u1AzR7w.png">
+                        <img class="icon" src="{{ asset('media/img/2.PNG') }}">
                         <div class="d-flex flex-column">
-{#                            TODO ICI VERIFIER#}
                             {% if rent.isPaid %}
                                 <p class="font-weight-bold">Réservation<br>Payée</p>
                             {% else %}
@@ -87,7 +87,7 @@
                         </div>
                     </div>
                     <div class="row d-flex icon-content">
-                        <img class="icon" src="https://i.imgur.com/TkPm63y.png">
+                        <img class="icon" src="{{ asset('media/img/3.PNG') }}">
                         <div class="d-flex flex-column">
                             <p class="font-weight-bold">Véhicule<br>Prêt</p>
                         </div>

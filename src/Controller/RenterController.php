@@ -169,7 +169,7 @@ class RenterController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->flush();
-            $this->addFlash('success', 'Car '.$car->getId().' modifié !');
+            $this->addFlash('success', 'Véhicule '.$car->getId().' modifié !');
             return $this->redirect($this->generateUrl('renter_cars'));
         }
 
