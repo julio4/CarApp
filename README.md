@@ -47,57 +47,57 @@ L'utilisateur est le plus souvent une entreprise qui souhaite louer des véhicul
 ![Status][s-fini]
 * Réduction de 10% si paiement mensuel (à partir d'un mois) 
 ![Status][s-fini]
-* Sélection d'une intervalle de date 
-![Status][s-fini]![Status][s-customer]
-* Possibilité de réaliser un paiement mensuel sans date limite (renouvellement chaque mois)
-![Status][s-fini]![Status][s-customer]
-* Affichage des modèles disponibles à la location selon les dates entrées
-![Status][s-fini]![Status][s-customer]
-* Page de récapitulative d'une location 
-![Status][s-fini]![Status][s-customer]![Status][s-renter]
-* Panel de toutes les locations effectuées 
-![Status][s-fini]![Status][s-customer]![Status][s-renter]
-* Accès à la facture 
-![Status][s-fini]![Status][s-renter]
 * Connexion obligatoire pour une location
 ![Status][s-fini]
+* Sélection d'une intervalle de date 
+![Status][s-fini] ![Status][s-customer]
+* Possibilité de réaliser un paiement mensuel sans date limite (renouvellement chaque mois)
+![Status][s-fini] ![Status][s-customer]
+* Affichage des modèles disponibles à la location selon les dates entrées
+![Status][s-fini] ![Status][s-customer]
+* Page de récapitulative d'une location 
+![Status][s-fini] ![Status][s-customer] ![Status][s-renter]
+* Panel de toutes les locations effectuées 
+![Status][s-fini] ![Status][s-customer] ![Status][s-renter]
+* Accès à la facture 
+![Status][s-fini] ![Status][s-renter]
 * Panel de gestion 
-![Status][s-fini]![Status][s-renter]
+![Status][s-fini] ![Status][s-renter]
 * Affichage des revenus, des réservations du mois en cours
-![Status][s-fini]![Status][s-renter]
+![Status][s-fini] ![Status][s-renter]
 * Affichage du pourcentage de véhicules en cours de location 
-![Status][s-fini]![Status][s-renter]
+![Status][s-fini] ![Status][s-renter]
 * Affichage du nombre de client 
-![Status][s-fini]![Status][s-renter]
+![Status][s-fini] ![Status][s-renter]
 * Graphiques des revenus/réservations
-![Status][s-fini]![Status][s-renter]
+![Status][s-fini] ![Status][s-renter]
 * Tableau des dernières locations
-![Status][s-fini]![Status][s-renter]
+![Status][s-fini] ![Status][s-renter]
 * Page de récapitulative des véhicules avec les statuts de chaque véhicule 
-![Status][s-fini]![Status][s-renter]
+![Status][s-fini] ![Status][s-renter]
 * Page de modification d'un véhicule (non loué), avec possibilité de retirer le véhicule du stock 
-![Status][s-fini]![Status][s-renter]
+![Status][s-fini] ![Status][s-renter]
 * Formulaire d'ajout d'un nouveau véhicule 
-![Status][s-fini]![Status][s-renter]
+![Status][s-fini] ![Status][s-renter]
 * Page de tout les clients 
-![Status][s-fini]![Status][s-renter]
+![Status][s-fini] ![Status][s-renter]
 * Calcul des factures pour chaque client du mois courant 
-![Status][s-fini]![Status][s-renter]
+![Status][s-fini] ![Status][s-renter]
 
 #### Administrateur
 Un rôle Administrateur est aussi implémenté:
 * Panel d'administration 
-![Status][s-fini][s-admin]
+![Status][s-fini] ![Status][s-admin]
 * Affichage du nombre d'utilisateurs 
-![Status][s-fini][s-admin]
+![Status][s-fini] ![Status][s-admin]
 * tableau de tous les utilisateurs inscrits 
-![Status][s-fini][s-admin]
+![Status][s-fini] ![Status][s-admin]
 * Possibilité de supprimer un compte 
-![Status][s-fini][s-admin]
+![Status][s-fini] ![Status][s-admin]
 * Possibilité de définir un compte utilisateur en compte renter 
-![Status][s-fini][s-admin]
+![Status][s-fini] ![Status][s-admin]
 * Possibilité de définir un compte renter en compte utilisateur 
-![Status][s-fini][s-admin]
+![Status][s-fini] ![Status][s-admin]
 
 #### Sécurité
 L'application repose sur une structure solide qui permet de garantir la sécurité:
@@ -219,7 +219,7 @@ Ces extensions sont automatiquement installées en suivant [le guide d'installat
 <!-- USAGE EXAMPLES -->
 ## Utilisation
 
-_Documentation des fonctionnalitées offertes par notre application ! (voir le rapport de projet)[Status][s-fini] 
+Documentation des fonctionnalitées offertes par notre application ! (voir le rapport de projet)[Status][s-fini] 
 
 <!-- CONTACT -->
 ## Contact
