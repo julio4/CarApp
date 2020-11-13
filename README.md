@@ -69,8 +69,6 @@ L'utilisateur est le plus souvent une entreprise qui souhaite louer des véhicul
 ![Status][s-fini] ![Rôle][s-renter]
 * Affichage du nombre de client 
 ![Status][s-fini] ![Rôle][s-renter]
-* Graphiques des revenus/réservations
-![Status][s-fini] ![Rôle][s-renter]
 * Tableau des dernières locations
 ![Status][s-fini] ![Rôle][s-renter]
 * Page de récapitulative des véhicules avec les statuts de chaque véhicule 
