@@ -4,11 +4,14 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Query\Expr;
+use function get_class;
 
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
@@ -25,11 +28,15 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
+     * @param UserInterface $user
+     * @param string $newEncodedPassword
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function upgradePassword(UserInterface $user, string $newEncodedPassword): void
     {
         if (!$user instanceof User) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
+            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
         }
 
         $user->setPassword($newEncodedPassword);
@@ -39,54 +46,42 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
+     * @param UserInterface $user
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function updateRoles(UserInterface $user): void
     {
         if (!$user instanceof User) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
+            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
         }
 
         $this->_em->persist($user);
         $this->_em->flush();
     }
 
-    // /**
-    //  * @return User[] Returns an array of User objects
-    //  */
-    public function findByLocationOfLoueur($loueur)
+    public function findByRentalsOfRenter($renter)
     {
-        return $this->createQueryBuilder('u')
-            ->innerJoin('App\Entity\Location','l', Expr\Join::WITH, 'l.user = u.id')
-            ->innerJoin('App\Entity\Vehicule','v', Expr\Join::WITH, 'v.id = l.vehicule')
-            ->innerJoin('App\Entity\User','loueur', Expr\Join::WITH, 'v.loueur = loueur.id')
-            ->andWhere('loueur.id = :loueur')
-            ->setParameter('loueur', $loueur)
-            ->orderBy('u.name', 'ASC')
+        return $this->createQueryBuilder('user')
+            ->innerJoin('App\Entity\Rent','rent', Expr\Join::WITH, 'rent.user = user.id')
+            ->innerJoin('App\Entity\Car','car', Expr\Join::WITH, 'car.id = rent.car')
+            ->innerJoin('App\Entity\User','renter', Expr\Join::WITH, 'car.renter = renter.id')
+            ->andWhere('renter.id = :renter')
+            ->setParameter('renter', $renter)
+            ->orderBy('user.name', 'ASC')
             ->getQuery()
             ->getResult()
         ;
     }
 
-    public function countClient(){
-        return $this->createQueryBuilder('u')
-            ->select('count(u.id)')
-            ->where('u.roles = :role')
+    public function countCustomers(){
+        return $this->createQueryBuilder('user')
+            ->select('count(user.id)')
+            ->where('user.roles = :role')
             ->setParameter('role', '["ROLE_USER"]')
             ->getQuery()
-            ->getSingleScalarResult()
+            ->getSingleResult()
         ;
     }
 
-
-    /*
-    public function findOneBySomeField($value): ?User
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

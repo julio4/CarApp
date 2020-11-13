@@ -28,23 +28,23 @@
                         <li><a class="dropdown-item" href="{{ path('admin_panel') }}">Administration</a></li>
                     {% endif %}
                     {% if is_granted('ROLE_LOUEUR') %}
-                        <li><a class="dropdown-item" href="{{ path('loueur_panel') }}">Panel <i class="fas fa-columns"></i></a></li>
-                        <li><a class="dropdown-item" href="{{ path('loueur_vehicules') }}">Véhicules <i class="fas fa-car-alt"></i></a></li>
-                        <li><a class="dropdown-item" href="{{ path('loueur_locations') }}">Locations <i class="fas fa-receipt"></i></a></li>
-                        <li><a class="dropdown-item" href="{{ path('loueur_clients') }}">Clients <i class="fas fa-users"></i></a></li>
-                        <li><a class="dropdown-item" href="{{ path('loueur_statistiques') }}">Statistiques <i class="fas fa-chart-area"></i></a></li>
+                        <li><a class="dropdown-item" href="{{ path('renter_panel') }}">Panel <i class="fas fa-columns"></i></a></li>
+                        <li><a class="dropdown-item" href="{{ path('renter_cars') }}">Véhicules <i class="fas fa-car-alt"></i></a></li>
+                        <li><a class="dropdown-item" href="{{ path('renter_rents') }}">Locations <i class="fas fa-receipt"></i></a></li>
+                        <li><a class="dropdown-item" href="{{ path('renter_customers') }}">Clients <i class="fas fa-users"></i></a></li>
+                        <li><a class="dropdown-item" href="{{ path('renter_stats') }}">Statistiques <i class="fas fa-chart-area"></i></a></li>
                     {% endif %}
                     {% if is_granted('ROLE_USER') %}
                         <li><a class="dropdown-item" href="{{ path('user_panel') }}">Compte <i class="fas fa-columns"></i></a></li>
-                        <li><a class="dropdown-item" href="{{ path('user_panel_locations')}}">Locations <i class="fas fa-car-alt"></i></a></li>
+                        <li><a class="dropdown-item" href="{{ path('user_rents')}}">Locations <i class="fas fa-car-alt"></i></a></li>
                     {% endif %}
-                    <li><a class="dropdown-item" href="{{ path('app_deconnexion') }}">Déconnexion <i class="fas fa-sign-out-alt"></i></a></li>
+                    <li><a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion <i class="fas fa-sign-out-alt"></i></a></li>
                 </ul>
             </div>
             {% endif %}
 
             {% if not app.user %}
-            <a class="btn border-dark navbar-right" type="button" href="{{ path('app_connexion') }}">
+            <a class="btn border-dark navbar-right" type="button" href="{{ path('app_login') }}">
                 Inscription/Connexion
             </a>
             {% endif %}

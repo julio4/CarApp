@@ -11,13 +11,13 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{{ path('user_panel_locations') }}">
+        <a class="nav-link" href="{{ path('user_rents') }}">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
             <span class="ml-2">Mes Locations</span>
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{{ path('app_deconnexion') }}">
+        <a class="nav-link" href="{{ path('app_logout') }}">
             <span class="ml-2">Déconnexion</span>
         </a>
     </li>
@@ -33,13 +33,13 @@
             <div class="card rounded shadow-sm border-0">
                 <div class="card-body p-4 text-center">
                     <p class="card-title">Véhicules louées</p>
-                    <h2 class="card-text">{{ locations|length }}</h2>
+                    <h2 class="card-text">{{ rentals|length }}</h2>
                 </div>
             </div>
         </div>
         {% set totalPrice = 0 %}
-        {% for location in locations %}
-            {% set totalPrice = totalPrice + location.prix %}
+        {% for r in rentals %}
+            {% set totalPrice = totalPrice + r.price %}
         {% endfor %}
         <div class="col-12 col-md-6 col-lg-6 mb-6 mb-lg-6">
             <div class="card rounded shadow-sm border-0">
@@ -56,9 +56,9 @@
         <div class="col-12 col-xl-12 mb-12 mb-lg-12">
             <div class="card rounded shadow-sm border-0">
                 <div class="card-body">
-                    <h5 class="card-title">Dernières locations</h5>
+                    <h5 class="card-title">Dernières rentals</h5>
                     <div class="table-responsive">
-                        <table class="table table-sm">
+                        <table class="table table-sm table-hover">
                             <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -71,27 +71,26 @@
                             </thead>
                             <tbody>
                             <!-- seulement les 10 dernières réservations -->
-                            {% for location in locations|slice(0,10) %}
-{#                                TODO clickable tableau#}
-                                <tr>
+                            {% for r in rentals|slice(0,10) %}
+                                <tr class='clickable-row' data-href='{{ path('user_rent_detail', { 'id': r.id }) }}' style="cursor: pointer;">
                                     <th scope="row">{{ location.id }}</th>
-                                    <td>{{ location.vehicule.type.name }}</td>
-                                    <td>{{ location.vehicule.loueur.name }}</td>
-                                    <td>{{ location.dateDebut|date("m/d/Y") }} - {{ location.dateFin|date("m/d/Y") }}</td>
+                                    <td>{{ r.car.type.name }}</td>
+                                    <td>{{ r.car.renter.name }}</td>
+                                    <td>{{ r.startDate|date("m/d/Y") }} - {{ r.endDate|date("m/d/Y") }}</td>
                                     <td>
-                                        {% if location.estReccurent %}
-                                            <span class="badge badge-success">Paiement mensuel</span> {{ location.prix }} €/Mois
+                                        {% if r.isMonthlyRecurring %}
+                                            <span class="badge badge-success">Paiement mensuel</span> {{ r.price }} €/Mois
                                         {% else %}
-                                            {{ location.prix }} €
+                                            {{ r.price }} €
                                         {% endif %}
                                     </td>
-                                    <td><a href="{{ path('user_location_recap', { 'id': location.id }) }}">Détails</a></td>
+                                    <td><a href="{{ path('user_rent_detail', { 'id': r.id }) }}">Détails</a></td>
                                 </tr>
                             {% endfor %}
                             </tbody>
                         </table>
                     </div>
-                    <a href="{{ path('user_panel_locations') }}" class="btn btn-block btn-light">Tout voir</a>
+                    <a href="{{ path('user_rents') }}" class="btn btn-block btn-light">Afficher toutes les locations</a>
                 </div>
             </div>
         </div>
@@ -104,4 +103,11 @@
 {% endblock %}
 
 {% block panel_scripts %}
+    <script>
+        jQuery(document).ready(function($) {
+            $(".clickable-row").click(function() {
+                window.location = $(this).data("href");
+            });
+        });
+    </script>
 {% endblock %}

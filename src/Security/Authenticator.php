@@ -24,7 +24,7 @@ class Authenticator extends AbstractFormLoginAuthenticator implements PasswordAu
 {
     use TargetPathTrait;
 
-    public const LOGIN_ROUTE = 'app_connexion';
+    public const LOGIN_ROUTE = 'app_login';
 
     private $entityManager;
     private $urlGenerator;
@@ -88,6 +88,8 @@ class Authenticator extends AbstractFormLoginAuthenticator implements PasswordAu
 
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
+     * @param $credentials
+     * @return string|null
      */
     public function getPassword($credentials): ?string
     {

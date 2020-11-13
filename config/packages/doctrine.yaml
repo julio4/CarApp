@@ -17,19 +17,19 @@ doctrine:
                 prefix: 'App\Entity'
                 alias: App
         dql:
-#            datetime_functions:
+            datetime_functions:
 #                addtime: DoctrineExtensions\Query\Mysql\AddTime
 #                convert_tz: DoctrineExtensions\Query\Mysql\ConvertTz
 #                date: DoctrineExtensions\Query\Mysql\Date
 #                date_format: DoctrineExtensions\Query\Mysql\DateFormat
-#                dateadd: DoctrineExtensions\Query\Mysql\DateAdd
+                 dateadd: DoctrineExtensions\Query\Mysql\DateAdd
 #                datesub: DoctrineExtensions\Query\Mysql\DateSub
-#                datediff: DoctrineExtensions\Query\Mysql\DateDiff
+                 datediff: DoctrineExtensions\Query\Mysql\DateDiff
 #                day: DoctrineExtensions\Query\Mysql\Day
 #                dayname: DoctrineExtensions\Query\Mysql\DayName
 #                dayofweek: DoctrineExtensions\Query\Mysql\DayOfWeek
 #                dayofyear: DoctrineExtensions\Query\Mysql\DayOfYear
-#                div: DoctrineExtensions\Query\Mysql\Div
+                 div: DoctrineExtensions\Query\Mysql\Div
 #                from_unixtime: DoctrineExtensions\Query\Mysql\FromUnixtime
 #                hour: DoctrineExtensions\Query\Mysql\Hour
 #                last_day: DoctrineExtensions\Query\Mysql\LastDay

@@ -2,8 +2,8 @@
 
 namespace App\Form;
 
-use App\Entity\TypeVehicule;
-use App\Entity\Vehicule;
+use App\Entity\CarType;
+use App\Entity\Car;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -14,14 +14,14 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
-class VehiculeFormType extends AbstractType
+class CarFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('type', EntityType::class, [
                 'label' => 'Modèle',
-                'class' => TypeVehicule::class,
+                'class' => CarType::class,
                 'choice_label' => 'name',
                 'attr' => [
                     'class' => "selectpicker form-control",
@@ -29,7 +29,8 @@ class VehiculeFormType extends AbstractType
                     'data-style' => "btn btn-primary border"
                 ]
             ])
-            ->add('prix', NumberType::class, [
+            ->add('price', NumberType::class, [
+                'label' => 'Prix',
                 'scale' => 2,
                 'attr' => [
                     'value' => "0",
@@ -74,10 +75,10 @@ class VehiculeFormType extends AbstractType
                     'E85' => 'E85'
                 ],
             ])
-            ->add('disponible',  CheckboxType::class, [
+            ->add('available',  CheckboxType::class, [
                 'label'    => 'Rendre disponible directement ?',
                 'required' => false,
-                'value' => 'disponible',
+                'value' => 'available',
                 'label_attr' => ['class' => 'switch-custom']
             ])
             ->add('imageFile', VichImageType::class, [
@@ -107,7 +108,7 @@ class VehiculeFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Vehicule::class,
+            'data_class' => Car::class,
         ]);
     }
 }

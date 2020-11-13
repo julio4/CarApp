@@ -16,22 +16,28 @@ liip_imagine:
     # valid drivers options include "gd" or "gmagick" or "imagick"
     driver: "gd"
 
-
-    # your filter sets are defined here
     filter_sets :
-
-        # use the default cache configuration
         cache : ~
 
-        # the name of the "filter set"
+        # name our filter set "my_fixed_filter"
+        photo_small:
+            filters:
+                fixed:
+                    width: 200
+                    height: 150
+
+        photo_medium:
+            filters:
+                fixed:
+                    width: 400
+                    height: 360
+
+        photo_big:
+            filters:
+                fixed:
+                    width: 800
+                    height: 720
+
         thumb_4_3 :
-
-            # adjust the image quality to 75%
-            quality : 75
-
-            # list of transformations to apply (the "filters")
             filters :
-
-                # create a thumbnail: set size to 120x90 and use the "outbound" mode
-                # to crop the image when the size ratio of the input differs
-                thumbnail  : { size : [400, 300], mode : outbound }
+                thumbnail  : { size : [800, 720], mode : inset }

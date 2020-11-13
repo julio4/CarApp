@@ -6,10 +6,8 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -116,7 +114,6 @@ class User implements UserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
         if(empty($roles)) {
             $roles[] = 'ROLE_USER';
         }
@@ -176,8 +173,6 @@ class User implements UserInterface
     }
 
     /**
-     * A visual identifier that represents this user.
-     *
      * @see UserInterface
      */
     public function checkIfAdmin(): bool
@@ -186,75 +181,75 @@ class User implements UserInterface
     }
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Vehicule", mappedBy="loueur")
+     * @ORM\OneToMany(targetEntity="App\Entity\Car", mappedBy="renter")
      */
-    private $vehicules;
+    private $cars;
 
     /**
-     * @ORM\OneToMany(targetEntity=Location::class, mappedBy="user", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Rent::class, mappedBy="user", orphanRemoval=true)
      */
-    private $locations;
+    private $rentals;
 
     public function __construct()
     {
-        $this->vehicules = new ArrayCollection();
-        $this->locations = new ArrayCollection();
+        $this->cars = new ArrayCollection();
+        $this->rentals = new ArrayCollection();
     }
 
     /**
-     * @return Collection|Vehicule[]
+     * @return Collection|Car[]
      */
-    public function getVehicules(): Collection
+    public function getCars(): Collection
     {
-        return $this->vehicules;
+        return $this->cars;
     }
 
-    public function addVehicule(Vehicule $vehicule): self
+    public function addCar(Car $car): self
     {
-        if (!$this->vehicules->contains($vehicule)) {
-            $this->vehicules[] = $vehicule;
-            $vehicule->setLoueur($this);
+        if (!$this->cars->contains($car)) {
+            $this->cars[] = $car;
+            $car->setRenter($this);
         }
         return $this;
     }
 
-    public function removeVehicule(Vehicule $vehicule): self
+    public function removeCar(Car $car): self
     {
-        if ($this->vehicules->contains($vehicule)) {
-            $this->vehicules->removeElement($vehicule);
+        if ($this->cars->contains($car)) {
+            $this->cars->removeElement($car);
             // set the owning side to null (unless already changed)
-            if ($vehicule->getType() === $this) {
-                $vehicule->setType(null);
+            if ($car->getType() === $this) {
+                $car->setType(null);
             }
         }
         return $this;
     }
 
     /**
-     * @return Collection|Location[]
+     * @return Collection|Rent[]
      */
-    public function getLocations(): Collection
+    public function getRentals(): Collection
     {
-        return $this->locations;
+        return $this->rentals;
     }
 
-    public function addLocation(Location $location): self
+    public function addRent(Rent $rent): self
     {
-        if (!$this->locations->contains($location)) {
-            $this->locations[] = $location;
-            $location->setUser($this);
+        if (!$this->rentals->contains($rent)) {
+            $this->rentals[] = $rent;
+            $rent->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeLocation(Location $location): self
+    public function removeRent(Rent $rent): self
     {
-        if ($this->locations->contains($location)) {
-            $this->locations->removeElement($location);
+        if ($this->rentals->contains($rent)) {
+            $this->rentals->removeElement($rent);
             // set the owning side to null (unless already changed)
-            if ($location->getUser() === $this) {
-                $location->setUser(null);
+            if ($rent->getUser() === $this) {
+                $rent->setUser(null);
             }
         }
 

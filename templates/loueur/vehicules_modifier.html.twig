@@ -3,8 +3,8 @@
 {% block dashboard_current %}
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ path('loueur_panel') }}">Panel</a></li>
-            <li class="breadcrumb-item"><a href="{{ path('loueur_vehicules') }}">Véhicules</a></li>
+            <li class="breadcrumb-item"><a href="{{ path('renter_panel') }}">Panel</a></li>
+            <li class="breadcrumb-item"><a href="{{ path('renter_cars') }}">Véhicules</a></li>
             <li class="breadcrumb-item active" aria-current="page">Modifier</li>
         </ol>
     </nav>
@@ -16,7 +16,7 @@
         <div class="col-10">
             <div class="card rounded shadow-sm border-0 mr-2">
                 <div class="card-body">
-                    <a class="fa_icon" href="{{ path('loueur_vehicules') }}" >
+                    <a class="fa_icon" href="{{ path('renter_cars') }}" >
                         <span class="fa fa-angle-left"></span>
                     </a>
                     {{ form_start(form) }}
@@ -28,12 +28,12 @@
                     <div class="form-row">
                         <div class="col">
                             {{ form_row(form.type) }}
-                            <a href="{{ path('loueur_type_modifier', {'id': vehicule.type.id}) }}">Modifier <i class="fas fa-edit"></i></a>
+                            <a href="{{ path('renter_editType', {'id': car.type.id}) }}">Modifier <i class="fas fa-edit"></i></a>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="col">
-                            {{ form_row(form.prix) }}
+                            {{ form_row(form.price) }}
                         </div>
                     </div>
                     <div class="form-row">
@@ -88,7 +88,7 @@
                         <div class="col">
                             <div class="text-center">
                                 {{ form_row(form.save, {'label': 'Confirmer les modifications'}) }}
-                                {{ form_row(form.disponible, {'label': 'Disponible à la location'}) }}
+                                {{ form_row(form.available, {'label': 'Disponible à la location'}) }}
                             </div>
                             <div class="text-center">
                                 <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#deleteModal">
@@ -112,7 +112,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Annuler</button>
-                                    <a href="{{ path('loueur_vehicules_archiver', {'id': vehicule.id}) }}" class="btn btn-danger">Supprimer</a>
+                                    <a href="{{ path('renter_deleteCar', {'id': car.id}) }}" class="btn btn-danger">Supprimer</a>
                                 </div>
                             </div>
                         </div>
@@ -128,7 +128,7 @@
 {% block panel_scripts %}
     {{ encore_entry_script_tags('form') }}
     <script>
-        $(".numberpicker").val({{ vehicule.prix }});
+        $(".numberpicker").val({{ car.price }});
         var $inputPrix = $(".numberpicker");
         var $1semaine = $("#1semaine");
         var $1mois = $("#1mois");
@@ -148,7 +148,7 @@
                     var form = document.createElement('form');
                     document.body.appendChild(form);
                     form.method = 'post';
-                    form.action = "{{ path('loueur_type_ajouter')|escape('js') }}";
+                    form.action = "{{ path('renter_addType')|escape('js') }}";
                     var input = document.createElement('input');
                     input.type = 'hidden';
                     input.name = 'default_name';

@@ -16,25 +16,27 @@
                         </a>
                         <div class='row align-items-center'>
                             <div class="col-8">
-                                <img src="{{ vich_uploader_asset(type, 'imageFile', 'App\\Entity\\TypeVehicule') | imagine_filter('thumb_4_3') }}" alt="" class="img-fluid d-block mx-auto mb-3">
+                                <img src="{{ vich_uploader_asset(type, 'imageFile', 'App\\Entity\\CarType') | imagine_filter('photo_medium') }}" class="img-fluid d-block mx-auto mb-3" alt="">
                             </div>
                             <div class="col-4">
                                 <h5>{{ type.name }}</h5>
-                                {% if vehicules|length > 1 %}
-                                    <p class="small text-muted font-italic"><strong>{{ vehicules|length }}</strong> disponibles</p>
+                                {% if Cars|length > 1 %}
+                                    <p class="small text-muted font-italic"><strong>{{ Cars|length }}</strong> disponibles</p>
                                 {% else %}
-                                    <p class="small text-muted font-italic"><strong>{{ vehicules|length }}</strong> disponible</p>
+                                    <p class="small text-muted font-italic"><strong>{{ Cars|length }}</strong> available</p>
                                 {% endif %}
                             </div>
                         </div>
 
                             <div class="row align-items-center">
-                                    {% if estReccurent %}
+                                    {% if isMonthlyRecurring %}
                                         <div class="jumbotron w-100">
                                             <div class="container">
                                                 <h1 class="display-4">Location mensuelle</h1>
                                                 <p class="lead">Un paiement chaque mois, réservé pour vous pour une durée indéterminé, annulable à partir du premier mois! </p>
-                                                <span>A partir du {{ savedDates.Debut }}</span>
+                                                {% if savedDates.Start is not empty %}
+                                                    <span>A partir du {{ savedDates.Start }}</span>
+                                                {% endif %}
                                             </div>
                                         </div>
                                     {% else %}
@@ -42,7 +44,7 @@
                                             <div class="container">
                                                 <h1 class="display-5">Location personalisée</h1>
                                                 <p class="lead">Profiter d'une location à des dates précises, qui convient à tous, à partir d'un jour!</p>
-                                                <span>Location du <strong>{{ savedDates.Debut }}</strong> au <strong>{{ savedDates.Fin }}</strong></span>
+                                                <span>Location du <strong>{{ savedDates.Start }}</strong> au <strong>{{ savedDates.End }}</strong></span>
                                             </div>
                                         </div>
                                     {% endif %}
@@ -61,27 +63,27 @@
                                 </div>
                             {% endfor %}
 
-                            {% for vehicule in vehicules %}
+                            {% for car in Cars %}
                             <hr>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <form id="vehicule_{{ vehicule.id }}" action="{{ path('location_louer', {'id': vehicule.id} ) }}" method="post">
+                                    <form id="vehicule_{{ car.id }}" action="{{ path('location_louer', {'id': car.id} ) }}" method="post">
 
-                                        <label for="date_{{ vehicule.id }}" hidden></label>
-                                        <input id="date_{{ vehicule.id }}" name="date" class="inputDate" hidden>
+                                        <label for="date_{{ car.id }}" hidden></label>
+                                        <input id="date_{{ car.id }}" name="date" class="inputDate" hidden>
                                         <h3>
                                             {{ type.name }}
                                         </h3>
 
-{#                                        <p class="small text-muted">Loueur: <a href="loueur.html">{{ vehicule.loueur.name }}</a></p>#}
+{#                                        <p class="small text-muted">Loueur: <a href="renter.html">{{ car.renter.name }}</a></p>#}
                                         <div class="row">
                                             <div class="col-md-4">
-                                                <img class="img-fluid d-block rounded" alt="{{vehicule['image.name']}}"
-                                                     src="{{ vich_uploader_asset(vehicule, 'imageFile', 'App\\Entity\\Vehicule') | imagine_filter('thumb_4_3') }}" />
+                                                <img class="img-fluid d-block rounded" alt="{{car['image.name']}}"
+                                                     src="{{ vich_uploader_asset(car, 'imageFile', 'App\\Entity\\Car') | imagine_filter('photo_medium') }}" />
                                             </div>
                                             <div class="col-md-4">
                                                 <dl>
-                                                    {% for key, descr in vehicule.carac %}
+                                                    {% for key, descr in car.features %}
                                                         <dt>
                                                             {{ key }}
                                                         </dt>
@@ -93,21 +95,21 @@
                                                 </dl>
                                             </div>
                                             <div class="col-md-4">
-                                                {% if estReccurent %}
-                                                    <h3 class="text-center">{{ vehicule.prix * 0.9 * 30}} €/mois</h3>
-                                                    <small class="float-right" style="color:orangered"><small style="color:black;text-decoration: line-through;">{{ vehicule.prix }}</small> <strong>{{ vehicule.prix * 0.9 }}</strong> €/jours -10%</small>
+                                                {% if isMonthlyRecurring %}
+                                                    <h3 class="text-center">{{ car.price * 0.9 * 30}} €/mois</h3>
+                                                    <small class="float-right" style="color:orangered"><small style="color:black;text-decoration: line-through;">{{ car.price }}</small> <strong>{{ car.price * 0.9 }}</strong> €/jours -10%</small>
                                                 {% elseif days >= 30 %}
-                                                    <h3 class="text-center">{{ vehicule.prix * 0.9 * days }} €</h3>
-                                                    <small class="float-right" style="color:orangered"><small style="color:black;text-decoration: line-through;">{{ vehicule.prix }}</small> <strong>{{ vehicule.prix * 0.9 }}</strong> €/jours -10%</small>
+                                                    <h3 class="text-center">{{ car.price * 0.9 * days }} €</h3>
+                                                    <small class="float-right" style="color:orangered"><small style="color:black;text-decoration: line-through;">{{ car.price }}</small> <strong>{{ car.price * 0.9 }}</strong> €/jours -10%</small>
                                                 {% else %}
-                                                    <h3 class="text-center">{{ vehicule.prix * days }} €</h3>
-                                                    <small class="float-right">{{ vehicule.prix }} €/jours</small>
+                                                    <h3 class="text-center">{{ car.price * days }} €</h3>
+                                                    <small class="float-right">{{ car.price }} €/jours</small>
                                                 {% endif %}
 
                                                 {% if is_granted('ROLE_USER') %}
-                                                <button type="button" class="validateLocation btn btn-main btn-outline-primary m-2 px-2" data-toggle="modal" data-target="#M_{{ vehicule.id }}">
-                                                    Réserver Maintenant
-                                                </button>
+                                                    <button type="button" class="validateLocation btn btn-main btn-outline-primary m-2 px-2" data-toggle="modal" data-target="#M_{{ car.id }}">
+                                                        Réserver Maintenant
+                                                    </button>
                                                 {% else %}
                                                     <button type="button" class="validateLocation btn btn-main btn-outline-primary m-2 px-2" data-toggle="modal" data-target="#needLogin">
                                                         Réserver Maintenant
@@ -115,27 +117,27 @@
                                                 {% endif %}
 
                                                 <!-- Confirmation -->
-                                                <div class="modal fade" id="M_{{ vehicule.id }}" tabindex="-1" role="dialog" aria-labelledby="BuyM_{{ vehicule.id }}" aria-hidden="true">
+                                                <div class="modal fade" id="M_{{ car.id }}" tabindex="-1" role="dialog" aria-labelledby="BuyM_{{ car.id }}" aria-hidden="true">
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="BuyM_{{ vehicule.id }}">Confirmation de location</h5>
+                                                                <h5 class="modal-title" id="BuyM_{{ car.id }}">Confirmation de location</h5>
                                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
                                                             </div>
                                                             <div class="modal-body">
                                                                 Ce véhicule vous sera facturé
-                                                                {% if estReccurent %}
-                                                                    <strong>{{ vehicule.prix * 0.9 * 30}}€/mois</strong>
+                                                                {% if isMonthlyRecurring %}
+                                                                    <strong>{{ car.price * 0.9 * 30}}€/mois</strong>
                                                                      à partir du
-                                                                    {{ savedDates.Debut }}
+                                                                    {{ savedDates.Start }}
                                                                 {% elseif days >= 30 %}
-                                                                    <strong>{{ vehicule.prix * 0.9 * days }} €</strong> du
-                                                                    {{ savedDates.Debut }} au {{ savedDates.Fin }}
+                                                                    <strong>{{ car.price * 0.9 * days }} €</strong> du
+                                                                    {{ savedDates.Start }} au {{ savedDates.End }}
                                                                 {% else %}
-                                                                    <strong>{{ vehicule.prix * days }} €</strong> du
-                                                                    {{ savedDates.Debut }} au {{ savedDates.Fin }}
+                                                                    <strong>{{ car.price * days }} €</strong> du
+                                                                    {{ savedDates.Start }} au {{ savedDates.End }}
                                                                 {% endif %}
                                                             </div>
                                                             <div class="modal-footer">
@@ -166,7 +168,7 @@
                                         <input name="hiddenDate" class="currentDate" type="hidden" hidden>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Annuler</button>
-                                            <a href="{{ path('app_connexion') }}" class="btn btn-primary">Connexion/Inscription</a>
+                                            <a href="{{ path('app_login') }}" class="btn btn-primary">Connexion/Inscription</a>
                                         </div>
                                     </div>
                                 </div>
@@ -184,8 +186,8 @@
         <script>
             $(document).ready(function () {
 
-                {% if savedDates.Debut is not empty and savedDates.Fin is not empty%}
-                    $('.currentDate').val("{{ savedDates.Debut }}" + " - " + "{{ savedDates.Fin }}");
+                {% if savedDates.Start is not empty and savedDates.End is not empty%}
+                    $('.currentDate').val("{{ savedDates.Start }}" + " - " + "{{ savedDates.End }}");
                 {% endif %}
 
                 //permet de mettre à jour les dates pour les envoyer automatiquement

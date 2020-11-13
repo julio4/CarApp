@@ -5,37 +5,37 @@
 
 {% block sidebard %}
     <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="{{ path("loueur_panel") }}">
+        <a class="nav-link active" aria-current="page" href="{{ path("renter_panel") }}">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
             <span class="ml-2">Accueil</span>
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" aria-current="page" href="{{ path('loueur_vehicules') }}">
+        <a class="nav-link" aria-current="page" href="{{ path('renter_cars') }}">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
             <span class="ml-2">Véhicules</span>
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{{ path('loueur_locations') }}">
+        <a class="nav-link" href="{{ path('renter_rents') }}">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-cart"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
             <span class="ml-2">Locations</span>
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{{ path('loueur_clients') }}">
+        <a class="nav-link" href="{{ path('renter_customers') }}">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
             <span class="ml-2">Clients</span>
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{{ path('loueur_statistiques') }}">
+        <a class="nav-link" href="{{ path('renter_stats') }}">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bar-chart-2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
             <span class="ml-2">Statistiques</span>
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{{ path('app_deconnexion') }}">
+        <a class="nav-link" href="{{ path('app_logout') }}">
             <span class="ml-2">Déconnexion</span>
         </a>
     </li>
@@ -79,7 +79,7 @@
             <div class="card rounded shadow-sm border-0">
                 <div class="card-body p-4 text-center">
                     <p class="card-title">Clients</p>
-                    <h2 class="card-text">{{ nbClients }}</h2>
+                    <h2 class="card-text">{{ nbCustomers }}</h2>
                 </div>
             </div>
         </div>
@@ -88,6 +88,7 @@
 
     <div class="row">
         <!-- Dernières réservations-->
+{#        TODO clickable array#}
         <div class="col-12 col-xl-8 mb-4 mb-lg-0">
             <div class="card rounded shadow-sm border-0">
                 <div class="card-body">
@@ -104,19 +105,19 @@
                             </tr>
                             </thead>
                             <tbody>
-                            {% for location in locations|slice(0,10) %}
+                            {% for rent in rentals|slice(0,10) %}
                             <tr>
-                                <th scope="row">{{ location.id }}</th>
-                                <td>{{ location.vehicule.type.name }}</td>
-                                <td>{{ location.user.email }}</td>
-                                <td>{{ location.prix }} €</td>
+                                <th scope="row">{{ rent.id }}</th>
+                                <td>{{ rent.car.type.name }}</td>
+                                <td>{{ rent.user.email }}</td>
+                                <td>{{ rent.price }} €</td>
                                 <td><a href="#" class="btn btn-sm btn-primary">Voir</a></td>
                             </tr>
                             {% endfor %}
                             </tbody>
                         </table>
                     </div>
-                    <a href="{{ path('loueur_locations') }}" class="btn btn-block btn-light">Tout voir</a>
+                    <a href="{{ path('renter_rents') }}" class="btn btn-block btn-light">Afficher toutes les locations</a>
                 </div>
             </div>
         </div>

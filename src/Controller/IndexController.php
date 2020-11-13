@@ -2,22 +2,31 @@
 
 namespace App\Controller;
 
-use App\Entity\TypeVehicule;
-use App\Entity\Vehicule;
-use App\Repository\TypeVehiculeRepository;
+use App\Repository\CarRepository;
+use App\Repository\CarTypeRepository;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
+ * Les pages du site accessible par tous, pour parcourir les véhicules disponibles à la location
+ *
  * @Route("/", name="index")
  */
 class IndexController extends AbstractController
 {
     /**
+     * La page d'accueil du site
+     *
      * @Route("/", name="_home")
+     * @param CarTypeRepository $carTypeRepository
+     * @param Request $request
+     * @return RedirectResponse|Response
      */
-    public function index(TypeVehiculeRepository $typeVehiculeRepository, Request $request)
+    public function index(CarTypeRepository $carTypeRepository, Request $request)
     {
         $form = $this->createFormBuilder()
                 ->add('date', null, [
@@ -28,43 +37,43 @@ class IndexController extends AbstractController
             ->getForm();
 
         //On récupère le cookie pour les dates
-        if(!$this->get('session')->has('récurrent'))
-            $this->get('session')->set('récurrent', true);
-        $estRecurrent = $this->get('session')->get('récurrent') ? true : false;
+        if(!$this->get('session')->has('recurring'))
+            $this->get('session')->set('recurring', true);
+        $isMonthlyRecurring = $this->get('session')->get('recurring') ? true : false;
 
         //Recherche des types disponibles avec les dates fournis
-        if(!$estRecurrent) {
+        if(!$isMonthlyRecurring) {
             if($this->isValidCookieDates()) {
-                $types = $typeVehiculeRepository->findAllAvailableBetween(
-                    $this->frDateToEn($this->get('session')->get('dateDebut')),
-                    $this->frDateToEn($this->get('session')->get('dateFin'))
+                $types = $carTypeRepository->findAllAvailableBetween(
+                    $this->frDateToEn($this->get('session')->get('startDate')),
+                    $this->frDateToEn($this->get('session')->get('endDate'))
                 );
             }
             else
-                $types = $typeVehiculeRepository->findAllAvailable(date_create('now'));
+                $types = $carTypeRepository->findAllAvailable(date_create('now'));
         }
         else {
-            $this->get('session')->set('récurrent', true);
-            if($this->isValidDate($this->get('session')->get('dateDebut')))
-                $types = $typeVehiculeRepository
-                    ->findAllAvailable($this->frDateToEn($this->get('session')->get('dateDebut')));
+            $this->get('session')->set('recurring', true);
+            if($this->isValidDate($this->get('session')->get('startDate')))
+                $types = $carTypeRepository
+                    ->findAllAvailable($this->frDateToEn($this->get('session')->get('startDate')));
             else
-                $types = $typeVehiculeRepository->findAllAvailable(date_create('now'));
+                $types = $carTypeRepository->findAllAvailable(date_create('now'));
         }
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            if($estRecurrent) {
+            if($isMonthlyRecurring) {
                 //Mise à jour du cookie récurrent
-                $this->get('session')->set('récurrent', true);
+                $this->get('session')->set('recurring', true);
 
                 //Récupération de la date
                 $date = $data['date'];
                 if($this->isValidDate($date)){
-                    $this->get('session')->set('dateDebut', $date);
-                    $types = $typeVehiculeRepository->findAllAvailable($this->frDateToEn($date));
+                    $this->get('session')->set('startDate', $date);
+                    $types = $carTypeRepository->findAllAvailable($this->frDateToEn($date));
                 }
                 //date invalide, on retourne une erreur
                 else {
@@ -74,17 +83,17 @@ class IndexController extends AbstractController
             }
             else {
                 //Mise à jour du cookie récurrent
-                $this->get('session')->set('récurrent', false);
+                $this->get('session')->set('recurring', false);
 
                 //on récupère les deux dates
                 $dates = preg_split('/( - )/', $data['date']);
                 if(sizeof($dates) == 2 and $this->isValidDates($dates[0], $dates[1])) {
                     //On met à jour les cookies
-                    $this->get('session')->set('dateDebut', $dates[0]);
-                    $this->get('session')->set('dateFin', $dates[1]);
+                    $this->get('session')->set('startDate', $dates[0]);
+                    $this->get('session')->set('endDate', $dates[1]);
 
-                    //On charge les types disponible avec les dates fournies
-                    $types = $typeVehiculeRepository->findAllAvailableBetween($this->frDateToEn($dates[0]), $this->frDateToEn($dates[1]));
+                    //On charge les types available avec les dates fournies
+                    $types = $carTypeRepository->findAllAvailableBetween($this->frDateToEn($dates[0]), $this->frDateToEn($dates[1]));
                 }
                 //dates invalide, on retourne une erreur
                 else {
@@ -94,34 +103,37 @@ class IndexController extends AbstractController
             }
         }
 
-        $estRecurrent ? $this->addMessageRecurrent() : $this->addMessageDates();
+        $isMonthlyRecurring ? $this->addMonthlyRecurringTips() : $this->addFixedDatesTips();
 
-        dump($types);
         return $this->render("index/index.html.twig", [
             'types' => $types,
             'savedDates' => [
-                "Debut" => $this->get('session')->get('dateDebut'),
-                "Fin" => $this->get('session')->get('dateFin')
+                "Start" => $this->get('session')->get('startDate'),
+                "End" => $this->get('session')->get('endDate')
             ],
             'form' => $form->createView(),
-            'estRecurrent' => $estRecurrent
+            'isMonthlyRecurring' => $isMonthlyRecurring
         ]);
     }
 
     /**
+     * Affiche les véhicule du type donnée avec les informations de location précisé dans la page d'accueil
+     *
      * @Route("/type/{id}", name="_type")
+     * @param $id
+     * @param CarTypeRepository $carTypeRepository
+     * @param CarRepository $carRepository
+     * @return RedirectResponse|Response
      */
-    public function afficherType($id,Request $request)
+    public function showCarsOfType($id, CarTypeRepository $carTypeRepository, CarRepository $carRepository)
     {
-        $em = $this->getDoctrine()->getManager();
-        $type = $em->getRepository(TypeVehicule::class)->find($id);
+        $type = $carTypeRepository->find($id);
+        $isMonthlyRecurring = $this->get('session')->get('recurring');
 
-        $vehiculesRepo = $em->getRepository(Vehicule::class);
-        $estRecurrent = $this->get('session')->get('récurrent');
-
-        if($estRecurrent) {
-            if($this->isValidDate($this->get('session')->get('dateDebut'))) {
-                $vehicules = $vehiculesRepo->findAllAvailableByTypeAt($this->frDateToEn($this->get('session')->get('dateDebut')),$type);
+        if($isMonthlyRecurring) {
+            if($this->isValidDate($this->get('session')->get('startDate'))) {
+                $cars = $carRepository
+                    ->findAllAvailableByTypeAt($this->frDateToEn($this->get('session')->get('startDate')),$type);
             }
             else {
                 $this->addFlash('danger','Veuillez préciser une date de début');
@@ -130,11 +142,11 @@ class IndexController extends AbstractController
         }
         elseif($this->isValidCookieDates()) {
                 $savedDates = [
-                    "Debut" => $this->get('session')->get('dateDebut'),
-                    "Fin" => $this->get('session')->get('dateFin')];
-                $vehicules = $vehiculesRepo->findAllAvailableByTypeBetween( $type,
-                    $this->frDateToEn($savedDates["Debut"]),
-                    $this->frDateToEn($savedDates["Fin"])
+                    "Start" => $this->get('session')->get('startDate'),
+                    "End" => $this->get('session')->get('endDate')];
+                $cars = $carRepository->findAllAvailableByTypeBetween( $type,
+                    $this->frDateToEn($savedDates["Start"]),
+                    $this->frDateToEn($savedDates["End"])
                 );
             }
         else {
@@ -146,75 +158,108 @@ class IndexController extends AbstractController
 
         return $this->render("index/vehicule.html.twig", [
             'type' => $type,
-            'vehicules' => $vehicules,
+            'Cars' => $cars,
             'savedDates' => [
-                "Debut" => $this->get('session')->get('dateDebut'),
-                "Fin" => $this->get('session')->get('dateFin'),
+                "Start" => $this->get('session')->get('startDate'),
+                "End" => $this->get('session')->get('endDate'),
             ],
             'days' => $days,
-            'estReccurent' => $estRecurrent
+            'isMonthlyRecurring' => $isMonthlyRecurring
         ]);
     }
 
     /**
+     * Réinitialise les dates et passe en mode mensuel
+     *
      * @Route("/date_r", name="_date_reset")
      */
     public function reinit_dates()
     {
-        $this->get('session')->remove('dateDebut');
-        $this->get('session')->remove('dateFin');
-        $this->get('session')->set('récurrent', true);
+        $this->get('session')->remove('startDate');
+        $this->get('session')->remove('endDate');
+        $this->get('session')->set('recurring', true);
         return $this->redirect($this->generateUrl('index_home'));
     }
 
     /**
+     * Initialise les dates pour une location à des dates fixées
+     *
      * @Route("/date_i", name="_date_init")
      */
     public function init_dates()
     {
-        $this->get('session')->set('récurrent', false);
+        $this->get('session')->set('recurring', false);
         return $this->redirect($this->generateUrl('index_home'));
     }
 
-    private function addMessageRecurrent() {
+    /**
+     * Affiche un message d'info pour préciser l'utilisateur qu'il est en mode Mensuel
+     */
+    private function addMonthlyRecurringTips() {
         $this->addFlash('info', 'Vous consultez les véhicules disponibles pour une location mensuelle à durée indéterminée !');
     }
 
-    private function addMessageDates() {
+    /**
+     * Affiche un message d'info pour préciser l'utilisateur qu'il est en mode dates fixées
+     */
+    private function addFixedDatesTips() {
         $this->addFlash('warning', 'Vous consultez les véhicules disponibles pour une location fixe !');
     }
 
-    private function isValidDates($dateDeb, $dateFin) {
-        if($this->frDateToEn($dateDeb) < $this->frDateToEn($dateFin))
-            if($this->frDateToEn($dateDeb) >= date('Y-m-d', time()))
+    /**
+     * Valide l'intervalle de date
+     * @param $startDate
+     * @param $endDate
+     * @return bool
+     */
+    private function isValidDates($startDate, $endDate) {
+        if($this->frDateToEn($startDate) < $this->frDateToEn($endDate))
+            if($this->frDateToEn($startDate) >= date('Y-m-d', time()))
                 return true;
         return false;
     }
 
+    /**
+     * Valide une date
+     * @param $date
+     * @return bool
+     */
     private function isValidDate($date) {
         if($this->frDateToEn($date) >= date('Y-m-d', time()))
             return true;
         return false;
     }
 
+    /**
+     * Vérifie que les dates contenues dans les cookies ne sont pas erronées
+     * (si cookies anciens ou modifications tierces)
+     */
     private function isValidCookieDates() {
-        if ($this->get('session')->has('récurrent') and !$this->get('session')->get('récurrent'))
-            if($this->get('session')->has('dateDebut') and $this->get('session')->has('dateFin')) {
-                return $this->isValidDates($this->get('session')->get('dateDebut'), $this->get('session')->get('dateFin'));
+        if ($this->get('session')->has('recurring') and !$this->get('session')->get('recurring'))
+            if($this->get('session')->has('startDate') and $this->get('session')->has('endDate')) {
+                return $this->isValidDates($this->get('session')->get('startDate'), $this->get('session')->get('endDate'));
             }
         return false;
     }
 
+    /**
+     * Compte le nombre de jours de l'intervalle de dates des cookies
+     */
     private function countDays() {
         if($this->isValidCookieDates()) {
-            $dateDeb = $this->frDateToEn($this->get('session')->get('dateDebut'));
-            $dateFin = $this->frDateToEn($this->get('session')->get('dateFin'));
+            $startDate = $this->frDateToEn($this->get('session')->get('startDate'));
+            $endDate = $this->frDateToEn($this->get('session')->get('endDate'));
 
-            return $dateFin->diff($dateDeb)->format("%a") + 1;
+            return $endDate->diff($startDate)->format("%a") + 1;
         }
         return null;
     }
 
+    /**
+     * Convertis une date au format Français à un format Date
+     * @param $date_string
+     * @return DateTime|false
+     */
     private function frDateToEn($date_string) {
         return date_create(strtr(mb_strtolower($date_string), array('janvier'=>'jan','février'=>'feb','mars'=>'march','avril'=>'apr','mai'=>'may','juin'=>'jun','juillet'=>'jul','août'=>'aug','septembre'=>'sep','octobre'=>'oct','novembre'=>'nov','décembre'=>'dec')));
     }

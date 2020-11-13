@@ -8,13 +8,13 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{{ path('user_panel_locations') }}">
+        <a class="nav-link" href="{{ path('user_rents') }}">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
             <span class="ml-2">Mes Locations</span>
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{{ path('app_deconnexion') }}">
+        <a class="nav-link" href="{{ path('app_logout') }}">
             <span class="ml-2">Déconnexion</span>
         </a>
     </li>
@@ -24,8 +24,8 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ path('user_panel') }}">Panel</a></li>
-            <li class="breadcrumb-item"><a href="{{ path('user_panel_locations') }}">Locations</a></li>
-            <li class="breadcrumb-item active" aria-current="page">#{{ location.id }}</li>
+            <li class="breadcrumb-item"><a href="{{ path('user_rents') }}">Locations</a></li>
+            <li class="breadcrumb-item active" aria-current="page">#{{ rent.id }}</li>
         </ol>
     </nav>
 {% endblock %}
@@ -35,43 +35,46 @@
     <div class="container">
         <div class="container px-1 px-md-4 py-5 mx-auto">
             <div class="card">
-                <a class="fa_icon" href="{{ path('user_panel_locations') }}" style="margin-left: 10px;">
+                <a class="fa_icon" href="{{ path('user_rents') }}" style="margin-left: 10px;">
                     <span class="fa fa-angle-left"></span>
                 </a>
                 <div class="row d-flex justify-content-between px-3 top">
                     <div class="d-flex">
-                        <h5>Réservation <span class="text-primary font-weight-bold">#{{ location.id }}</span></h5>
+                        <h5>Réservation <span class="text-primary font-weight-bold">#{{ rent.id }}</span></h5>
                     </div>
                     <div class="d-flex flex-column text-sm-right">
-                        <p class="mb-0">Loueur <span>{{ location.vehicule.loueur.name }}</span></p>
-                        <p>Contact <span class="font-weight-bold">{{ location.vehicule.loueur.email }}</span></p>
+                        <p class="mb-0">Loueur <span>{{ rent.car.renter.name }}</span></p>
+                        <p>Contact <span class="font-weight-bold">{{ rent.car.renter.email }}</span></p>
                     </div>
                 </div>
                 <div class="row d-flex justify-content-center">
                     <div class="col-12">
                         <ul id="progressbar" class="text-center">
                             <li class="active step0"></li>
-                            <li class="{% if location.estPayee %}active{% endif %} step0"></li>
-                            <li class="{% if location.estPayee %}active{% endif %} step0"></li>
+                            <li class="{% if rent.isPaid %}active{% endif %} step0"></li>
+                            <li class="{% if rent.isPaid %}active{% endif %} step0"></li>
                         </ul>
                     </div>
                 </div>
                 <div class="row justify-content-between top">
-                    <div class="row d-flex icon-content"> <img class="icon" src="https://i.imgur.com/9nnc9Et.png">
+                    <div class="row d-flex icon-content">
+                        <img class="icon" src="https://i.imgur.com/9nnc9Et.png">
                         <div class="d-flex flex-column">
                             <p class="font-weight-bold">Réservation <br>Enregistrée</p>
                         </div>
                     </div>
-                    <div class="row d-flex icon-content"> <img class="icon" src="https://i.imgur.com/u1AzR7w.png">
+                    <div class="row d-flex icon-content">
+                        <img class="icon" src="https://i.imgur.com/u1AzR7w.png">
                         <div class="d-flex flex-column">
-                            {% if location.estPayee %}
+                            {% if rent.isPaid %}
                                 <p class="font-weight-bold">Réservation<br>Payée</p>
                             {% else %}
                                 <p class="font-weight-bold">Réservation<br>en attente de paiement</p>
                             {% endif %}
                         </div>
                     </div>
-                    <div class="row d-flex icon-content"> <img class="icon" src="https://i.imgur.com/TkPm63y.png">
+                    <div class="row d-flex icon-content">
+                        <img class="icon" src="https://i.imgur.com/TkPm63y.png">
                         <div class="d-flex flex-column">
                             <p class="font-weight-bold">Véhicule<br>Prêt</p>
                         </div>

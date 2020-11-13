@@ -3,8 +3,8 @@ vich_uploader:
 
     mappings:
         vehicule_image:
-            uri_prefix: media/img/vehicules
-            upload_destination: '%kernel.project_dir%/public/media/img/vehicules'
+            uri_prefix: media/img/Cars
+            upload_destination: '%kernel.project_dir%/public/media/img/Cars'
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
             inject_on_load: false
             delete_on_update: true

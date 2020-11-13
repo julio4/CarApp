@@ -4,7 +4,7 @@
   <h3 align="center">Projet Pweb 2020: Car'App</h3>
 
   <p align="center">
-    Une web app pour gérer la locations de voitures
+    Une web app pour gérer la rentals de voitures
     <br />
     ·
     <br />
@@ -37,7 +37,7 @@
 [![Screen][screenshot]](https://carapp2020.netlify.app)
 
 L'objectif du projet est de construire une application web basée sur une architecture [MVC](https://fr.wikipedia.org/wiki/Mod%C3%A8le-vue-contr%C3%B4leur) de location de voitures.
-Elle permet aux utilisateurs de parcourir les différents modèles de véhicules mis en locations avec une description, photo, et caractéristiques pour chaque véhicule.
+Elle permet aux utilisateurs de parcourir les différents modèles de véhicules mis en rentals avec une description, photo, et caractéristiques pour chaque véhicule.
 
 Celle-ci implémente un nombre de services à la fois pour les utilisateurs et les loueurs:
 
@@ -53,15 +53,15 @@ L'utilisateur est le plus souvent une entreprise qui souhaite louer des véhicul
 ![Status][s-fini]
 * Possibilité de réaliser un paiement mensuel sans date limite (Abonnement) 
 ![Status][s-bug]
-* Filtrage par caractéristiques et prix 
+* Filtrage par caractéristiques et price 
 ![Status][s-a-faire]
-* Affichage des modèles disponibles à la locations selon les dates entrée 
+* Affichage des modèles disponibles à la rentals selon les dates entrée 
 ![Status][s-bug]
 * Récapitulatif de commande pour valider la location d'un ou plusieurs véhicules 
 ![Status][s-a-faire]
 * Page de récapitulatif d'une location 
 ![Status][s-a-faire]
-* Panel de toutes les locations effectuées 
+* Panel de toutes les rentals effectuées 
 ![Status][s-a-faire]
 * Accès au facture 
 ![Status][s-a-faire]
@@ -84,7 +84,7 @@ L'utilisateur est le plus souvent une entreprise qui souhaite louer des véhicul
 ![Status][s-a-faire]
 * Graphique des revenue/réservation 
 ![Status][s-en-cours]
-* Tableau des dernières locations 
+* Tableau des dernières rentals 
 ![Status][s-en-cours]
 * Page de récapitulatif d'une location 
 ![Status][s-en-cours]
@@ -117,9 +117,9 @@ Un rôle Administrateur est aussi implémenté:
 ![Status][s-fini]
 * Possibilité de supprimer un compte 
 ![Status][s-fini]
-* Possibilité de définir un compte utilisateur en compte loueur 
+* Possibilité de définir un compte utilisateur en compte renter 
 ![Status][s-fini]
-* Possibilité de définir un compte loueur en compte utilisateur 
+* Possibilité de définir un compte renter en compte utilisateur 
 ![Status][s-fini]
 
 #### Sécurité
@@ -144,7 +144,7 @@ Cette application web utilise certaines technologies et frameworks:
 ##### Back-end
 * [Symfony 5](https://symfony.com/)
 
-Une liste des dépendances est disponible XXXXXXXXXXXXXXX
+Une liste des dépendances est available XXXXXXXXXXXXXXX
 
 
 <!-- Installation -->
@@ -213,10 +213,10 @@ symfony server:ca:install
 symfony server:start
 ```
 
-L'application est disponible en environnement de développement en local à l'adresse [localhost:8000](https://127.0.0.1:8000/)
+L'application est available en environnement de développement en local à l'adresse [localhost:8000](https://127.0.0.1:8000/)
 
 Le compte administrateur de base est accessible avec l'utilisateur `admin` et le mot de passe `password`
-Un compte loueur est accessible avec l'utilisateur `demoLoueur` et le mot de passe `password`
+Un compte renter est accessible avec l'utilisateur `demoLoueur` et le mot de passe `password`
 Un compte utilisateur est accessible avec l'utilisateur `demoUser` et le mot de passe `password`
 
 ### Extensions utilisées
@@ -262,7 +262,7 @@ Cependant cet apprentissage n'a pas été une perte de temps car nous avons pu r
 #### Services réalisés
 
 Nous avons décider de commencer par la sécurité du site, avec l'enregistrement des utilisateurs sous différents rôles, les formulaires de connexions, d'enregistrements, etc ...
-Nous avons aussi mis en place un espace Administrateur différent du loueur, qui permet de gérer directement les utilisateurs.
+Nous avons aussi mis en place un espace Administrateur différent du renter, qui permet de gérer directement les utilisateurs.
 
 Puis nous avons commencé à implémenter les services correspondants à chaque utilisateur, cependant nous préférons empêcher tout bug ou disfonctionnement ce qui prend beaucoup de temps à développer. En effet, tout erreur est gérée par les controllers.
 

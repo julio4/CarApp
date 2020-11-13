@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}Connexion{% endblock %}
 
 {% block body %}
 <div class="container py-5">
@@ -10,8 +10,8 @@
         {% endif %}
 
         {% if app.user %}
-            <div class="mb-3">
-                Vous êtes connecté(e) en tant que {{ app.user.username }}, <a href="{{ path('app_deconnexion') }}">Logout</a>
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>Vous êtes connecté(e)!</strong> Bonjour {{ app.user.username }}, <a href="{{ path('app_logout') }}">Se déconnecter</a>
             </div>
         {% else %}
 
@@ -25,21 +25,16 @@
                    value="{{ csrf_token('authenticate') }}"
             >
 
-            {#
-                Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-                See https://symfony.com/doc/current/security/remember_me.html
-
-                <div class="checkbox mb-3">
-                    <label>
-                        <input type="checkbox" name="_remember_me"> Remember me
-                    </label>
-                </div>
-            #}
-
-            <button class="btn btn-lg btn-primary my-5" type="submit">
-                Connexion
-            </button>
-            <a href="{{ path('app_inscription') }}">Vous n'avez pas de compte ?</a>
+        <div class="row">
+            <div class="col-12">
+                <button class="btn btn-lg border-dark my-4 float-right" type="submit">
+                    Connexion
+                </button>
+            </div>
+            <div class="col-12">
+                <a class="lead float-right" href="{{ path('app_inscription') }}">Vous n'avez pas de compte ?</a>
+            </div>
+        </div>
         {% endif %}
     </form>
 </div>

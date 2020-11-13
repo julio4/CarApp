@@ -7,8 +7,8 @@
 {% block dashboard_current %}
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ path('loueur_panel') }}">Panel</a></li>
-            <li class="breadcrumb-item"><a href="{{ path('loueur_vehicules') }}">Véhicules</a></li>
+            <li class="breadcrumb-item"><a href="{{ path('renter_panel') }}">Panel</a></li>
+            <li class="breadcrumb-item"><a href="{{ path('renter_cars') }}">Véhicules</a></li>
             <li class="breadcrumb-item active" aria-current="page">Nouveau</li>
         </ol>
     </nav>
@@ -19,7 +19,7 @@
         <div class="col-10">
             <div class="card rounded shadow-sm border-0 mr-2">
                 <div class="card-body">
-                    <a class="fa_icon" href="{{ path('loueur_vehicules') }}" >
+                    <a class="fa_icon" href="{{ path('renter_cars') }}" >
                         <span class="fa fa-angle-left"></span>
                     </a>
 
@@ -36,7 +36,7 @@
                     </div>
                     <div class="form-row">
                         <div class="col">
-                            {{ form_row(form.prix) }}
+                            {{ form_row(form.price) }}
                         </div>
                     </div>
                     <div class="form-row">
@@ -89,7 +89,7 @@
                         <div class="col">
                             <div class="text-center">
                                 {{ form_row(form.save) }}
-                                {{ form_row(form.disponible) }}
+                                {{ form_row(form.available) }}
                             </div>
                         </div>
                     </div>
@@ -124,7 +124,7 @@
                     var form = document.createElement('form');
                     document.body.appendChild(form);
                     form.method = 'post';
-                    form.action = "{{ path('loueur_type_ajouter')|escape('js') }}";
+                    form.action = "{{ path('renter_addType')|escape('js') }}";
                         var input = document.createElement('input');
                         input.type = 'hidden';
                         input.name = 'default_name';

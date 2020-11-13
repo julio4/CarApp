@@ -5,14 +5,20 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
+ * Ce panel d'administration permet la gestion des utilisateurs au sein du site
+ *
  * @Route("/admin", name="admin")
  */
 class AdminController extends AbstractController
 {
     /**
+     * La page d'accueil du panel
+     *
      * @Route("/", name="_panel")
      */
     public function panel()
@@ -26,7 +32,11 @@ class AdminController extends AbstractController
     }
 
     /**
+     * Affiche touts les utilisateurs inscrits sur le site
+     *
      * @Route("/utilisateurs", name="_panel_utilisateur")
+     * @param UserRepository $userRepository
+     * @return Response
      */
     public function panel_userManager(UserRepository $userRepository)
     {
@@ -37,12 +47,17 @@ class AdminController extends AbstractController
     }
 
     /**
+     * Permet de supprimer un utilisateur
+     *
      * @Route("/utilisateurs/supprimer/{id}", requirements={"id" = "\d+"}, name="_panel_utilisateur_supprimer")
+     * @param $id
+     * @param UserRepository $userRepository
+     * @return RedirectResponse
      */
-    public function deleteUser($id)
+    public function deleteUser($id, UserRepository $userRepository)
     {
-        $em = $this->getDoctrine()->getManager();
-        $user = $em->getRepository(User::class)->find($id);
+        $user = $userRepository->find($id);
+
         if (!$user) {
             $this->addFlash('error','Utilisateur ' . $id . ' non existant!');
             return $this->redirect($this->generateUrl('admin_panel_utilisateur'));
@@ -62,12 +77,16 @@ class AdminController extends AbstractController
     }
 
     /**
+     * Permet de passer un utilisateur en mode loueur
+     *
      * @Route("/utilisateurs/loueur/{id}", requirements={"id" = "\d+"}, name="_panel_utilisateur_loueur")
+     * @param $id
+     * @param UserRepository $userRepository
+     * @return RedirectResponse
      */
-    public function setUserLoueur($id)
+    public function setUserLoueur($id, UserRepository $userRepository)
     {
-        $em = $this->getDoctrine()->getManager();
-        $user = $em->getRepository(User::class)->find($id);
+        $user = $userRepository->find($id);
 
         if (!$user) {
             $this->addFlash('error','Utilisateur ' . $id . ' non existant!');
@@ -80,20 +99,24 @@ class AdminController extends AbstractController
 
         $roles = ["ROLE_LOUEUR"];
         $user->setRoles($roles);
-        $em->flush();
+        $this->getDoctrine()->getManager()->flush();
 
-        $this->addFlash('success','Utilisateur a maintenant le rôle de Loueur !');
+        $this->addFlash('success','Utilisateur ' . $id . ' a maintenant le rôle de Loueur !');
 
         return $this->redirect($this->generateUrl('admin_panel_utilisateur'));
     }
 
     /**
+     * Permet de passer un loueur en mode utilisateur
+     *
      * @Route("/utilisateurs/utilisateur/{id}", requirements={"id" = "\d+"}, name="_panel_utilisateur_utilisateur")
+     * @param $id
+     * @param UserRepository $userRepository
+     * @return RedirectResponse
      */
-    public function setUserUtilisateur($id)
+    public function setUserUtilisateur($id, UserRepository $userRepository)
     {
-        $em = $this->getDoctrine()->getManager();
-        $user = $em->getRepository(User::class)->find($id);
+        $user = $userRepository->find($id);
 
         if (!$user) {
             $this->addFlash('error','Utilisateur ' . $id . ' non existant!');
@@ -106,9 +129,9 @@ class AdminController extends AbstractController
 
         $roles = ["ROLE_USER"];
         $user->setRoles($roles);
-        $em->flush();
+        $this->getDoctrine()->getManager()->flush();
 
-        $this->addFlash('success','Utilisateur a maintenant le rôle d\'utilisateur !');
+        $this->addFlash('success','Utilisateur ' . $id . ' a maintenant le rôle d\'utilisateur !');
 
         return $this->redirect($this->generateUrl('admin_panel_utilisateur'));
     }

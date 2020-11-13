@@ -2,74 +2,125 @@
 
 namespace App\Controller;
 
-use App\Entity\Location;
-use App\Repository\LocationRepository;
+use App\Repository\RentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
+ * Permet à un utilisateur de gérer son compte ,de voir ses locations et de payer ses factures
+ *
  * @Route("/compte", name="user")
  */
 class UserController extends AbstractController
 {
     /**
+     * Panel d'accueil récapitulatif
+     *
      * @Route("/", name="_panel")
+     * @param RentRepository $rentRepository
+     * @return Response
      */
-    public function index(LocationRepository $locationRepository)
+    public function index(RentRepository $rentRepository)
     {
-        $locations = $locationRepository->findBy(['user' => $this->getUser()]);
+        $rents = $rentRepository->findBy(['user' => $this->getUser()]);
         return $this->render('user/index.html.twig', [
-            'locations' => $locations,
+            'rentals' => $rents,
         ]);
     }
 
     /**
-     * @Route("/locations", name="_panel_locations")
+     * Affiche les locations
+     *
+     * @Route("/locations", name="_rents")
+     * @param RentRepository $rentRepository
+     * @param UserInterface $user
+     * @return Response
      */
-    public function locations(LocationRepository $locationRepository)
+    public function locations(RentRepository $rentRepository, UserInterface $user)
     {
-        $locations = $locationRepository->findBy(['user' => $this->getUser()]);
+        $nbMonthToPay = $rentRepository->findWithNbMoisAPayee($user);
+
         return $this->render('user/locations.html.twig', [
-            'locations' => $locations,
+            'rentals' => $nbMonthToPay,
         ]);
     }
 
     /**
-     * @Route("/facturation/{id}", name="_location_facturation")
+     * Permet de payer intégralement la location
+     *
+     * @Route("/facturation/{id}", name="_billing")
+     * @param $id
+     * @param RentRepository $rentRepository
+     * @param UserInterface $user
+     * @return RedirectResponse
      */
-    public function facturation($id, LocationRepository $locationRepository, Request $request, UserInterface $user){
-        $location = $locationRepository->findOneBy(['id' => $id, 'user' => $user]);
+    public function facturation($id, RentRepository $rentRepository, UserInterface $user){
+        $rent = $rentRepository->findOneBy(['id' => $id, 'user' => $user]);
 
-        if($location != null) {
-            $location->setEstPayee(true);
+        if($rent != null) {
+            $rent->setIsPaid(true);
 
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
             $this->addFlash('success', 'Paiement pour la location #'.$id.' effectué avec succès!');
-            return $this->redirect($this->generateUrl('user_panel_locations'));
+            return $this->redirect($this->generateUrl('user_rents'));
         }
         else {
             $this->addFlash('danger','Erreur facturation inaccessible ou inexistante!');
-            return $this->redirect($this->generateUrl('user_panel_locations'));
+            return $this->redirect($this->generateUrl('user_rents'));
         }
     }
 
     /**
-     * @Route("/details/{id}", name="_location_recap")
+     * Permet de payer pour le mois courant la location
+     *
+     * @Route("/facturation_mois/{id}", name="_RecurringBilling")
+     * @param $id
+     * @param RentRepository $rentRepository
+     * @param UserInterface $user
+     * @return RedirectResponse
      */
-    public function recapLocation($id, LocationRepository $locationRepository, Request $request, UserInterface $user){
-        $location = $locationRepository->findOneBy(['id' => $id, 'user' => $user]);
-        if($location != null) {
+    public function facturationMois($id, RentRepository $rentRepository, UserInterface $user){
+        $rent = $rentRepository->findOneBy(['id' => $id, 'user' => $user]);
+
+        if($rent != null) {
+            $rent->setPaidMonths($rent->getPaidMonths()+1);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            $this->addFlash('success', 'Paiement mensuel pour la location #'.$id.' effectué avec succès!');
+            return $this->redirect($this->generateUrl('user_rents'));
+        }
+        else {
+            $this->addFlash('danger','Erreur facturation inaccessible ou inexistante!');
+            return $this->redirect($this->generateUrl('user_rents'));
+        }
+    }
+
+    /**
+     * Affiche un récapitulatif d'une location
+     *
+     * @Route("/details/{id}", name="_rent_detail")
+     * @param $id
+     * @param RentRepository $rentRepository
+     * @param UserInterface $user
+     * @return RedirectResponse|Response
+     */
+    public function recapLocation($id, RentRepository $rentRepository, UserInterface $user){
+        $rent = $rentRepository->findOneBy(['id' => $id, 'user' => $user]);
+        if($rent != null) {
             return $this->render('user/location_recap.html.twig', [
-                'location' => $location
+                'rent' => $rent
             ]);
         }
         else {
             $this->addFlash('danger','Erreur location inaccessible ou inexistante!');
-            return $this->redirect($this->generateUrl('user_panel_locations'));
+            return $this->redirect($this->generateUrl('user_rents'));
         }
     }
 }

@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block style %}
-    {% if estRecurrent %}
+    {% if isMonthlyRecurring %}
         {{ encore_entry_link_tags('date') }}
     {% else %}
         {{ encore_entry_link_tags('dates') }}
@@ -23,7 +23,7 @@
             </div>
             <div class="row justify-content-md-center">
                 <div class="col-6">
-                    {% if estRecurrent %}
+                    {% if isMonthlyRecurring %}
                         {{ form_row(form.date, {'label': 'Choississez la date de début de location:'}) }}
                     {% else %}
                         {{ form_row(form.date, {'label': 'Choississez vos dates de location:'}) }}
@@ -33,7 +33,7 @@
             {{ form_rest(form) }}
             <div class="row justify-content-md-center my-3">
                 <div class="col-3">
-                    {% if estRecurrent %}
+                    {% if isMonthlyRecurring %}
                         <a href="{{ path('index_date_init') }}" class="btn btn-warning">Location à des dates précises</a>
                     {% else %}
                         <a href="{{ path('index_date_reset') }}" class="btn btn-info">Location mensuelle</a>
@@ -41,7 +41,7 @@
                 </div>
                 <div class="col-3">
                     <button class="btn btn-primary" type="submit">
-                        Valider {% if estRecurrent %}la date{% else %}les dates{% endif %} <span class='fa fa-calendar-alt'></span>
+                        Valider {% if isMonthlyRecurring %}la date{% else %}les dates{% endif %} <span class='fa fa-calendar-alt'></span>
                     </button>
                 </div>
             </div>
@@ -93,19 +93,19 @@
                     <div class="card rounded shadow-sm border-0">
                         <a href="{{ path('index_type', {id: type.id})}}" class="text-dark">
                             <div class="card-body p-4">
-                                <img src="{{ vich_uploader_asset(type, 'imageFile', 'App\\Entity\\TypeVehicule') | imagine_filter('thumb_4_3') }}"
+                                <img src="{{ vich_uploader_asset(type, 'imageFile', 'App\\Entity\\CarType') | imagine_filter('photo_small') }}"
                                      alt="{{ type.image.name }}" class="img-fluid d-block mx-auto mb-3">
                                 <h3>
                                     {{ type.name }}
                                 </h3>
                                 {% set minimalPrice = 10000 %}
-                                {% for v in type.vehicules %}
-                                    {% if v.prix < minimalPrice%}
-                                        {% set minimalPrice = v.prix %}
+                                {% for v in type.Cars %}
+                                    {% if v.price < minimalPrice%}
+                                        {% set minimalPrice = v.price %}
                                     {% endif %}
                                 {% endfor %}
                                 <p class="small font-bold float-right">À partir de
-                                    {% if estRecurrent %}{{ minimalPrice * 0.9 * 30 }} €/mois{% else %}{{ minimalPrice }} €/jour{% endif %}</p>
+                                    {% if isMonthlyRecurring %}{{ minimalPrice * 0.9 * 30 }} €/mois{% else %}{{ minimalPrice }} €/jour{% endif %}</p>
                             </div>
                         </a>
                     </div>
@@ -115,7 +115,7 @@
             <div class="jumbotron jumbotron-fluid w-100">
                 <div class="container">
                     <h1 class="display-4">Oops !</h1>
-                    <p class="lead">Aucune voiture disponible ! Des dates différentes peuvent donner de nouveaux résultats!</p>
+                    <p class="lead">Aucune voiture available ! Des dates différentes peuvent donner de nouveaux résultats!</p>
                 </div>
             </div>
             {% endif %}
@@ -145,21 +145,21 @@
     </div>
 {% endblock %}
 {% block javascripts %}
-    {% if estRecurrent %}
+    {% if isMonthlyRecurring %}
         {{ encore_entry_script_tags('date') }}
     {% else %}
         {{ encore_entry_script_tags('dates') }}
     {% endif %}
 <script>
     $(document).ready(function () {
-        {% if estRecurrent %}
+        {% if isMonthlyRecurring %}
 
-        picker.setDate("{{ savedDates.Debut }}");
+        picker.setDate("{{ savedDates.Start }}");
 
         {% else %}
 
-            {% if savedDates.Debut is not empty and savedDates.Fin is not empty%}
-            picker.setDateRange("{{ savedDates.Debut }}", "{{ savedDates.Fin }}");
+            {% if savedDates.Start is not empty and savedDates.End is not empty%}
+            picker.setDateRange("{{ savedDates.Start }}", "{{ savedDates.End }}");
             {% endif %}
 
         {% endif %}

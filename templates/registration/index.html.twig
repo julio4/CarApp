@@ -5,8 +5,8 @@
 {% block body %}
 <div class="container py-5">
     {% if app.user %}
-        <div class="mb-3">
-            Vous êtes connectée en tant que {{ app.user.username }}, <a href="{{ path('app_deconnexion') }}">Logout</a>
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Vous êtes connecté(e)!</strong> Bonjour {{ app.user.username }}, <a href="{{ path('app_logout') }}">Se déconnecter</a>
         </div>
     {% endif %}
     {{ form(form) }}

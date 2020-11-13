@@ -2,9 +2,9 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\TypeVehicule;
+use App\Entity\CarType;
 use App\Entity\User;
-use App\Entity\Vehicule;
+use App\Entity\Car;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -62,7 +62,7 @@ class AppFixtures extends Fixture
         );
         $userDemo->setRoles(['ROLE_USER']);
 
-        $type = new TypeVehicule();
+        $type = new CarType();
         copy(__DIR__."/../../public/media/img/fixtures/porsche.png", __DIR__."/../../public/media/img/fixtures/porsche_type.png");
         $src = __DIR__."/../../public/media/img/fixtures/porsche_type.png";
         $file = new UploadedFile(
@@ -75,15 +75,15 @@ class AppFixtures extends Fixture
         $type->setName('Porsche')
             ->setImageFile($file);
 
-        $porsche1 = new Vehicule();
-        $porsche1->setDisponible(1);
-        $porsche1->setPrix(24.5);
-        $carac = array('boite' => 'Automatique',
+        $porsche1 = new Car();
+        $porsche1->setAvailable(1);
+        $porsche1->setPrice(24.5);
+        $features = array('boite' => 'Automatique',
             'moteur' => 'Electrique',
             'carburant' => 'Electrique');
-        $porsche1->setCarac($carac);
+        $porsche1->setFeatures($features);
         $porsche1->setType($type);
-        $porsche1->setLoueur($loueurDemo);
+        $porsche1->setRenter($loueurDemo);
         copy(__DIR__."/../../public/media/img/fixtures/voiture.png", __DIR__."/../../public/media/img/fixtures/voiture_vehicule.png");
         $src = __DIR__."/../../public/media/img/fixtures/voiture_vehicule.png";
         $file = new UploadedFile(
@@ -94,7 +94,7 @@ class AppFixtures extends Fixture
             true
         );
         $porsche1->setImageFile($file);
-        $porsche1->setEstArchivee(false);
+        $porsche1->setIsArchived(false);
 
         $manager->persist($admin);
         $manager->persist($loueurDemo);

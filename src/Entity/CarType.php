@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
-use App\Repository\TypeVehiculeRepository;
+use App\Repository\CarTypeRepository;
+use DateTimeImmutable;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,10 +15,10 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass=TypeVehiculeRepository::class)
+ * @ORM\Entity(repositoryClass=CarTypeRepository::class)
  * @Vich\Uploadable
  */
-class TypeVehicule
+class CarType
 {
     /**
      * @ORM\Id
@@ -46,10 +48,10 @@ class TypeVehicule
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Vehicule", mappedBy="type")
-     * @ORM\OrderBy({"prix" = "ASC"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Car", mappedBy="type")
+     * @ORM\OrderBy({"price" = "ASC"})
      */
-    private $vehicules;
+    private $Cars;
 
     public function getId(): ?int
     {
@@ -71,41 +73,38 @@ class TypeVehicule
     public function __construct()
     {
         $this->image = new EmbeddedFile();
-        $this->vehicules = new ArrayCollection();
+        $this->Cars = new ArrayCollection();
     }
 
     /**
-     * @return Collection|Vehicule[]
+     * @return Collection|Car[]
      */
-    public function getVehicules(): Collection
+    public function getCars(): Collection
     {
-        return $this->vehicules;
+        return $this->Cars;
     }
 
-    public function addVehicule(Vehicule $vehicule): self
+    public function addCar(Car $car): self
     {
-        if (!$this->vehicules->contains($vehicule)) {
-            $this->vehicules[] = $vehicule;
-            $vehicule->setType($this);
+        if (!$this->Cars->contains($car)) {
+            $this->Cars[] = $car;
+            $car->setType($this);
         }
         return $this;
     }
 
-    public function removeVehicule(Vehicule $vehicule): self
+    public function removeCar(Car $car): self
     {
-        if ($this->vehicules->contains($vehicule)) {
-            $this->vehicules->removeElement($vehicule);
-            // set the owning side to null (unless already changed)
-            if ($vehicule->getType() === $this) {
-                $vehicule->setType(null);
+        if ($this->Cars->contains($car)) {
+            $this->Cars->removeElement($car);
+            if ($car->getType() === $this) {
+                $car->setType(null);
             }
         }
         return $this;
     }
 
     /**
-     * NOTE: This is not a mapped field of entity metadata, just a simple property.
-     *
      * @Vich\UploadableField(mapping="vehicule_image", fileNameProperty="image.name", size="image.size", mimeType="image.mimeType", originalName="image.originalName", dimensions="image.dimensions")
      *
      * @var File|null
@@ -122,17 +121,11 @@ class TypeVehicule
     /**
      * @ORM\Column(type="datetime")
      *
-     * @var \DateTimeInterface|null
+     * @var DateTimeInterface|null
      */
     private $updatedAt;
 
     /**
-     * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
-     * of 'UploadedFile' is injected into this setter to trigger the  update. If this
-     * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
-     * must be able to accept an instance of 'File' as the bundle will inject one here
-     * during Doctrine hydration.
-     *
      * @param File|UploadedFile|null $imageFile
      */
     public function setImageFile(?File $imageFile = null)
@@ -142,7 +135,7 @@ class TypeVehicule
         if (null !== $imageFile) {
             // It is required that at least one field changes if you are using doctrine
             // otherwise the event listeners won't be called and the file is lost
-            $this->updatedAt = new \DateTimeImmutable();
+            $this->updatedAt = new DateTimeImmutable();
         }
     }
 
