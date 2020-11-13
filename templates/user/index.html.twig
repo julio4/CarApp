@@ -73,7 +73,7 @@
                             <!-- seulement les 10 dernières réservations -->
                             {% for r in rentals|slice(0,10) %}
                                 <tr class='clickable-row' data-href='{{ path('user_rent_detail', { 'id': r.id }) }}' style="cursor: pointer;">
-                                    <th scope="row">{{ location.id }}</th>
+                                    <th scope="row">{{ r.id }}</th>
                                     <td>{{ r.car.type.name }}</td>
                                     <td>{{ r.car.renter.name }}</td>
                                     <td>{{ r.startDate|date("m/d/Y") }} - {{ r.endDate|date("m/d/Y") }}</td>

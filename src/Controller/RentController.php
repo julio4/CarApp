@@ -69,7 +69,9 @@ class RentController extends AbstractController
                     return $this->redirect($this->generateUrl('index_type', ["id" => $car->getType()->getId()]));
                 }
             }
+            $car->addRental($rent);
             $em = $this->getDoctrine()->getManager();
+            $em->persist($car);
             $em->persist($rent);
             $em->flush();
             $this->addFlash('success','Nouvelle réservation <a href="'.$this->generateUrl("user_rent_detail",['id'=>$rent->getId()]).'">#'. $rent->getId() . '</a> validée à payer.');

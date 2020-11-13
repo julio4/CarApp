@@ -78,7 +78,7 @@
 {#                                        <p class="small text-muted">Loueur: <a href="renter.html">{{ car.renter.name }}</a></p>#}
                                         <div class="row">
                                             <div class="col-md-4">
-                                                <img class="img-fluid d-block rounded" alt="{{car['image.name']}}"
+                                                <img class="img-fluid d-block rounded" alt="{{car.image.name}}"
                                                      src="{{ vich_uploader_asset(car, 'imageFile', 'App\\Entity\\Car') | imagine_filter('photo_medium') }}" />
                                             </div>
                                             <div class="col-md-4">

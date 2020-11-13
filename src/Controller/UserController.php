@@ -43,7 +43,7 @@ class UserController extends AbstractController
     {
         $nbMonthToPay = $rentRepository->findWithNbMoisAPayee($user);
 
-        return $this->render('user/locations.html.twig', [
+        return $this->render('user/rents.html.twig', [
             'rentals' => $nbMonthToPay,
         ]);
     }
@@ -114,7 +114,7 @@ class UserController extends AbstractController
     public function recapLocation($id, RentRepository $rentRepository, UserInterface $user){
         $rent = $rentRepository->findOneBy(['id' => $id, 'user' => $user]);
         if($rent != null) {
-            return $this->render('user/location_recap.html.twig', [
+            return $this->render('user/rent_details.html.twig', [
                 'rent' => $rent
             ]);
         }

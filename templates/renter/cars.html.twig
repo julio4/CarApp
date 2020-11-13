@@ -1,5 +1,4 @@
-{% extends 'loueur/index.html.twig' %}
-
+{% extends 'renter/index.html.twig' %}
 
 {% block sidebard %}
     <li class="nav-item">
@@ -9,7 +8,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{{ path('renter_cars') }}">
+        <a class="nav-link active" aria-current="page" href="{{ path('renter_cars') }}">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
             <span class="ml-2">Véhicules</span>
         </a>
@@ -21,7 +20,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="{{ path('renter_customers') }}">
+        <a class="nav-link" href="{{ path('renter_customers') }}">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
             <span class="ml-2">Clients</span>
         </a>
@@ -42,31 +41,72 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ path('renter_panel') }}">Panel</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Clients</li>
+            <li class="breadcrumb-item active" aria-current="page">Véhicules</li>
         </ol>
     </nav>
 {% endblock %}
 {% block dashboard_body %}
-    <h1 class="h2">Clients</h1>
+    <h1 class="h2">Véhicules</h1>
     <div class="row">
         <div class="col">
             <div class="card rounded shadow-sm border-0">
                 <div class="card-body">
+                    <h5 class="card-title">Listes des véhicules du parc de location <a class="btn btn-primary" href="{{ path('renter_addCar') }}" role="button">Ajouter +</a></h5>
+                    {% for message in app.flashes('success') %}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ message|raw }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endfor %}
+                    {% for message in app.flashes('danger') %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{ message|raw }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endfor %}
                     <div class="table-responsive">
                         <table class="table table-hover">
                             <thead>
                             <tr>
-                                <th scope="col">Nom</th>
-                                <th scope="col">email</th> <!-- Idées : https://bootsnipp.com/snippets/Veob -->
-                                <th scope="col">Facturation</th>
+                                <th scope="col">Modèle</th>
+                                <th scope="col">Caractéristiques</th> <!-- Idées : https://bootsnipp.com/snippets/Veob -->
+                                <th scope="col">Prix/Jour</th>
+                                <th scope="col">Disponibilité</th>
+                                <th scope="col"></th>
                             </tr>
                             </thead>
                             <tbody>
-                            {% for c in customers %}
-                                <tr class='clickable-row' data-href='{{ path('renter_billing', {"id": c.id}) }}' style="cursor: pointer;">
-                                    <th scope="row">{{ c.name }}</th>
-                                    <td>{{ c.email }}</td>
-                                    <td><a href="{{ path('renter_billing', {"id": c.id}) }}">Accéder à la facture <i class="fas fa-file-invoice-dollar"></i></a></td>
+                            {% for c in Cars %}
+                                <tr {% if not c.isRented %}class='clickable-row' data-href='{{ path('renter_editCar', { 'id': c.car.id }) }}' style="cursor: pointer;"{% endif %}>
+                                    <th scope="row">{{ c.car.type.name }}</th>
+                                    <td>
+                                        <ul>
+                                        {% for key, descr in c.car.features %}
+                                            <li>{{ key }} : {{ descr }}</li>
+                                        {% endfor %}
+                                        </ul>
+                                    </td>
+                                    <td>{{ c.car.price }} €</td>
+                                    <td>
+                                    {% if c.isRented %}
+                                        <span class="badge badge-success">Louée</span>
+                                    {% else %}
+                                        {% if c.car.available %}
+                                            <span class="badge badge-primary">Disponible</span>
+                                        {% else  %}
+                                            <span class="badge badge-secondary">Non available</span>
+                                        {% endif %}
+                                    {% endif %}
+                                    </td>
+                                    {% if c.isRented %}
+                                        <td><a href="#" class="btn btn-sm btn-secondary disabled">En location</a></td>
+                                    {% else %}
+                                        <td><a href="{{ path('renter_editCar', { 'id': c.car.id }) }}" class="btn btn-sm btn-primary">Modifier <i class="fas fa-edit"></i></a></td>
+                                    {% endif %}
                                 </tr>
                             {% endfor %}
                             </tbody>

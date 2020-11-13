@@ -77,9 +77,9 @@ class AdminController extends AbstractController
     }
 
     /**
-     * Permet de passer un utilisateur en mode loueur
+     * Permet de passer un utilisateur en mode renter
      *
-     * @Route("/utilisateurs/loueur/{id}", requirements={"id" = "\d+"}, name="_panel_utilisateur_loueur")
+     * @Route("/utilisateurs/renter/{id}", requirements={"id" = "\d+"}, name="_panel_utilisateur_loueur")
      * @param $id
      * @param UserRepository $userRepository
      * @return RedirectResponse
@@ -107,7 +107,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * Permet de passer un loueur en mode utilisateur
+     * Permet de passer un renter en mode utilisateur
      *
      * @Route("/utilisateurs/utilisateur/{id}", requirements={"id" = "\d+"}, name="_panel_utilisateur_utilisateur")
      * @param $id

@@ -64,63 +64,63 @@
                             </thead>
                             <tbody>
                             {% for r in rentals %}
-                                <tr class='clickable-row' data-href='{{ path('user_rent_detail', { 'id': r.rent.id }) }}' style="cursor: pointer;">
-                                    <th scope="row">{{ r.rent.id }}</th>
-                                    <td>{{ r.rent.car.type.name }}</td>
-                                    <td>{{ r.rent.car.renter.name }}</td>
-                                    <td>{{ r.rent.startDate|date("d/m/Y") }}
-                                        {% if not r.rent.isMonthlyRecurring %}
-                                            - {{ r.rent.endDate|date("d/m/Y") }}<br>{{ r.rent.duration }} jours
+                                <tr class='clickable-row' data-href='{{ path('user_rent_detail', { 'id': r.getRent.id }) }}' style="cursor: pointer;">
+                                    <th scope="row">{{ r.getRent.id }}</th>
+                                    <td>{{ r.getRent.car.type.name }}</td>
+                                    <td>{{ r.getRent.car.renter.name }}</td>
+                                    <td>{{ r.getRent.startDate|date("d/m/Y") }}
+                                        {% if not r.getRent.isMonthlyRecurring %}
+                                            - {{ r.getRent.endDate|date("d/m/Y") }}<br>{{ r.getRent.duration }} jours
                                         {% endif %}</td>
                                     <td>
-                                    {% if r.rent.isMonthlyRecurring %}
-                                        {{ r.rent.price }} €/Mois <span class="badge badge-success">Paiement mensuel</span>
+                                    {% if r.getRent.isMonthlyRecurring %}
+                                        {{ r.getRent.price }} €/Mois <span class="badge badge-success">Paiement mensuel</span>
                                     {% else %}
-                                        {{ r.rent.price }} €
-                                        {% if r.rent.duration > 29 %}
-                                             ({{ r.rent.price * 0.9 * 30 }} €/Mois)
+                                        {{ r.getRent.price }} €
+                                        {% if r.getRent.duration > 29 %}
+                                             ({{ r.getRent.price * 0.9 * 30 }} €/Mois)
                                         {% endif %}
                                     {% endif %}
                                     </td>
                                     <td>
-                                    {% if r.rent.isMonthlyRecurring %}
+                                    {% if r.getRent.isMonthlyRecurring %}
                                         {% if r.nbPaidMonths == 0 %}
                                             <span class="badge badge-success">Payée ce mois</span>
                                             <br>Prochain paiement le <strong>{{ r.nextMonth|date("d/m/Y") }}</strong>
                                         {% else %}
                                             <h4>
-                                                <a href="{{ path('user_RecurringBilling', {'id': r.rent.id }) }}" class="badge badge-warning">
+                                                <a href="{{ path('user_RecurringBilling', {'id': r.getRent.id }) }}" class="badge badge-warning">
                                                     Payer ce mois<i class="far fa-credit-card"></i>
                                                 </a>
                                             </h4>
                                         {% endif %}
                                     {% else %}
-                                        {% if r.rent.isPaid %}
+                                        {% if r.getRent.isPaid %}
                                             <span class="badge badge-success">Payée</span>
                                         {% else %}
-                                            {% if r.rent.duration > 29 %}
+                                            {% if r.getRent.duration > 29 %}
                                                 {% if r.nbPaidMonths == 0 %}
                                                     <span class="badge badge-success">Payée ce mois</span>
                                                     <h4>
-                                                        <a href="{{ path('user_billing', {'id': r.rent.id }) }}" class="badge badge-warning">
+                                                        <a href="{{ path('user_billing', {'id': r.getRent.id }) }}" class="badge badge-warning">
                                                             Payer intégralement<i class="far fa-credit-card"></i>
                                                         </a>
                                                     </h4>
                                                 {% else %}
                                                     <h4>
-                                                        <a href="{{ path('user_RecurringBilling', {'id': r.rent.id }) }}" class="badge badge-warning">
+                                                        <a href="{{ path('user_RecurringBilling', {'id': r.getRent.id }) }}" class="badge badge-warning">
                                                             Payer ce mois<i class="far fa-credit-card"></i>
                                                         </a>
                                                     </h4>
                                                     <h4>
-                                                        <a href="{{ path('user_billing', {'id': r.rent.id }) }}" class="badge badge-warning">
+                                                        <a href="{{ path('user_billing', {'id': r.getRent.id }) }}" class="badge badge-warning">
                                                             Payer intégralement<i class="far fa-credit-card"></i>
                                                         </a>
                                                     </h4>
                                                 {% endif %}
                                             {% else %}
                                                 <h4>
-                                                    <a href="{{ path('user_billing', {'id': r.rent.id }) }}" class="badge badge-warning">
+                                                    <a href="{{ path('user_billing', {'id': r.getRent.id }) }}" class="badge badge-warning">
                                                         Payer<i class="far fa-credit-card"></i>
                                                     </a>
                                                 </h4>
@@ -129,7 +129,7 @@
                                     {% endif %}
                                     </td>
                                     <td>
-                                        <a href="{{ path('user_rent_detail', { 'id': r.rent.id }) }}">
+                                        <a href="{{ path('user_rent_detail', { 'id': r.getRent.id }) }}">
                                             Détails <i class="fas fa-plus-square"></i>
                                         </a>
                                     </td>

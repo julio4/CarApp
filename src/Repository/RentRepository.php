@@ -45,7 +45,7 @@ class RentRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('rent')
             ->innerJoin('App\Entity\Car','car', Expr\Join::WITH, 'car.id = rent.car')
             ->andWhere('rent.user = :user')
-            ->select('rent as rent, 
+            ->select('rent as getRent, 
             IFELSE
             (rent.isMonthlyRecurring = 1,
                 (DIV(DATEDIFF(CURRENT_DATE(),rent.startDate),30)+1) - rent.paidMonths
@@ -69,10 +69,10 @@ class RentRepository extends ServiceEntityRepository
             ->innerJoin('App\Entity\Car','car', Expr\Join::WITH, 'car.id = rent.car')
             ->innerJoin('App\Entity\CarType','type', Expr\Join::WITH, 'type.id = car.type')
             ->innerJoin('App\Entity\User','user', Expr\Join::WITH, 'rent.user = user.id')
-            ->andWhere('v.renter = :renter')
+            ->andWhere('car.renter = :renter')
             ->setParameter('renter', $renter)
             ->orderBy('rent.startDate', 'DESC')
-            ->Select('rent as rent,
+            ->Select('rent as getRent,
             IFELSE
             (rent.isMonthlyRecurring = 1 AND rent.startDate <= :now OR rent.startDate <= :now AND rent.endDate >= :now
                 ,1
@@ -99,7 +99,7 @@ class RentRepository extends ServiceEntityRepository
             ->setParameter('renter', $renter)
             ->setParameter('user', $user)
             ->orderBy('rent.startDate', 'DESC')
-            ->Select('rent as rent,
+            ->Select('rent as getRent,
             IFELSE(rent.isMonthlyRecurring = 1 AND rent.startDate <= :now OR rent.startDate <= :now AND rent.endDate >= :now
                 ,1
                 ,0
@@ -121,7 +121,7 @@ class RentRepository extends ServiceEntityRepository
             ->setParameter('renter', $renter)
             ->setParameter('user', $user)
             ->orderBy('rent.startDate', 'DESC')
-            ->select('rent as rent,
+            ->select('rent as getRent,
             IFELSE(rent.isMonthlyRecurring = 1 AND rent.startDate <= CURRENT_DATE() 
             OR rent.startDate <= CURRENT_DATE() AND rent.endDate >= CURRENT_DATE(),1,0) as ongoing, 
             IFELSE

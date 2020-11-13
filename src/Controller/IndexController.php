@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Car;
 use App\Repository\CarRepository;
 use App\Repository\CarTypeRepository;
 use DateTime;
@@ -134,6 +135,7 @@ class IndexController extends AbstractController
             if($this->isValidDate($this->get('session')->get('startDate'))) {
                 $cars = $carRepository
                     ->findAllAvailableByTypeAt($this->frDateToEn($this->get('session')->get('startDate')),$type);
+                dump($cars);
             }
             else {
                 $this->addFlash('danger','Veuillez préciser une date de début');
@@ -144,10 +146,17 @@ class IndexController extends AbstractController
                 $savedDates = [
                     "Start" => $this->get('session')->get('startDate'),
                     "End" => $this->get('session')->get('endDate')];
-                $cars = $carRepository->findAllAvailableByTypeBetween( $type,
+
+                $cars_temp = $carRepository->findAllAvailableByTypeBetween( $type,
                     $this->frDateToEn($savedDates["Start"]),
                     $this->frDateToEn($savedDates["End"])
                 );
+                $nbOfRents = $carRepository->countRents($type);
+                $cars = array();
+                for($i = 0; $i < count($cars_temp); $i++) {
+                    if($cars_temp[$i][1] == $nbOfRents[$i][1])
+                        $cars[] = $cars_temp[$i][0];
+                }
             }
         else {
             $this->addFlash('danger','Veuillez préciser une intervalle de date pour la location');
@@ -156,7 +165,7 @@ class IndexController extends AbstractController
 
         $days = $this->countDays();
 
-        return $this->render("index/vehicule.html.twig", [
+        return $this->render("index/car.html.twig", [
             'type' => $type,
             'Cars' => $cars,
             'savedDates' => [

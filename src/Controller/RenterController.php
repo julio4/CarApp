@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * Panel permettant une gestion complète de ses véhicules, locations, clients et factures pour un loueur
+ * Panel permettant une gestion complète de ses véhicules, locations, clients et factures pour un renter
  *
  * @Route("/gestion", name="renter")
  */
@@ -37,14 +37,14 @@ class RenterController extends AbstractController
         $rents = $rentRepository->findAll();
         $nbCustomers = $userRepository->countCustomers();
 
-        return $this->render('loueur/index.html.twig', [
+        return $this->render('renter/index.html.twig', [
             'rentals' => $rents,
             'nbCustomers' => $nbCustomers
         ]);
     }
 
     /**
-     * Gestion de tout les véhicules du loueur
+     * Gestion de tout les véhicules du renter
      *
      * @Route("/vehicule", name="_cars")
      * @param CarRepository $carRepository
@@ -54,7 +54,7 @@ class RenterController extends AbstractController
     public function cars(CarRepository $carRepository, UserInterface $user)
     {
         $cars = $carRepository->findOwnedBy($user);
-        return $this->render('loueur/vehicules.html.twig', [
+        return $this->render('renter/cars.html.twig', [
             "Cars" => $cars
         ]);
     }
@@ -81,7 +81,7 @@ class RenterController extends AbstractController
             return $this->redirect($this->generateUrl('renter_addCar'));
         }
 
-        return $this->render('loueur/type_formulaire.html.twig', [
+        return $this->render('renter/addCarType.html.twig', [
             'form' => $form->createView()
         ]);
     }
@@ -109,7 +109,7 @@ class RenterController extends AbstractController
             return $this->redirect($this->generateUrl('renter_cars'));
         }
 
-        return $this->render('loueur/type_modifier.html.twig', [
+        return $this->render('renter/editCarType.html.twig', [
             'form' => $form->createView()
         ]);
     }
@@ -146,7 +146,7 @@ class RenterController extends AbstractController
             return $this->redirect($this->generateUrl('renter_cars'));
         }
 
-        return $this->render('loueur/vehicules_formulaire.html.twig', [
+        return $this->render('renter/addCar.html.twig', [
             'form' => $form->createView()
         ]);
     }
@@ -173,14 +173,14 @@ class RenterController extends AbstractController
             return $this->redirect($this->generateUrl('renter_cars'));
         }
 
-        return $this->render('loueur/vehicules_modifier.html.twig', [
+        return $this->render('renter/editCar.html.twig', [
             'form' => $form->createView(),
             'car' => $car
         ]);
     }
 
     /**
-     * Archive (n'apparait plus dans le panel loueur) un véhicule
+     * Archive (n'apparait plus dans le panel renter) un véhicule
      *
      * @Route ("/vehicule/archiver/{id}", name="_deleteCar")
      * @param $id
@@ -210,7 +210,7 @@ class RenterController extends AbstractController
     }
 
     /**
-     * Affiche les utilisateurs ayant loué au moins une fois avec ce loueur
+     * Affiche les utilisateurs ayant loué au moins une fois avec ce renter
      *
      * @Route ("/clients", name="_customers")
      * @param UserRepository $userRepository
@@ -221,7 +221,7 @@ class RenterController extends AbstractController
 
         $customers = $userRepository->findByRentalsOfRenter($user);
 
-        return $this->render('loueur/clients.html.twig', [
+        return $this->render('renter/customers.html.twig', [
             "customers" => $customers
         ]);
 
@@ -241,7 +241,7 @@ class RenterController extends AbstractController
         $customer = $userRepository->find($id);
         $locations = $rentRepository->findOneWithBilling($customer, $user);
 
-        return $this->render('loueur/facturation.html.twig', [
+        return $this->render('renter/billing.html.twig', [
             "rentals" => $locations,
             "customer" => $customer
         ]);
@@ -249,7 +249,7 @@ class RenterController extends AbstractController
     }
 
     /**
-     * Affiche toutes les locations du loueur
+     * Affiche toutes les locations du renter
      *
      * @Route ("/locations", name="_rents")
      * @param RentRepository $rentRepository
@@ -259,7 +259,7 @@ class RenterController extends AbstractController
     public function renterRents(RentRepository $rentRepository, UserInterface $user){
         $rents= $rentRepository->findRenter($user);
 
-        return $this->render('loueur/locations.html.twig', [
+        return $this->render('renter/rents.html.twig', [
             "rentals" => $rents
         ]);
 
@@ -276,7 +276,7 @@ class RenterController extends AbstractController
         $rent = $rentRepository->findOneOf($id, $user);
 
         if($rent != null) {
-            return $this->render('loueur/location_recap.html.twig', [
+            return $this->render('renter/rent_details.html.twig', [
                 'rent' => $rent
             ]);
         }
@@ -295,7 +295,7 @@ class RenterController extends AbstractController
     public function stats(CarRepository $carRepository, UserInterface $user){
 
         $cars = $carRepository->findOwnedBy($user);
-        return $this->render('loueur/statistiques.html.twig', [
+        return $this->render('renter/stats.html.twig', [
             "Cars" => $cars
         ]);
 

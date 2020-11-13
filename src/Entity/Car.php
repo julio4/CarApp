@@ -146,7 +146,7 @@ class Car
         return $this->rentals;
     }
 
-    public function addLocation(Rent $rent): self
+    public function addRental(Rent $rent): self
     {
         if (!$this->rentals->contains($rent)) {
             $this->rentals[] = $rent;
