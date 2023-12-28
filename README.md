@@ -236,13 +236,6 @@ Ces extensions sont automatiquement installées en suivant [le guide d'installat
 
 Documentation des fonctionnalitées offertes par notre application ! (voir le rapport de projet)[Status][s-fini] 
 
-<!-- CONTACT -->
-## Contact
-
-Jules Doumèche - [@julio4](https://github.com/julio4) - jules.doumeche@etu.parisdescartes.fr
-Gwénolé Martin - [@LightBowFire](https://github.com/LightBowFire/) - gwenole.martin@etu.parisdescartes.fr
-Mehdi Hachisman - [@Mehachi](https://github.com/Mehachi/) - mehdi.hachisman@etu.parisdescartes.fr
-
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [s-url]: (#roadmap)
